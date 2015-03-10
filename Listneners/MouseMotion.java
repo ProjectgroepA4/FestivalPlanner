@@ -6,7 +6,16 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
+import Applicatie.Panel;
+
 public class MouseMotion extends MouseMotionAdapter {
+	Panel p;
+	
+	public MouseMotion(Panel p)
+	{
+		this.p = p;
+	}
+	
 	public void mouseDragged(MouseEvent e) {
 		Point2D clickPoint = getClickPoint(e.getPoint());
 		if(dragObject != null)

@@ -48,9 +48,9 @@ public class Panel extends JPanel {
 		objects.add(new Podium(new Point2D.Double(500, 100)));
 		objects.add(new Podium(new Point2D.Double(300, 400)));
 	
-		addMouseListener(new Mouse());
+		addMouseListener(new Mouse(this));
 		
-		addMouseMotionListener(new MouseMotion());
+		addMouseMotionListener(new MouseMotion(this));
 		
 		addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
@@ -114,6 +114,66 @@ public class Panel extends JPanel {
 			e1.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public ArrayList<DrawObject> getObjects() {
+		return objects;
+	}
+
+
+	public void setObjects(ArrayList<DrawObject> objects) {
+		this.objects = objects;
+	}
+
+
+	public DrawObject getDragObject() {
+		return dragObject;
+	}
+
+
+	public void setDragObject(DrawObject dragObject) {
+		this.dragObject = dragObject;
+	}
+
+
+	public Point2D getCameraPoint() {
+		return cameraPoint;
+	}
+
+
+	public void setCameraPoint(Point2D cameraPoint) {
+		this.cameraPoint = cameraPoint;
+	}
+
+
+	public float getCameraScale() {
+		return cameraScale;
+	}
+
+
+	public void setCameraScale(float cameraScale) {
+		this.cameraScale = cameraScale;
+	}
+
+
+	public Point2D getLastClickPosition() {
+		return lastClickPosition;
+	}
+
+
+	public void setLastClickPosition(Point2D lastClickPosition) {
+		this.lastClickPosition = lastClickPosition;
+	}
+
+
+	public Point getLastMousePosition() {
+		return lastMousePosition;
+	}
+
+
+	public void setLastMousePosition(Point lastMousePosition) {
+		this.lastMousePosition = lastMousePosition;
 	}
 	
 

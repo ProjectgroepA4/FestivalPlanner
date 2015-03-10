@@ -5,10 +5,18 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import Applicatie.DrawObject;
+import Applicatie.Panel;
 import Objects.Podium;
 import Objects.Toilet;
 
 public class Mouse extends MouseAdapter {
+		Panel p;
+		
+		public Mouse(Panel p)
+		{
+			this.p = p;
+		}
+		
 		public void mousePressed(MouseEvent e) {
 			Point2D clickPoint = getClickPoint(e.getPoint());
 			lastClickPosition = clickPoint;
