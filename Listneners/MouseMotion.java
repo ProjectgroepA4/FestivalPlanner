@@ -8,7 +8,10 @@ import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Applicatie.Panel;
+
 public class MouseMotion extends MouseMotionAdapter {
+
 	private Panel panel;
 
 	public MouseMotion(Panel panel)

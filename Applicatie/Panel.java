@@ -106,9 +106,11 @@ public class Panel extends JPanel {
 	}
 
 
+
 	public void setBackground(BufferedImage background) {
 		this.background = background;
 	}
+
 
 
 	public ArrayList<DrawObject> getObjects() {
