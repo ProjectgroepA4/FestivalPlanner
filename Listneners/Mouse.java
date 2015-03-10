@@ -7,30 +7,38 @@ import java.awt.geom.Point2D;
 import Applicatie.DrawObject;
 import Objects.Podium;
 import Objects.Toilet;
+import Applicatie.Panel;
 
 public class Mouse extends MouseAdapter {
-		public void mousePressed(MouseEvent e) {
-			Point2D clickPoint = getClickPoint(e.getPoint());
-			lastClickPosition = clickPoint;
-			lastMousePosition = e.getPoint();
+	private Panel panel;
+	
+	public Mouse(Panel panel)
+	{
+		this.panel = panel;
+	}
+	
+	public void mousePressed(MouseEvent e) {
+			Point2D clickPoint = panel.getClickPoint(e.getPoint());
+			panel.setLastClickPosition(clickPoint);
+			panel.setLastMousePosition(e.getPoint());
 			if(e.getX() < 200)
 			{
 				if(e.getY() < 300)
-					dragObject = new Podium(clickPoint);
+					panel.setDragObject(new Podium(clickPoint));
 				else
-					dragObject = new Toilet(clickPoint);
-				objects.add(dragObject);
+					panel.setDragObject(new Toilet(clickPoint));
+				panel.add(panel.getDragObject());
 			}
 			else
 			{
-				for(DrawObject o : objects)
+				for(DrawObject o : panel.getObjects())
 					if(o.contains(clickPoint))
-						dragObject = o;
+						panel.setDragObject(o);
 			}
 		}
 	
 	
 		public void mouseReleased(MouseEvent e) {
-			dragObject = null;
+			panel.setDragObject(null);
 		}
 }

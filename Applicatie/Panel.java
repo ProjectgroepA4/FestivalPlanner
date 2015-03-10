@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import Listneners.Mouse;
 import Listneners.MouseMotion;
+import Listneners.MouseWheel;
 import Objects.Podium;
 
 public class Panel extends JPanel {
@@ -48,31 +49,19 @@ public class Panel extends JPanel {
 		objects.add(new Podium(new Point2D.Double(500, 100)));
 		objects.add(new Podium(new Point2D.Double(300, 400)));
 	
-		addMouseListener(new Mouse());
+		addMouseListener(new Mouse(this));
 		
-		addMouseMotionListener(new MouseMotion());
+		addMouseMotionListener(new MouseMotion(this));
 		
-		addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				Point2D clickPoint = getClickPoint(e.getPoint());
-				for(DrawObject o : objects)
-				{
-					if(o.contains(clickPoint))
-					{
-						o.scale *= 1 + (e.getPreciseWheelRotation()/10.0);
-						repaint();
-						return;
-					}
-				}
-				
-//				cameraPoint
-				cameraScale *= 1 - (e.getPreciseWheelRotation()/10.0);
-				repaint();
-			}
-		});
+		addMouseWheelListener(new MouseWheel(this));
 		
 	}
 	
+	
+	public void add(DrawObject dragObject)
+	{
+		objects.add(dragObject);
+	}
 	
 	public void paintComponent(Graphics g)
 	{
@@ -99,7 +88,7 @@ public class Panel extends JPanel {
 		g2.setTransform(oldTransform);
 	}
 
-	private AffineTransform getCamera() {
+	public AffineTransform getCamera() {
 		AffineTransform tx = new AffineTransform();
 		tx.translate(-cameraPoint.getX() + getWidth()/2, -cameraPoint.getY() + getHeight()/2);
 		tx.scale(cameraScale, cameraScale);
@@ -107,13 +96,78 @@ public class Panel extends JPanel {
 		return tx;
 	}
 	
-	private Point2D getClickPoint(Point point) {
+	public Point2D getClickPoint(Point point) {
 		try {
 			return getCamera().inverseTransform(point, null);
 		} catch (NoninvertibleTransformException e1) {
 			e1.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public void setBackground(BufferedImage background) {
+		this.background = background;
+	}
+
+
+	public ArrayList<DrawObject> getObjects() {
+		return objects;
+	}
+
+
+	public void setObjects(ArrayList<DrawObject> objects) {
+		this.objects = objects;
+	}
+
+
+	public DrawObject getDragObject() {
+		return dragObject;
+	}
+
+
+	public void setDragObject(DrawObject dragObject) {
+		this.dragObject = dragObject;
+	}
+
+
+	public Point2D getCameraPoint() {
+		return cameraPoint;
+	}
+
+
+	public void setCameraPoint(Point2D cameraPoint) {
+		this.cameraPoint = cameraPoint;
+	}
+
+
+	public float getCameraScale() {
+		return cameraScale;
+	}
+
+
+	public void setCameraScale(float cameraScale) {
+		this.cameraScale = cameraScale;
+	}
+
+
+	public Point2D getLastClickPosition() {
+		return lastClickPosition;
+	}
+
+
+	public void setLastClickPosition(Point2D lastClickPosition) {
+		this.lastClickPosition = lastClickPosition;
+	}
+
+
+	public Point getLastMousePosition() {
+		return lastMousePosition;
+	}
+
+
+	public void setLastMousePosition(Point lastMousePosition) {
+		this.lastMousePosition = lastMousePosition;
 	}
 	
 
