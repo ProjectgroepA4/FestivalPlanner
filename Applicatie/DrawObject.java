@@ -1,3 +1,4 @@
+package Applicatie;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -38,9 +39,9 @@ public class DrawObject {
 		return tx;
 	}
 
-	public boolean contains(Point point) {
+	public boolean contains(Point2D clickPoint) {
 		Shape shape = new Rectangle2D.Double(0,0,image.getWidth(null), image.getHeight(null));
-		return getTransform().createTransformedShape(shape).contains(point);
+		return getTransform().createTransformedShape(shape).contains(clickPoint);
 	}
 	
 	public void setSelected(boolean b)

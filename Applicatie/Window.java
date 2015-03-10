@@ -1,3 +1,4 @@
+package Applicatie;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -16,14 +17,8 @@ public class Window extends JFrame {
 		
 		//CONTENT PANELS
 		JPanel contentPanel = new JPanel(new BorderLayout());
-		FestivalPanel fp = new FestivalPanel();
-		TopBar tb = new TopBar(fp);
-		SideBar sb = new SideBar(fp);
-		BottomBar bb = new BottomBar(fp);
+		Panel fp = new Panel();
 		contentPanel.add(fp, BorderLayout.CENTER);
-		contentPanel.add(tb, BorderLayout.NORTH);
-		contentPanel.add(sb, BorderLayout.EAST);
-		contentPanel.add(bb, BorderLayout.SOUTH);
 		
 		setContentPane(contentPanel);
 		//END CONTENT PANELS
