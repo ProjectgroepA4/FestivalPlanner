@@ -22,6 +22,7 @@ public class Mouse extends MouseAdapter {
 	public void mousePressed(MouseEvent e) {
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
+		panel.setLastMousePosition(e.getPoint());
 
 		if(e.getX() < 200)
 		{

@@ -34,8 +34,8 @@ public class Panel extends JPanel {
 	float cameraScale = 1;
 	
 	
-	Point2D lastClickPosition;
-	Point lastMousePosition;
+	Point2D lastClickPosition = new Point(0,0);
+	Point lastMousePosition = new Point(0,0);
 	
 	Panel()
 	{
