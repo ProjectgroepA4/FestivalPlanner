@@ -67,18 +67,18 @@ public class Panel extends JPanel {
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setClip(new Rectangle2D.Double(0,0, 200, getHeight()));
+		g2.setClip(new Rectangle2D.Double(0,0, getWidth(), 300));
 
 		g2.fill(new Ellipse2D.Double(0,0,300,300));
 		
 		
-		g2.setClip(new Rectangle2D.Double(200,0, getWidth()-200, getHeight()));
+		g2.setClip(new Rectangle2D.Double(0,300, getWidth(), getHeight()-200));
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 		
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(0,0,1920,1080));
+		g2.fill(new Rectangle2D.Double(-1920,-1080,3840,2160));
 		
 		for(DrawObject o : objects)
 			o.draw(g2);

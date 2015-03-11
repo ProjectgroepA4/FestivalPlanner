@@ -23,10 +23,9 @@ public class Mouse extends MouseAdapter {
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
 		panel.setLastMousePosition(e.getPoint());
-
-		if(e.getX() < 200)
+		if(e.getY() < 300)
 		{
-			if(e.getY() < 300)
+			if(e.getX() < 300)
 				panel.setDragObject(new Podium(clickPoint));
 			else
 				panel.setDragObject(new Toilet(clickPoint));
