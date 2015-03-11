@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import Listneners.Mouse;
-import Listneners.MouseMotion;
-import Listneners.MouseWheel;
+import Listeners.Mouse;
+import Listeners.MouseMotion;
+import Listeners.MouseWheel;
 import Objects.Podium;
 
 public class Panel extends JPanel {

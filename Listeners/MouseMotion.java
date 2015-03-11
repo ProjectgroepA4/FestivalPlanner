@@ -1,4 +1,4 @@
-package Listneners;
+package Listeners;
 import Applicatie.Panel;
 
 import java.awt.event.MouseEvent;

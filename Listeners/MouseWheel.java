@@ -1,4 +1,4 @@
-package Listneners;
+package Listeners;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
