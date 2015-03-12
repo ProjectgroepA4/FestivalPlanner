@@ -1,2 +1,0 @@
-# FestivalPlanner
-Festival Planner
