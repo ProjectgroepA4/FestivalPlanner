@@ -3,8 +3,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
@@ -23,6 +21,7 @@ import Listeners.MouseMotion;
 import Listeners.MouseWheel;
 import Objects.Podium;
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel {
 	
 	BufferedImage background;
@@ -33,12 +32,16 @@ public class Panel extends JPanel {
 	Point2D cameraPoint = new Point2D.Double(getWidth()/2,getHeight()/2);
 	float cameraScale = 1;
 	
+	PropertiesPanel pp;
+	
 	
 	Point2D lastClickPosition = new Point(0,0);
 	Point lastMousePosition = new Point(0,0);
 	
-	Panel()
+	Panel(PropertiesPanel pp)
 	{
+		this.pp = pp;
+		pp.setPanel(this);
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
 		} catch (IOException e) {
@@ -172,5 +175,14 @@ public class Panel extends JPanel {
 		this.lastMousePosition = lastMousePosition;
 	}
 	
+	public PropertiesPanel getPP()
+	{
+		return pp;
+	}
+
+	public void update()
+	{
+		repaint();
+	}
 
 }

@@ -34,8 +34,15 @@ public class Mouse extends MouseAdapter {
 		else
 		{
 			for(DrawObject o : panel.getObjects())
+			{
 				if(o.contains(clickPoint))
+				{
 					panel.setDragObject(o);
+					panel.getPP().setSelected(o);
+					return;
+				}
+			}
+			panel.getPP().clearSelected();
 		}
 	}
 

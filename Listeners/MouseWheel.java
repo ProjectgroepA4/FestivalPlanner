@@ -23,6 +23,7 @@ public class MouseWheel implements MouseWheelListener {
 			{
 				double scale = o.getScale()* 1 + (e.getPreciseWheelRotation()/10.0);
 				o.setScale(scale);
+				panel.getPP().update();
 				panel.repaint();
 				return;
 			}
