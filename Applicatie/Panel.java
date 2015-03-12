@@ -29,6 +29,8 @@ public class Panel extends JPanel {
 	
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	DrawObject dragObject = null;
+	private DrawObject selectedObject;
+	private String clickedOption = "drag";
 	
 	Point2D cameraPoint = new Point2D.Double(getWidth()/2,getHeight()/2);
 	float cameraScale = 1;
@@ -170,6 +172,26 @@ public class Panel extends JPanel {
 
 	public void setLastMousePosition(Point lastMousePosition) {
 		this.lastMousePosition = lastMousePosition;
+	}
+
+
+	public DrawObject getSelectedObject() {
+		return selectedObject;
+	}
+
+
+	public void setSelectedObject(DrawObject selectedObject) {
+		this.selectedObject = selectedObject;
+	}
+
+
+	public String getClickedOption() {
+		return clickedOption;
+	}
+
+
+	public void setClickedOption(String clickedOption) {
+		this.clickedOption = clickedOption;
 	}
 	
 
