@@ -9,7 +9,7 @@ import Applicatie.Panel;
 
 public class MouseWheel implements MouseWheelListener {
 	private Panel panel;
-	private int scrollfactor, min, max;
+	private int scrollfactor;
 
 	public MouseWheel(Panel panel)
 	{
@@ -35,11 +35,19 @@ public class MouseWheel implements MouseWheelListener {
 
 			if(e.getPreciseWheelRotation() < 0)
 			{
-				panel.setScrollfactor(panel.getScrollfactor() - scrollfactor);
+				if(panel.getScrollfactor() + scrollfactor + panel.getPanelInfoLength() < panel.getWidth())
+				{
+					panel.setScrollfactor(panel.getScrollfactor() + scrollfactor);
+				}
+		
 			}
 			else
 			{
-				panel.setScrollfactor(panel.getScrollfactor() + scrollfactor);
+				if(panel.getScrollfactor() - scrollfactor >= 0)
+				{
+					panel.setScrollfactor(panel.getScrollfactor() - scrollfactor);
+				}
+				
 			}
 
 		}

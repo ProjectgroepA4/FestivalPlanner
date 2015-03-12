@@ -81,6 +81,17 @@ public class Panel extends JPanel {
 		
 	}
 	
+	public int getPanelInfoLength()
+	{
+		int panelInfoLength = 0;
+		for(BufferedImage image : panelInfo)
+		{
+			panelInfoLength += image.getWidth();
+		}
+		
+		return panelInfoLength;
+	}
+	
 	public DrawObject createNewDrawObject(int index)
 	{
 		switch(index)
@@ -112,11 +123,10 @@ public class Panel extends JPanel {
 //		g2.drawImage(podiumImage, 0, 0, null);
 		for(BufferedImage image : panelInfo)
 		{
-			g2.drawImage(image, panelInfox - scrollfactor, panelInfoy, null);
+			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
 			panelInfox += image.getWidth();
 		}
 		panelInfox = 0;
-		
 		
 		g2.setClip(new Rectangle2D.Double(0,150, getWidth(), getHeight()));
 		AffineTransform oldTransform = g2.getTransform();
