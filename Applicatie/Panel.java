@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,10 +23,17 @@ import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
 import Objects.Podium;
+import Objects.Toilet;
 
 public class Panel extends JPanel {
 	
 	BufferedImage background;
+	BufferedImage podiumImage, toiletImage;
+	
+	private int panelInfox, panelInfoy;
+	
+	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
+	private ArrayList<Object> panelTypes = new ArrayList<Object>();
 	
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	DrawObject dragObject = null;
@@ -37,17 +45,33 @@ public class Panel extends JPanel {
 	Point2D lastClickPosition = new Point(0,0);
 	Point lastMousePosition = new Point(0,0);
 	
+	//how to nieuwe dingen aan het panel toe te voegen:
+	//maak bufferedimage global aan, voeg er een image aan toe, en voeg de image aan panelInfo toe en het object aan panelTypes.
+	//en maak een case statement die een new Object returnt in createNewDrawObject.
+	
 	Panel()
 	{
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
+			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
+			toiletImage = ImageIO.read(new File("images/toilet.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		panelInfo.add(podiumImage);
+		panelInfo.add(toiletImage);
+		panelTypes.add(new Podium(null));
+		panelTypes.add(new Toilet(null));
+		panelInfo.add(toiletImage);
+		panelTypes.add(new Toilet(null));
 		
-		objects.add(new Podium(new Point2D.Double(100, 100)));
-		objects.add(new Podium(new Point2D.Double(500, 100)));
-		objects.add(new Podium(new Point2D.Double(300, 400)));
+		panelInfox = 0;
+		panelInfoy = 0;
+		
+		
+//		objects.add(new Podium(new Point2D.Double(100, 100)));
+//		objects.add(new Podium(new Point2D.Double(500, 100)));
+//		objects.add(new Podium(new Point2D.Double(300, 400)));
 	
 		addMouseListener(new Mouse(this));
 		
@@ -57,6 +81,20 @@ public class Panel extends JPanel {
 		
 	}
 	
+	public DrawObject createNewDrawObject(int index)
+	{
+		switch(index)
+		{
+		case 0:
+			return new Podium(null);
+		case 1:
+			return new Toilet(null);
+		case 2:
+			return new Toilet(null);
+		default:
+			return null;
+		}
+	}
 	
 	public void add(DrawObject dragObject)
 	{
@@ -69,10 +107,18 @@ public class Panel extends JPanel {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setClip(new Rectangle2D.Double(0,0, getWidth(), 300));
 
-		g2.fill(new Ellipse2D.Double(0,0,300,300));
+//		g2.fill(new Ellipse2D.Double(0,0,300,300));
+		
+//		g2.drawImage(podiumImage, 0, 0, null);
+		for(BufferedImage image : panelInfo)
+		{
+			g2.drawImage(image, panelInfox, panelInfoy, null);
+			panelInfox += image.getWidth();
+		}
+		panelInfox = 0;
 		
 		
-		g2.setClip(new Rectangle2D.Double(0,300, getWidth(), getHeight()-200));
+		g2.setClip(new Rectangle2D.Double(0,150, getWidth(), getHeight()));
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 		
@@ -80,8 +126,10 @@ public class Panel extends JPanel {
 		g2.setPaint(p);
 		g2.fill(new Rectangle2D.Double(-1920,-1080,3840,2160));
 		
-		for(DrawObject o : objects)
+		for(DrawObject o : objects){
 			o.draw(g2);
+		}
+			
 		
 		
 		g2.setClip(null);
@@ -170,6 +218,36 @@ public class Panel extends JPanel {
 
 	public void setLastMousePosition(Point lastMousePosition) {
 		this.lastMousePosition = lastMousePosition;
+	}
+
+
+	public BufferedImage getPodiumImage() {
+		return podiumImage;
+	}
+
+
+	public void setPodiumImage(BufferedImage podiumImage) {
+		this.podiumImage = podiumImage;
+	}
+
+
+	public ArrayList<BufferedImage> getPanelInfo() {
+		return panelInfo;
+	}
+
+
+	public void setPanelInfo(ArrayList<BufferedImage> panelInfo) {
+		this.panelInfo = panelInfo;
+	}
+
+
+	public ArrayList<Object> getPanelTypes() {
+		return panelTypes;
+	}
+
+
+	public void setPanelTypes(ArrayList<Object> panelTypes) {
+		this.panelTypes = panelTypes;
 	}
 	
 
