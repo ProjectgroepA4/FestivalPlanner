@@ -9,12 +9,14 @@ import Applicatie.Panel;
 
 public class MouseWheel implements MouseWheelListener {
 	private Panel panel;
-	
+	private int scrollfactor, min, max;
+
 	public MouseWheel(Panel panel)
 	{
 		this.panel = panel;
+		scrollfactor = 20;
 	}
-	
+
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
 		for(DrawObject o : panel.getObjects())
@@ -27,10 +29,29 @@ public class MouseWheel implements MouseWheelListener {
 				return;
 			}
 		}
-		
-//		cameraPoint
-		double cameraScale = panel.getCameraScale() * 1 - (e.getPreciseWheelRotation()/10);
-		panel.setCameraScale((float) cameraScale);
+
+		if(e.getY() < 150)
+		{
+
+			if(e.getPreciseWheelRotation() < 0)
+			{
+				panel.setScrollfactor(panel.getScrollfactor() - scrollfactor);
+			}
+			else
+			{
+				panel.setScrollfactor(panel.getScrollfactor() + scrollfactor);
+			}
+
+		}
+		else
+		{
+			//			cameraPoint
+			double cameraScale = panel.getCameraScale() * 1 - (e.getPreciseWheelRotation()/10);
+			panel.setCameraScale((float) cameraScale);
+
+		}
+
+
 		panel.repaint();
 	}
 }

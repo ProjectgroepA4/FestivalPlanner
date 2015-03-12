@@ -30,7 +30,7 @@ public class Panel extends JPanel {
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage;
 	
-	private int panelInfox, panelInfoy;
+	private int panelInfox, panelInfoy,scrollfactor;
 	
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
 	private ArrayList<Object> panelTypes = new ArrayList<Object>();
@@ -67,7 +67,7 @@ public class Panel extends JPanel {
 		
 		panelInfox = 0;
 		panelInfoy = 0;
-		
+		scrollfactor = 0;
 		
 //		objects.add(new Podium(new Point2D.Double(100, 100)));
 //		objects.add(new Podium(new Point2D.Double(500, 100)));
@@ -90,7 +90,7 @@ public class Panel extends JPanel {
 		case 1:
 			return new Toilet(null);
 		case 2:
-			return new Toilet(null);
+			return new Podium(null);
 		default:
 			return null;
 		}
@@ -112,7 +112,7 @@ public class Panel extends JPanel {
 //		g2.drawImage(podiumImage, 0, 0, null);
 		for(BufferedImage image : panelInfo)
 		{
-			g2.drawImage(image, panelInfox, panelInfoy, null);
+			g2.drawImage(image, panelInfox - scrollfactor, panelInfoy, null);
 			panelInfox += image.getWidth();
 		}
 		panelInfox = 0;
@@ -248,6 +248,22 @@ public class Panel extends JPanel {
 
 	public void setPanelTypes(ArrayList<Object> panelTypes) {
 		this.panelTypes = panelTypes;
+	}
+
+	public int getScrollfactor() {
+		return scrollfactor;
+	}
+
+	public void setScrollfactor(int scrollfactor) {
+		this.scrollfactor = scrollfactor;
+	}
+
+	public int getPanelInfox() {
+		return panelInfox;
+	}
+
+	public void setPanelInfox(int panelInfox) {
+		this.panelInfox = panelInfox;
 	}
 	
 

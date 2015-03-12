@@ -34,7 +34,7 @@ public class Mouse extends MouseAdapter {
 			int last = 0;
 			for(BufferedImage image : panel.getPanelInfo())
 			{
-				if(e.getX() < last + image.getWidth())
+				if(e.getX() < last + image.getWidth() - panel.getScrollfactor())
 				{
 					DrawObject tempDrawObj = panel.createNewDrawObject(i);
 					tempDrawObj.setPosition(clickPoint);
