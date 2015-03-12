@@ -3,10 +3,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -14,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,18 +18,21 @@ import javax.swing.JPanel;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
+import Objects.Entrance;
+import Objects.Path;
 import Objects.Podium;
 import Objects.Toilet;
+import Objects.Wall;
 
 public class Panel extends JPanel {
 	
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,wallImage;
 	
 	private int panelInfox, panelInfoy,scrollfactor;
 	
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
-	private ArrayList<Object> panelTypes = new ArrayList<Object>();
+//	private ArrayList<Object> panelTypes = new ArrayList<Object>();
 	
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	DrawObject dragObject = null;
@@ -54,16 +53,18 @@ public class Panel extends JPanel {
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
-			toiletImage = ImageIO.read(new File("images/toilet.png"));
+			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
+			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
+			pathImage = ImageIO.read(new File("images/pathIcon.png"));
+			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		panelInfo.add(podiumImage);
 		panelInfo.add(toiletImage);
-		panelTypes.add(new Podium(null));
-		panelTypes.add(new Toilet(null));
-		panelInfo.add(toiletImage);
-		panelTypes.add(new Toilet(null));
+		panelInfo.add(entranceImage);
+		panelInfo.add(pathImage);
+		panelInfo.add(wallImage);
 		
 		panelInfox = 0;
 		panelInfoy = 0;
@@ -101,7 +102,11 @@ public class Panel extends JPanel {
 		case 1:
 			return new Toilet(null);
 		case 2:
-			return new Podium(null);
+			return new Entrance(null);
+		case 3:
+			return new Path(null);
+		case 4:
+			return new Wall(null);
 		default:
 			return null;
 		}
@@ -250,15 +255,6 @@ public class Panel extends JPanel {
 		this.panelInfo = panelInfo;
 	}
 
-
-	public ArrayList<Object> getPanelTypes() {
-		return panelTypes;
-	}
-
-
-	public void setPanelTypes(ArrayList<Object> panelTypes) {
-		this.panelTypes = panelTypes;
-	}
 
 	public int getScrollfactor() {
 		return scrollfactor;
