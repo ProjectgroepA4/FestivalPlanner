@@ -1,0 +1,125 @@
+public void save()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		
+		fileChooser.setFileFilter(new FileFilter() {
+				@Override
+				public boolean accept(File pathname) {
+					if(pathname.isFile() && pathname.getName().endsWith(".agn"))
+					{
+						return true;
+					}else if(pathname.isDirectory()){return true;}else{return false;}
+				}
+
+				@Override
+				public String getDescription() {
+					return ".agn";
+				}
+			
+		});
+		fileChooser.setDialogTitle("Choose save location");
+		int userSelection = fileChooser.showSaveDialog(null);
+		
+		if(userSelection == JFileChooser.APPROVE_OPTION)
+		{
+			File file = fileChooser.getSelectedFile();
+			if(!file.getName().endsWith(".agn"))
+			{
+				file = new File(file.getAbsolutePath() + ".agn");
+			}
+			
+			if(file.exists())
+			{
+				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to overwrite: " + file.getName(), "Overwrite", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
+				{
+					saveTerrain(file);
+				}
+			}
+			else
+			{
+				saveTerrain(file);
+			}
+		}
+	}
+	
+	
+	public void saveTerrain(File file) {
+
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(agenda);
+			for (TekenObject object : objects) {
+				oos.writeObject(object);
+			}
+			oos.close();
+			JOptionPane.showMessageDialog(null, "Saved succesfully");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}		
+	
+	public void load()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				if(pathname.isFile() && pathname.getName().endsWith(".agn"))
+				{
+					return true;
+				}else if(pathname.isDirectory()){return true;}else{return false;}
+			}
+
+			@Override
+			public String getDescription() {
+				return ".agn";
+			}
+		
+		});
+		
+		fileChooser.setDialogTitle("Choose file");
+		int userSelection = fileChooser.showOpenDialog(null);
+		
+		if(userSelection == JFileChooser.APPROVE_OPTION)
+		{
+			File file = fileChooser.getSelectedFile();
+			if(!file.exists())
+			{
+				JOptionPane.showMessageDialog(null, "This file does not exist: " + file.getName());
+			}
+			else
+			{
+				fillTerrain(file);
+				JOptionPane.showMessageDialog(null, "Loaded succesfully");
+			}
+		}
+		}
+	
+	public void fillTerrain(File file) {
+		FileInputStream fis = null;
+		ObjectInputStream ois = null;
+
+		try {
+			
+			fis = new FileInputStream(file);
+			ois = new ObjectInputStream(fis);
+
+			Object object;
+			object = ois.readObject();
+			try {
+				agenda = (Agenda) object;
+				object = ois.readObject();
+				while (object != null) {
+					objects.add((TekenObject) object); 					
+					object = ois.readObject();
+				}
+			} catch (EOFException e) {
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		for ( int i = 0; i < objects.size(); i++){
+			System.out.println(objects.get(i).getPosition());
+		}
+	}
