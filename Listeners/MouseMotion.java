@@ -48,5 +48,6 @@ public class MouseMotion extends MouseMotionAdapter {
 		}
 		panel.setLastMousePosition(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
+		panel.getPP().update();
 	}
 }

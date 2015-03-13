@@ -24,6 +24,7 @@ import Objects.Podium;
 import Objects.Toilet;
 import Objects.Wall;
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel {
 	
 	BufferedImage background;
@@ -40,6 +41,8 @@ public class Panel extends JPanel {
 	Point2D cameraPoint = new Point2D.Double(getWidth()/2,getHeight()/2);
 	float cameraScale = 1;
 	
+	PropertiesPanel pp;
+	
 	
 	Point2D lastClickPosition = new Point(0,0);
 	Point lastMousePosition = new Point(0,0);
@@ -48,8 +51,11 @@ public class Panel extends JPanel {
 	//maak bufferedimage global aan, voeg er een image aan toe, en voeg de image aan panelInfo toe en het object aan panelTypes.
 	//en maak een case statement die een new Object returnt in createNewDrawObject.
 	
-	Panel()
+
+	Panel(PropertiesPanel pp)
 	{
+		this.pp = pp;
+		pp.setPanel(this);
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
@@ -272,5 +278,14 @@ public class Panel extends JPanel {
 		this.panelInfox = panelInfox;
 	}
 	
+	public PropertiesPanel getPP()
+	{
+		return pp;
+	}
+
+	public void update()
+	{
+		repaint();
+	}
 
 }
