@@ -1,8 +1,7 @@
 package Applicatie;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -17,7 +16,6 @@ public class DrawObject {
 	double scale;
 	Image image;
 	protected boolean selected;
-	private Rectangle2D rektAngle;
 
 	public DrawObject(String filename, Point2D position)
 	{
@@ -31,14 +29,6 @@ public class DrawObject {
 	{
 		AffineTransform tx = getTransform();
 		g.drawImage(image, tx, null);
-		if(selected) {
-			g.setColor(Color.BLACK);
-			g.setStroke(new BasicStroke(7));
-			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
-			tx = getTransformRectangle(rektAngle.getWidth(),rektAngle.getHeight());
-			Shape transformedRektAngle = tx.createTransformedShape(rektAngle);
-			g.draw(transformedRektAngle);
-		}
 	}
 
 	protected AffineTransform getTransform() {
@@ -49,19 +39,6 @@ public class DrawObject {
 		return tx;
 	}
 
-	/**
-	 * Special transformation for the selection rectangle, because the translation of the image one places the rectangle translated from the image.
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	private AffineTransform getTransformRectangle(double width, double height) {
-		AffineTransform tx = new AffineTransform();
-		tx.scale(scale, scale);
-		tx.rotate(Math.toRadians(rotation), width / 2, height / 2);
-		return tx;
-	}
-	
 	public boolean contains(Point2D clickPoint) {
 		Shape shape = new Rectangle2D.Double(0,0,image.getWidth(null), image.getHeight(null));
 		return getTransform().createTransformedShape(shape).contains(clickPoint);
@@ -108,8 +85,5 @@ public class DrawObject {
 		return selected;
 	}
 	
-	public Rectangle2D getRectangle() {
-		return rektAngle;
-	}
 	
 }

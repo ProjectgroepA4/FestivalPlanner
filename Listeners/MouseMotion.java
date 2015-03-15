@@ -21,41 +21,33 @@ public class MouseMotion extends MouseMotionAdapter {
 
 	public void mouseDragged(MouseEvent e) {
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
-		switch(panel.getClickedOption()) {
-			case "drag":
-				if(panel.getDragObject() != null)
-					panel.getDragObject().setPosition(new Point2D.Double(
+		if(panel.getDragObject() != null)
+		{
+			if(SwingUtilities.isLeftMouseButton(e)){
+
+
+				panel.getDragObject().setPosition(new Point2D.Double(
 						panel.getDragObject().getPosition().getX() - (panel.getLastClickPosition().getX() - clickPoint.getX()), 
 						panel.getDragObject().getPosition().getY() - (panel.getLastClickPosition().getY() - clickPoint.getY())));
-				break;
+			}
+			else
+			{
+
+				double tempval = panel.getDragObject().getRotation() + (panel.getLastClickPosition().getX() - clickPoint.getX());
+				panel.getDragObject().setRotation(tempval);
+			}
+			panel.repaint();
 		}
-		panel.repaint();
-		
-		
-//		if(panel.getDragObject() != null)
-//		{
-//			if(SwingUtilities.isLeftMouseButton(e)){
-//
-//
-//			
-//			}
-//			else
-//			{
-//double tempval = panel.getDragObject().getRotation() + (panel.getLastClickPosition().getX() - clickPoint.getX());
-		//panel.getDragObject().setRotation(tempval);
-//				
-//			}
-//			panel.repaint();
-//		}
-//		else
-//		{
-//			panel.setCameraPoint(new Point2D.Double(
-//					panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()),
-//					panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())
-//					));
-//			panel.repaint();
-//		}
+		else
+		{
+			panel.setCameraPoint(new Point2D.Double(
+					panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()),
+					panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())
+					));
+			panel.repaint();
+		}
 		panel.setLastMousePosition(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
+		panel.getPP().update();
 	}
 }
