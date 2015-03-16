@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -18,67 +19,35 @@ import javax.swing.JPanel;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
-import Objects.Entrance;
-import Objects.Path;
 import Objects.Podium;
-import Objects.Toilet;
-import Objects.Wall;
 
-@SuppressWarnings("serial")
 public class Panel extends JPanel {
 	
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,wallImage;
-	
-	private int panelInfox, panelInfoy,scrollfactor;
-	
-	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
-//	private ArrayList<Object> panelTypes = new ArrayList<Object>();
 	
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	DrawObject dragObject = null;
+	private DrawObject selectedObject;
+	private String clickedOption = "drag";
 	
 	Point2D cameraPoint = new Point2D.Double(getWidth()/2,getHeight()/2);
 	float cameraScale = 1;
-	
-	PropertiesPanel pp;
 	
 	
 	Point2D lastClickPosition = new Point(0,0);
 	Point lastMousePosition = new Point(0,0);
 	
-	//how to nieuwe dingen aan het panel toe te voegen:
-	//maak bufferedimage global aan, voeg er een image aan toe, en voeg de image aan panelInfo toe en het object aan panelTypes.
-	//en maak een case statement die een new Object returnt in createNewDrawObject.
-	
-
-	Panel(PropertiesPanel pp)
+	Panel()
 	{
-		this.pp = pp;
-		pp.setPanel(this);
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
-			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
-			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
-			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
-			pathImage = ImageIO.read(new File("images/pathIcon.png"));
-			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		panelInfo.add(podiumImage);
-		panelInfo.add(toiletImage);
-		panelInfo.add(entranceImage);
-		panelInfo.add(pathImage);
-		panelInfo.add(wallImage);
 		
-		panelInfox = 0;
-		panelInfoy = 0;
-		scrollfactor = 0;
-		
-//		objects.add(new Podium(new Point2D.Double(100, 100)));
-//		objects.add(new Podium(new Point2D.Double(500, 100)));
-//		objects.add(new Podium(new Point2D.Double(300, 400)));
+		objects.add(new Podium(new Point2D.Double(100, 100)));
+		objects.add(new Podium(new Point2D.Double(500, 100)));
+		objects.add(new Podium(new Point2D.Double(300, 400)));
 	
 		addMouseListener(new Mouse(this));
 		
@@ -88,35 +57,6 @@ public class Panel extends JPanel {
 		
 	}
 	
-	public int getPanelInfoLength()
-	{
-		int panelInfoLength = 0;
-		for(BufferedImage image : panelInfo)
-		{
-			panelInfoLength += image.getWidth();
-		}
-		
-		return panelInfoLength;
-	}
-	
-	public DrawObject createNewDrawObject(int index)
-	{
-		switch(index)
-		{
-		case 0:
-			return new Podium(null);
-		case 1:
-			return new Toilet(null);
-		case 2:
-			return new Entrance(null);
-		case 3:
-			return new Path(null);
-		case 4:
-			return new Wall(null);
-		default:
-			return null;
-		}
-	}
 	
 	public void add(DrawObject dragObject)
 	{
@@ -127,30 +67,21 @@ public class Panel extends JPanel {
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setClip(new Rectangle2D.Double(0,0, getWidth(), 300));
+		g2.setClip(new Rectangle2D.Double(0,0, 200, getHeight()));
 
-//		g2.fill(new Ellipse2D.Double(0,0,300,300));
+		g2.fill(new Ellipse2D.Double(0,0,300,300));
 		
-//		g2.drawImage(podiumImage, 0, 0, null);
-		for(BufferedImage image : panelInfo)
-		{
-			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
-			panelInfox += image.getWidth();
-		}
-		panelInfox = 0;
 		
-		g2.setClip(new Rectangle2D.Double(0,150, getWidth(), getHeight()));
+		g2.setClip(new Rectangle2D.Double(200,0, getWidth()-200, getHeight()));
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 		
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-1920,-1080,3840,2160));
+		g2.fill(new Rectangle2D.Double(0,0,1920,1080));
 		
-		for(DrawObject o : objects){
+		for(DrawObject o : objects)
 			o.draw(g2);
-		}
-			
 		
 		
 		g2.setClip(null);
@@ -161,7 +92,6 @@ public class Panel extends JPanel {
 		AffineTransform tx = new AffineTransform();
 		tx.translate(-cameraPoint.getX() + getWidth()/2, -cameraPoint.getY() + getHeight()/2);
 		tx.scale(cameraScale, cameraScale);
-		
 		return tx;
 	}
 	
@@ -174,23 +104,17 @@ public class Panel extends JPanel {
 		return null;
 	}
 
-
-
 	public void setBackground(BufferedImage background) {
 		this.background = background;
 	}
-
-
 
 	public ArrayList<DrawObject> getObjects() {
 		return objects;
 	}
 
-
 	public void setObjects(ArrayList<DrawObject> objects) {
 		this.objects = objects;
 	}
-
 
 	public DrawObject getDragObject() {
 		return dragObject;
@@ -242,50 +166,22 @@ public class Panel extends JPanel {
 	}
 
 
-	public BufferedImage getPodiumImage() {
-		return podiumImage;
+	public DrawObject getSelectedObject() {
+		return selectedObject;
 	}
 
 
-	public void setPodiumImage(BufferedImage podiumImage) {
-		this.podiumImage = podiumImage;
+	public void setSelectedObject(DrawObject selectedObject) {
+		this.selectedObject = selectedObject;
 	}
 
 
-	public ArrayList<BufferedImage> getPanelInfo() {
-		return panelInfo;
+	public String getClickedOption() {
+		return clickedOption;
 	}
 
 
-	public void setPanelInfo(ArrayList<BufferedImage> panelInfo) {
-		this.panelInfo = panelInfo;
+	public void setClickedOption(String clickedOption) {
+		this.clickedOption = clickedOption;
 	}
-
-
-	public int getScrollfactor() {
-		return scrollfactor;
-	}
-
-	public void setScrollfactor(int scrollfactor) {
-		this.scrollfactor = scrollfactor;
-	}
-
-	public int getPanelInfox() {
-		return panelInfox;
-	}
-
-	public void setPanelInfox(int panelInfox) {
-		this.panelInfox = panelInfox;
-	}
-	
-	public PropertiesPanel getPP()
-	{
-		return pp;
-	}
-
-	public void update()
-	{
-		repaint();
-	}
-
 }
