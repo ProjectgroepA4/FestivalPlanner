@@ -45,6 +45,10 @@ public class DrawObject {
 		AffineTransform tx = getTransform();
 		g.drawImage(image, tx, null);
 		if(selected) {
+//			g.rotate(Math.toRadians(rotation), image.getWidth(null)/2, image.getHeight(null)/2);
+			
+			AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.getX() + image.getWidth(null)/2, position.getY() +image.getHeight(null)/2);
+			g.transform(rotate);
 			g.setColor(Color.BLACK);
 			g.setStroke(new BasicStroke(7));
 			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
@@ -63,6 +67,8 @@ public class DrawObject {
 			g.setColor(Color.RED);
 			rotateDot = new Ellipse2D.Double((rektAngle.getX() + (rektAngle.getWidth()/2))-8,rektAngle.getY()-8,15,15);
 			g.fill(rotateDot);
+			
+			
 		}
 	}
 
