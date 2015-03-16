@@ -11,19 +11,17 @@ public class MouseWheel implements MouseWheelListener {
 	private Panel panel;
 	private int scrollfactor;
 
-	public MouseWheel(Panel panel)
-	{
+	public MouseWheel(Panel panel) {
 		this.panel = panel;
 		scrollfactor = 20;
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
-		for(DrawObject o : panel.getObjects())
-		{
-			if(o.contains(clickPoint))
-			{
-				double scale = o.getScale()* 1 + (e.getPreciseWheelRotation()/10.0);
+		for (DrawObject o : panel.getObjects()) {
+			if (o.contains(clickPoint)) {
+				double scale = o.getScale() * 1
+						+ (e.getPreciseWheelRotation() / 10.0);
 				o.setScale(scale);
 				panel.getPP().update();
 				panel.repaint();
@@ -31,35 +29,30 @@ public class MouseWheel implements MouseWheelListener {
 			}
 		}
 
-		if(e.getY() < 150)
-		{
+		if (e.getY() < 150) {
 
-			if(e.getPreciseWheelRotation() < 0)
-			{
-				if(panel.getScrollfactor() + scrollfactor + panel.getPanelInfoLength() < panel.getWidth())
-				{
-					panel.setScrollfactor(panel.getScrollfactor() + scrollfactor);
+			if (e.getPreciseWheelRotation() < 0) {
+				if (panel.getScrollfactor() + scrollfactor
+						+ panel.getPanelInfoLength() < panel.getWidth()) {
+					panel.setScrollfactor(panel.getScrollfactor()
+							+ scrollfactor);
 				}
-		
-			}
-			else
-			{
-				if(panel.getScrollfactor() - scrollfactor >= 0)
-				{
-					panel.setScrollfactor(panel.getScrollfactor() - scrollfactor);
+
+			} else {
+				if (panel.getScrollfactor() - scrollfactor >= 0) {
+					panel.setScrollfactor(panel.getScrollfactor()
+							- scrollfactor);
 				}
-				
+
 			}
 
-		}
-		else
-		{
-			//			cameraPoint
-			double cameraScale = panel.getCameraScale() * 1 - (e.getPreciseWheelRotation()/10);
+		} else {
+			// cameraPoint
+			double cameraScale = panel.getCameraScale() * 1
+					- (e.getPreciseWheelRotation() / 10);
 			panel.setCameraScale((float) cameraScale);
 
 		}
-
 
 		panel.repaint();
 	}

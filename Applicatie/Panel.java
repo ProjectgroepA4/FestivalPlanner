@@ -1,4 +1,5 @@
 package Applicatie;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -26,34 +27,36 @@ import Objects.Wall;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
-	
+
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,wallImage;
-	
-	private int panelInfox, panelInfoy,scrollfactor;
-	
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,
+			wallImage;
+
+	private int panelInfox, panelInfoy, scrollfactor;
+
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
-//	private ArrayList<Object> panelTypes = new ArrayList<Object>();
-	
+	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
+
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	DrawObject dragObject = null;
-	
-	Point2D cameraPoint = new Point2D.Double(getWidth()/2,getHeight()/2);
-	float cameraScale = 1;
-	
-	PropertiesPanel pp;
-	
-	
-	Point2D lastClickPosition = new Point(0,0);
-	Point lastMousePosition = new Point(0,0);
-	
-	//how to nieuwe dingen aan het panel toe te voegen:
-	//maak bufferedimage global aan, voeg er een image aan toe, en voeg de image aan panelInfo toe en het object aan panelTypes.
-	//en maak een case statement die een new Object returnt in createNewDrawObject.
-	
+	private DrawObject selectedObject;
+	private String clickedOption = "drag";
 
-	Panel(PropertiesPanel pp)
-	{
+	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
+	float cameraScale = 1;
+
+	PropertiesPanel pp;
+
+	Point2D lastClickPosition = new Point(0, 0);
+	Point lastMousePosition = new Point(0, 0);
+
+	// how to nieuwe dingen aan het panel toe te voegen:
+	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
+	// image aan panelInfo toe en het object aan panelTypes.
+	// en maak een case statement die een new Object returnt in
+	// createNewDrawObject.
+
+	Panel(PropertiesPanel pp) {
 		this.pp = pp;
 		pp.setPanel(this);
 		try {
@@ -71,38 +74,34 @@ public class Panel extends JPanel {
 		panelInfo.add(entranceImage);
 		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
-		
+
 		panelInfox = 0;
 		panelInfoy = 0;
 		scrollfactor = 0;
-		
-//		objects.add(new Podium(new Point2D.Double(100, 100)));
-//		objects.add(new Podium(new Point2D.Double(500, 100)));
-//		objects.add(new Podium(new Point2D.Double(300, 400)));
-	
+
+		// objects.add(new Podium(new Point2D.Double(100, 100)));
+		// objects.add(new Podium(new Point2D.Double(500, 100)));
+		// objects.add(new Podium(new Point2D.Double(300, 400)));
+
 		addMouseListener(new Mouse(this));
-		
+
 		addMouseMotionListener(new MouseMotion(this));
-		
+
 		addMouseWheelListener(new MouseWheel(this));
-		
+
 	}
-	
-	public int getPanelInfoLength()
-	{
+
+	public int getPanelInfoLength() {
 		int panelInfoLength = 0;
-		for(BufferedImage image : panelInfo)
-		{
+		for (BufferedImage image : panelInfo) {
 			panelInfoLength += image.getWidth();
 		}
-		
+
 		return panelInfoLength;
 	}
-	
-	public DrawObject createNewDrawObject(int index)
-	{
-		switch(index)
-		{
+
+	public DrawObject createNewDrawObject(int index) {
+		switch (index) {
 		case 0:
 			return new Podium(null);
 		case 1:
@@ -117,54 +116,50 @@ public class Panel extends JPanel {
 			return null;
 		}
 	}
-	
-	public void add(DrawObject dragObject)
-	{
+
+	public void add(DrawObject dragObject) {
 		objects.add(dragObject);
 	}
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setClip(new Rectangle2D.Double(0,0, getWidth(), 300));
 
-//		g2.fill(new Ellipse2D.Double(0,0,300,300));
-		
-//		g2.drawImage(podiumImage, 0, 0, null);
-		for(BufferedImage image : panelInfo)
-		{
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 300));
+
+		// g2.fill(new Ellipse2D.Double(0,0,300,300));
+
+		// g2.drawImage(podiumImage, 0, 0, null);
+		for (BufferedImage image : panelInfo) {
 			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
 			panelInfox += image.getWidth();
 		}
 		panelInfox = 0;
-		
-		g2.setClip(new Rectangle2D.Double(0,150, getWidth(), getHeight()));
+
+		g2.setClip(new Rectangle2D.Double(0, 150, getWidth(), getHeight()));
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
-		
-		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
+
+		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,
+				0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-1920,-1080,3840,2160));
-		
-		for(DrawObject o : objects){
+		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
+
+		for (DrawObject o : objects) {
 			o.draw(g2);
 		}
-			
-		
-		
+
 		g2.setClip(null);
 		g2.setTransform(oldTransform);
 	}
 
 	public AffineTransform getCamera() {
 		AffineTransform tx = new AffineTransform();
-		tx.translate(-cameraPoint.getX() + getWidth()/2, -cameraPoint.getY() + getHeight()/2);
+		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY()
+				+ getHeight() / 2);
 		tx.scale(cameraScale, cameraScale);
-		
 		return tx;
 	}
-	
+
 	public Point2D getClickPoint(Point point) {
 		try {
 			return getCamera().inverseTransform(point, null);
@@ -174,93 +169,73 @@ public class Panel extends JPanel {
 		return null;
 	}
 
-
-
 	public void setBackground(BufferedImage background) {
 		this.background = background;
 	}
-
-
 
 	public ArrayList<DrawObject> getObjects() {
 		return objects;
 	}
 
-
 	public void setObjects(ArrayList<DrawObject> objects) {
 		this.objects = objects;
 	}
-
 
 	public DrawObject getDragObject() {
 		return dragObject;
 	}
 
-
 	public void setDragObject(DrawObject dragObject) {
 		this.dragObject = dragObject;
 	}
-
 
 	public Point2D getCameraPoint() {
 		return cameraPoint;
 	}
 
-
 	public void setCameraPoint(Point2D cameraPoint) {
 		this.cameraPoint = cameraPoint;
 	}
-
 
 	public float getCameraScale() {
 		return cameraScale;
 	}
 
-
 	public void setCameraScale(float cameraScale) {
 		this.cameraScale = cameraScale;
 	}
-
 
 	public Point2D getLastClickPosition() {
 		return lastClickPosition;
 	}
 
-
 	public void setLastClickPosition(Point2D lastClickPosition) {
 		this.lastClickPosition = lastClickPosition;
 	}
-
 
 	public Point getLastMousePosition() {
 		return lastMousePosition;
 	}
 
-
 	public void setLastMousePosition(Point lastMousePosition) {
 		this.lastMousePosition = lastMousePosition;
 	}
-
 
 	public BufferedImage getPodiumImage() {
 		return podiumImage;
 	}
 
-
 	public void setPodiumImage(BufferedImage podiumImage) {
 		this.podiumImage = podiumImage;
 	}
-
 
 	public ArrayList<BufferedImage> getPanelInfo() {
 		return panelInfo;
 	}
 
-
 	public void setPanelInfo(ArrayList<BufferedImage> panelInfo) {
 		this.panelInfo = panelInfo;
 	}
-
 
 	public int getScrollfactor() {
 		return scrollfactor;
@@ -277,15 +252,28 @@ public class Panel extends JPanel {
 	public void setPanelInfox(int panelInfox) {
 		this.panelInfox = panelInfox;
 	}
-	
-	public PropertiesPanel getPP()
-	{
+
+	public PropertiesPanel getPP() {
 		return pp;
 	}
 
-	public void update()
-	{
+	public void update() {
 		repaint();
 	}
 
+	public DrawObject getSelectedObject() {
+		return selectedObject;
+	}
+
+	public void setSelectedObject(DrawObject selectedObject) {
+		this.selectedObject = selectedObject;
+	}
+
+	public String getClickedOption() {
+		return clickedOption;
+	}
+
+	public void setClickedOption(String clickedOption) {
+		this.clickedOption = clickedOption;
+	}
 }
