@@ -82,7 +82,6 @@ public class Mouse extends MouseAdapter {
 			}
 		}
 		if (panel.getDragObject() == null && selectedObject != null) {
-			System.out.println("deselected");
 			selectedObject.setSelected(false);
 			selectedObject = null;
 		}

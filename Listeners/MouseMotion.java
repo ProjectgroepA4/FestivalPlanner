@@ -22,8 +22,12 @@ public class MouseMotion extends MouseMotionAdapter {
 				case "drag":
 					if(panel.getDragObject() != null)
 						panel.getDragObject().setPosition(new Point2D.Double(
-							(panel.getDragObject().getPosition().getX() ) - ((panel.getLastClickPosition().getX() - clickPoint.getX()) ), 
-							(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY())  ));
+							(panel.getDragObject().getPosition().getX() ) - ((panel.getLastClickPosition().getX() - clickPoint.getX()) ) / panel.getDragObject().getScale(), 
+							(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY()) / panel.getDragObject().getScale()  ));
+						System.out.println(panel.getDragObject().getPosition().getX());
+						System.out.println(panel.getLastClickPosition().getX());
+						System.out.println(clickPoint.getX());
+						System.out.println("----------'");
 					break;
 				case "upperLeft":
 					if(clickPoint.getX() < panel.getDragObject().getPosition().getX() && clickPoint.getY() < panel.getDragObject().getPosition().getY()) {
