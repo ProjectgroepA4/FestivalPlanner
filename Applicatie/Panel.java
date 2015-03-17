@@ -27,11 +27,11 @@ import Objects.Toilet;
 import Objects.Wall;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel {
+public class Panel extends JPanel
+{
 
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,
-			wallImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage;
 
 	private int panelInfox, panelInfoy, scrollfactor;
 
@@ -57,17 +57,21 @@ public class Panel extends JPanel {
 	// en maak een case statement die een new Object returnt in
 	// createNewDrawObject.
 
-	Panel(PropertiesPanel pp) {
+	Panel(PropertiesPanel pp)
+	{
 		this.pp = pp;
 		pp.setPanel(this);
-		try {
+		try
+		{
 			background = ImageIO.read(new File("images/grass.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 		panelInfo.add(podiumImage);
@@ -92,17 +96,21 @@ public class Panel extends JPanel {
 
 	}
 
-	public int getPanelInfoLength() {
+	public int getPanelInfoLength()
+	{
 		int panelInfoLength = 0;
-		for (BufferedImage image : panelInfo) {
+		for (BufferedImage image : panelInfo)
+		{
 			panelInfoLength += image.getWidth();
 		}
 
 		return panelInfoLength;
 	}
 
-	public DrawObject createNewDrawObject(int index) {
-		switch (index) {
+	public DrawObject createNewDrawObject(int index)
+	{
+		switch (index)
+		{
 		case 0:
 			return new Stage(null);
 		case 1:
@@ -118,11 +126,13 @@ public class Panel extends JPanel {
 		}
 	}
 
-	public void add(DrawObject dragObject) {
+	public void add(DrawObject dragObject)
+	{
 		objects.add(dragObject);
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 300));
@@ -130,7 +140,8 @@ public class Panel extends JPanel {
 		// g2.fill(new Ellipse2D.Double(0,0,300,300));
 
 		// g2.drawImage(podiumImage, 0, 0, null);
-		for (BufferedImage image : panelInfo) {
+		for (BufferedImage image : panelInfo)
+		{
 			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
 			panelInfox += image.getWidth();
 		}
@@ -140,12 +151,12 @@ public class Panel extends JPanel {
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 
-		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,
-				0, 100, 100));
+		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
 		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
 
-		for (DrawObject o : objects) {
+		for (DrawObject o : objects)
+		{
 			o.draw(g2);
 		}
 
@@ -153,136 +164,170 @@ public class Panel extends JPanel {
 		g2.setTransform(oldTransform);
 	}
 
-	public AffineTransform getCamera() {
+	public AffineTransform getCamera()
+	{
 		AffineTransform tx = new AffineTransform();
-		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY()
-				+ getHeight() / 2);
+		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY() + getHeight() / 2);
 		tx.scale(cameraScale, cameraScale);
 		return tx;
 	}
 
-	public Point2D getClickPoint(Point point) {
-		try {
+	public Point2D getClickPoint(Point point)
+	{
+		try
+		{
 			return getCamera().inverseTransform(point, null);
-		} catch (NoninvertibleTransformException e1) {
+		}
+		catch (NoninvertibleTransformException e1)
+		{
 			e1.printStackTrace();
 		}
 		return null;
 	}
 
-	public void setBackground(BufferedImage background) {
+	public void setBackground(BufferedImage background)
+	{
 		this.background = background;
 	}
 
-	public ArrayList<DrawObject> getObjects() {
+	public ArrayList<DrawObject> getObjects()
+	{
 		return objects;
 	}
 
-	public void setObjects(ArrayList<DrawObject> objects) {
+	public void setObjects(ArrayList<DrawObject> objects)
+	{
 		this.objects = objects;
 	}
 
-	public DrawObject getDragObject() {
+	public DrawObject getDragObject()
+	{
 		return dragObject;
 	}
 
-	public void setDragObject(DrawObject dragObject) {
+	public void setDragObject(DrawObject dragObject)
+	{
 		this.dragObject = dragObject;
 	}
 
-	public Point2D getCameraPoint() {
+	public Point2D getCameraPoint()
+	{
 		return cameraPoint;
 	}
 
-	public void setCameraPoint(Point2D cameraPoint) {
+	public void setCameraPoint(Point2D cameraPoint)
+	{
 		this.cameraPoint = cameraPoint;
 	}
 
-	public float getCameraScale() {
+	public float getCameraScale()
+	{
 		return cameraScale;
 	}
 
-	public void setCameraScale(float cameraScale) {
+	public void setCameraScale(float cameraScale)
+	{
 		this.cameraScale = cameraScale;
 	}
 
-	public Point2D getLastClickPosition() {
+	public Point2D getLastClickPosition()
+	{
 		return lastClickPosition;
 	}
 
-	public void setLastClickPosition(Point2D lastClickPosition) {
+	public void setLastClickPosition(Point2D lastClickPosition)
+	{
 		this.lastClickPosition = lastClickPosition;
 	}
 
-	public Point getLastMousePosition() {
+	public Point getLastMousePosition()
+	{
 		return lastMousePosition;
 	}
 
-	public void setLastMousePosition(Point lastMousePosition) {
+	public void setLastMousePosition(Point lastMousePosition)
+	{
 		this.lastMousePosition = lastMousePosition;
 	}
 
-	public BufferedImage getPodiumImage() {
+	public BufferedImage getPodiumImage()
+	{
 		return podiumImage;
 	}
 
-	public void setPodiumImage(BufferedImage podiumImage) {
+	public void setPodiumImage(BufferedImage podiumImage)
+	{
 		this.podiumImage = podiumImage;
 	}
 
-	public ArrayList<BufferedImage> getPanelInfo() {
+	public ArrayList<BufferedImage> getPanelInfo()
+	{
 		return panelInfo;
 	}
 
-	public void setPanelInfo(ArrayList<BufferedImage> panelInfo) {
+	public void setPanelInfo(ArrayList<BufferedImage> panelInfo)
+	{
 		this.panelInfo = panelInfo;
 	}
 
-	public int getScrollfactor() {
+	public int getScrollfactor()
+	{
 		return scrollfactor;
 	}
 
-	public void setScrollfactor(int scrollfactor) {
+	public void setScrollfactor(int scrollfactor)
+	{
 		this.scrollfactor = scrollfactor;
 	}
 
-	public int getPanelInfox() {
+	public int getPanelInfox()
+	{
 		return panelInfox;
 	}
 
-	public void setPanelInfox(int panelInfox) {
+	public void setPanelInfox(int panelInfox)
+	{
 		this.panelInfox = panelInfox;
 	}
 
-	public PropertiesPanel getPP() {
+	public PropertiesPanel getPP()
+	{
 		return pp;
 	}
 
-	public void update() {
+	public void update()
+	{
 		repaint();
 	}
 
-	public DrawObject getSelectedObject() {
+	public DrawObject getSelectedObject()
+	{
 		return selectedObject;
 	}
 
-	public void setSelectedObject(DrawObject selectedObject) {
+	public void setSelectedObject(DrawObject selectedObject)
+	{
 		this.selectedObject = selectedObject;
 	}
 
-	public String getClickedOption() {
+	public String getClickedOption()
+	{
 		return clickedOption;
 	}
 
-	public void setClickedOption(String clickedOption) {
+	public void setClickedOption(String clickedOption)
+	{
 		this.clickedOption = clickedOption;
 	}
 
-	public void removeObject(DrawObject o) {
+	public void removeObject(DrawObject o)
+	{
 		Iterator<DrawObject> itr = objects.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext())
+		{
 			DrawObject nextObject = (DrawObject) itr.next();
-			if(nextObject.equals(o)) {
+			if (nextObject.equals(o))
+			{
 				pp.clearSelected();
 				itr.remove();
 			}
