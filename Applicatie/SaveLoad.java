@@ -139,6 +139,7 @@ public class SaveLoad {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		panel.callRepaint();
 	}
 	
 	
