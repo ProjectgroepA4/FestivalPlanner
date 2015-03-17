@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Listeners.Keyboard;
+
 
 public class Window extends JFrame {
 	private static final long serialVersionUID = -1324363758675184283L;
@@ -17,9 +19,11 @@ public class Window extends JFrame {
 		
 		//CONTENT PANELS
 		JPanel contentPanel = new JPanel(new BorderLayout());
-		Panel fp = new Panel();
+		PropertiesPanel pp = new PropertiesPanel();
+		Panel fp = new Panel(pp);
 		contentPanel.add(fp, BorderLayout.CENTER);
-		
+		contentPanel.add(pp, BorderLayout.EAST);
+		addKeyListener(new Keyboard(fp));
 		setContentPane(contentPanel);
 		//END CONTENT PANELS
 		

@@ -22,7 +22,7 @@ public class MouseMotion extends MouseMotionAdapter {
 				case "drag":
 					if(panel.getDragObject() != null)
 						panel.getDragObject().setPosition(new Point2D.Double(
-							(panel.getDragObject().getPosition().getX() ) - ((panel.getLastClickPosition().getX() - clickPoint.getX()) ), 
+							(panel.getDragObject().getPosition().getX() ) - ((panel.getLastClickPosition().getX() - clickPoint.getX())  ), 
 							(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY())  ));
 					break;
 				case "upperLeft":
@@ -31,7 +31,7 @@ public class MouseMotion extends MouseMotionAdapter {
 					}
 					else if (clickPoint.getX() > panel.getDragObject().getPosition().getX() && clickPoint.getY() > panel.getDragObject().getPosition().getY()) {
 						resizeSmaller();
-					}
+					} 
 					break;
 				case "upperRight":
 					if(clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY()) {
@@ -58,7 +58,7 @@ public class MouseMotion extends MouseMotionAdapter {
 					}
 					break;
 				case "rotate": 
-					double tempval = panel.getDragObject().getRotation() + (panel.getLastClickPosition().getX() - clickPoint.getX());
+					double tempval = panel.getDragObject().getRotation() - (panel.getLastClickPosition().getX() - clickPoint.getX());
 					panel.getDragObject().setRotation(tempval);
 					break;
 			}
@@ -72,6 +72,7 @@ public class MouseMotion extends MouseMotionAdapter {
 		panel.repaint();
 		panel.setLastMousePosition(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
+		panel.getPP().update();
 	}
 	
 	private void resizeBigger() {
