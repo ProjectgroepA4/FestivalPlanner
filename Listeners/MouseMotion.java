@@ -1,11 +1,16 @@
 package Listeners;
+
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 
+import Applicatie.DrawObject;
 import Applicatie.Panel;
 
-public class MouseMotion extends MouseMotionAdapter {
+public class MouseMotion extends MouseMotionAdapter
+{
 
 	private Panel panel;
 
@@ -14,78 +19,102 @@ public class MouseMotion extends MouseMotionAdapter {
 		this.panel = panel;
 	}
 
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(MouseEvent e)
+	{
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
-		if(panel.getDragObject() != null) {
-			Point2D objectPoint = panel.getDragObject().getObjectPoint(panel.getDragObject().getPosition());
-			switch(panel.getClickedOption()) {
+		Point2D tempPoint = null;
+		if (panel.getDragObject() != null)
+		{
+			switch (panel.getClickedOption())
+			{
 				case "drag":
-					if(panel.getDragObject() != null)
-						panel.getDragObject().setPosition(new Point2D.Double(
-							(panel.getDragObject().getPosition().getX() ) - ((panel.getLastClickPosition().getX() - clickPoint.getX())  ), 
-							(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY())  ));
+					boolean collision = false;
+					if (panel.getDragObject() != null)
+						panel.getDragObject().setPosition(new Point2D.Double((panel.getDragObject().getPosition().getX()) - ((panel.getLastClickPosition().getX() - clickPoint.getX())) / panel.getDragObject().getScale(), 
+								(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY()) / panel.getDragObject().getScale()));
+					for(DrawObject o : panel.getObjects()) {
+						if(o.collision(panel.getDragObject().getCorners()) && o != panel.getDragObject()) {
+							System.out.println("Hover");
+							collision = true;
+							panel.getDragObject().setRectangleColor(Color.RED);
+							break;
+						}
+						if(!collision) {
+							System.out.println("nega");
+							panel.getDragObject().setRectangleColor(Color.BLACK);
+						}
+					}
 					break;
 				case "upperLeft":
-					if(clickPoint.getX() < panel.getDragObject().getPosition().getX() && clickPoint.getY() < panel.getDragObject().getPosition().getY()) {
+					if (clickPoint.getX() < panel.getDragObject().getPosition().getX() && clickPoint.getY() < panel.getDragObject().getPosition().getY())
+					{
 						resizeBigger();
+					} else if (clickPoint.getX() > panel.getDragObject().getPosition().getX() && clickPoint.getY() > panel.getDragObject().getPosition().getY())
+					{
+						resizeSmaller(clickPoint);
 					}
-					else if (clickPoint.getX() > panel.getDragObject().getPosition().getX() && clickPoint.getY() > panel.getDragObject().getPosition().getY()) {
-						resizeSmaller();
-					} 
 					break;
 				case "upperRight":
-					if(clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY()) {
+					if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY())
+					{
 						resizeBigger();
-					}
-					else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY()) {
-						resizeSmaller();
+					} else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY())
+					{
+						resizeSmaller(clickPoint);
 					}
 					break;
-				case "bottomLeft": 
-					if(clickPoint.getX() < panel.getDragObject().getRectangle().getX() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight()) {
+				case "bottomLeft":
+					if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+					{
 						resizeBigger();
-					}
-					else if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight()) {
-						resizeSmaller();
+					} else if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+					{
+						resizeSmaller(clickPoint);
 					}
 					break;
 				case "bottomRight":
-					if(clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight()) {
+					if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+					{
 						resizeBigger();
-					}
-					else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight()) {
-						resizeSmaller();
+					} else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+					{
+						resizeSmaller(clickPoint);
 					}
 					break;
-				case "rotate": 
+				case "rotate":
 					double tempval = panel.getDragObject().getRotation() - (panel.getLastClickPosition().getX() - clickPoint.getX());
 					panel.getDragObject().setRotation(tempval);
 					break;
 			}
+		} else
+		{
+			panel.setCameraPoint(new Point2D.Double(panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()), panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())));
 		}
-		else {
-			panel.setCameraPoint(new Point2D.Double(
-				panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()),
-				panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())
-				));
-		}		
+
 		panel.repaint();
 		panel.setLastMousePosition(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
 		panel.getPP().update();
 	}
-	
-	private void resizeBigger() {
-		double scale = panel.getDragObject().getScale()*1 + 0.02;
+
+	private void resizeBigger()
+	{
+		double scale = panel.getDragObject().getScale() + 0.05;
+
 		panel.getDragObject().setScale(scale);
-		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX()-2,panel.getDragObject().getPosition().getY()-2));
+		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX(), panel.getDragObject().getPosition().getY() - 5));
+
 	}
-	
-	private void resizeSmaller() {
-		if(panel.getDragObject().getScale() > 0.2) {
-			double scale = panel.getDragObject().getScale()*1 - 0.02;
+
+	private void resizeSmaller(Point2D clickPoint)
+	{
+		System.out.println(clickPoint.getX());
+		if (panel.getDragObject().getScale() > 0.2)
+		{
+			double scale = panel.getDragObject().getScale() - 0.05;
 			panel.getDragObject().setScale(scale);
-			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX()+2,panel.getDragObject().getPosition().getY()+2));
+			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() - clickPoint.getX(), panel.getDragObject().getPosition().getY() - clickPoint.getY()));
+
 		}
 	}
 }

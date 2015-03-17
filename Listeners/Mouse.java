@@ -9,33 +9,34 @@ import java.util.Map;
 
 import Applicatie.DrawObject;
 import Applicatie.Panel;
-import Objects.Podium;
 
-public class Mouse extends MouseAdapter {
+import Objects.Stage;
+
+public class Mouse extends MouseAdapter
+{
 
 	private Panel panel;
 	private DrawObject selectedObject;
 
-	public Mouse(Panel panel) {
+	public Mouse(Panel panel)
+	{
 		this.panel = panel;
 		selectedObject = null;
 	}
 
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e)
+	{
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
 		panel.setLastMousePosition(e.getPoint());
-		if (e.getY() < 150) {
-			// if(e.getX() < 51) //51 = width podium image
-			// panel.setDragObject(new Podium(clickPoint));
-			// else
-			// panel.setDragObject(new Toilet(clickPoint));
+		if (e.getY() < 150)
+		{
 			int i = 0;
 			int last = 0;
-			for (BufferedImage image : panel.getPanelInfo()) {
-				if (e.getX() >= panel.getScrollfactor()
-						&& e.getX() < last + image.getWidth()
-								+ panel.getScrollfactor()) {
+			for (BufferedImage image : panel.getPanelInfo())
+			{
+				if (e.getX() >= panel.getScrollfactor() && e.getX() < last + image.getWidth() + panel.getScrollfactor())
+				{
 					DrawObject tempDrawObj = panel.createNewDrawObject(i);
 					tempDrawObj.setPosition(clickPoint);
 					panel.setDragObject(tempDrawObj);
@@ -43,31 +44,47 @@ public class Mouse extends MouseAdapter {
 				}
 				i++;
 				last += image.getWidth();
-
 			}
-			if (panel.getDragObject() != null) {
+			if (panel.getDragObject() != null)
+			{
 				panel.add(panel.getDragObject());
 			}
-		} else {
-			for (DrawObject o : panel.getObjects()) {
-				if (o.contains(clickPoint)) {
-					if (o == selectedObject) {
+		}
+		else
+		{
+			for (DrawObject o : panel.getObjects())
+			{
+				if (o.contains(clickPoint))
+				{
+					if (o == selectedObject)
+					{
 						boolean upperLeft = o.containsCorner(clickPoint, 0);
 						boolean upperRight = o.containsCorner(clickPoint, 1);
 						boolean bottomLeft = o.containsCorner(clickPoint, 2);
 						boolean bottomRight = o.containsCorner(clickPoint, 3);
 						boolean rotate = o.containsCorner(clickPoint, 4);
-						if (upperLeft) {
+						if (upperLeft)
+						{
 							panel.setClickedOption("upperLeft");
-						} else if (upperRight) {
+						}
+						else if (upperRight)
+						{
 							panel.setClickedOption("upperRight");
-						} else if (bottomLeft) {
+						}
+						else if (bottomLeft)
+						{
 							panel.setClickedOption("bottomLeft");
-						} else if (bottomRight) {
+						}
+						else if (bottomRight)
+						{
 							panel.setClickedOption("bottomRight");
-						} else if (rotate) {
+						}
+						else if (rotate)
+						{
 							panel.setClickedOption("rotate");
-						} else {
+						}
+						else
+						{
 							panel.setClickedOption("drag");
 						}
 					}
@@ -78,17 +95,21 @@ public class Mouse extends MouseAdapter {
 					panel.setDragObject(o);
 					panel.getPP().setSelected(o);
 					panel.setSelectedObject(o);
+
 				}
 			}
 		}
-		if (panel.getDragObject() == null && selectedObject != null) {
+		if (panel.getDragObject() == null && selectedObject != null)
+		{
 			selectedObject.setSelected(false);
+			panel.getPP().clearSelected();
 			selectedObject = null;
 		}
 		panel.repaint();
 	}
 
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e)
+	{
 		panel.setDragObject(null);
 		panel.setClickedOption("drag");
 		panel.repaint();

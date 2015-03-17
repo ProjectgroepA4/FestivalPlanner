@@ -17,7 +17,6 @@ public class Keyboard implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == e.VK_DELETE ) {
 			if(panel.getSelectedObject() != null) {
-				System.out.println("lala");
 				panel.removeObject(panel.getSelectedObject());
 			}
 		}

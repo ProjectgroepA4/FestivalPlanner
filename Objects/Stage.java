@@ -4,18 +4,17 @@ import java.awt.geom.Point2D;
 
 import Applicatie.DrawObject;
 
-public class Path extends DrawObject
+public class Stage extends DrawObject
 {
-
-	public Path(Point2D position)
+	public Stage(Point2D position)
 	{
-		super("images/path.jpg", position);
+		super("images/stage4.png", position);
 	}
 
 	@Override
 	public String getName()
 	{
-		return "Path";
+		return "Stage";
 	}
 
 }
