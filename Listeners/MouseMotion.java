@@ -73,6 +73,7 @@ public class MouseMotion extends MouseMotionAdapter
 		{
 			panel.setCameraPoint(new Point2D.Double(panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()), panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())));
 		}
+
 		panel.repaint();
 		panel.setLastMousePosition(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
@@ -82,7 +83,7 @@ public class MouseMotion extends MouseMotionAdapter
 	private void resizeBigger()
 	{
 		double scale = panel.getDragObject().getScale() + 0.05;
-		
+
 		panel.getDragObject().setScale(scale);
 		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX(), panel.getDragObject().getPosition().getY() - 5));
 
@@ -96,6 +97,7 @@ public class MouseMotion extends MouseMotionAdapter
 			double scale = panel.getDragObject().getScale() - 0.05;
 			panel.getDragObject().setScale(scale);
 			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() - clickPoint.getX(), panel.getDragObject().getPosition().getY() - clickPoint.getY()));
+
 		}
 	}
 }

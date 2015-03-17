@@ -129,6 +129,7 @@ public abstract class DrawObject
 		try
 		{
 			return getTransform().inverseTransform(point, null);
+
 		} catch (NoninvertibleTransformException e)
 		{
 			e.printStackTrace();
@@ -166,6 +167,7 @@ public abstract class DrawObject
 					return true;
 				else
 					return false;
+
 		}
 		if (point.getX() > chosenCorner.getX() && point.getX() < chosenCorner.getX() + chosenCorner.getWidth() && point.getY() > chosenCorner.getY() && point.getY() < chosenCorner.getY() + chosenCorner.getHeight())
 			return true;

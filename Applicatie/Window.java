@@ -7,7 +7,8 @@ import javax.swing.JPanel;
 
 import Listeners.Keyboard;
 
-public class Window extends JFrame {
+public class Window extends JFrame
+{
 	private static final long serialVersionUID = -1324363758675184283L;
 
 	Window() {
@@ -24,7 +25,6 @@ public class Window extends JFrame {
 		contentPanel.add(pp, BorderLayout.EAST);
 
 		addKeyListener(new Keyboard(fp));
-
 		setContentPane(contentPanel);
 		// END CONTENT PANELS
 

@@ -114,6 +114,7 @@ public class Panel extends JPanel
 	{
 		switch (index)
 		{
+
 			case 0:
 				return new Stage(null);
 			case 1:
@@ -142,10 +143,6 @@ public class Panel extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 300));
 
-		// g2.fill(new Ellipse2D.Double(0,0,300,300));
-
-		// g2.drawImage(podiumImage, 0, 0, null);
-
 		g2.drawLine(0, 150, getWidth(), 150);
 		for (BufferedImage image : panelInfo)
 		{
@@ -164,7 +161,6 @@ public class Panel extends JPanel
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
-
 		for (DrawObject o : objects)
 		{
 			o.draw(g2);
@@ -178,7 +174,6 @@ public class Panel extends JPanel
 	{
 		AffineTransform tx = new AffineTransform();
 		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY() + getHeight() / 2);
-
 		tx.scale(cameraScale, cameraScale);
 		return tx;
 	}
