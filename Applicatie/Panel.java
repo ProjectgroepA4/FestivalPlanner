@@ -286,8 +286,4 @@ public class Panel extends JPanel {
 	public void clearObjects(){
 		objects.clear();
 	}
-	
-	public void callRepaint(){
-		repaint();
-	}
 }

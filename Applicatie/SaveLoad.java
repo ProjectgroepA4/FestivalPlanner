@@ -32,7 +32,7 @@ public class SaveLoad {
 
 				@Override
 				public String getDescription() {
-					return ".agn";
+					return ".agn";	
 				}
 			
 		});
@@ -139,7 +139,7 @@ public class SaveLoad {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		panel.callRepaint();
+		panel.update();
 	}
 	
 	
