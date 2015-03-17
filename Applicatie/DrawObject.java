@@ -13,7 +13,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 
 
-public class DrawObject {
+public abstract class DrawObject {
 	Point2D position;
 	double rotation;
 	double scale;
@@ -39,6 +39,8 @@ public class DrawObject {
 		rotation = 0;
 		this.position = position;
 	}
+	
+	public abstract String getName();
 	
 	public void draw(Graphics2D g)
 	{

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import Applicatie.DrawObject;
 import Applicatie.Panel;
-import Objects.Podium;
+import Objects.Stage;
 
 public class Mouse extends MouseAdapter {
 
@@ -82,8 +82,8 @@ public class Mouse extends MouseAdapter {
 			}
 		}
 		if (panel.getDragObject() == null && selectedObject != null) {
-			System.out.println("deselected");
 			selectedObject.setSelected(false);
+			panel.getPP().clearSelected();
 			selectedObject = null;
 		}
 		panel.repaint();

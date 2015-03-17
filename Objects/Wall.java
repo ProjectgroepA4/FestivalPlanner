@@ -10,4 +10,9 @@ public class Wall extends DrawObject {
 		super("images/wall.png", position);
 	}
 
+	@Override
+	public String getName() {
+		return "Wall";
+	}
+
 }

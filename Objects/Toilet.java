@@ -10,4 +10,10 @@ public class Toilet extends DrawObject {
 		super("images/wc.png", position);
 	}
 
+	@Override
+	public String getName() {
+		return "Toilet";
+	}
+
+
 }

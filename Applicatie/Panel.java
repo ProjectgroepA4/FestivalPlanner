@@ -21,7 +21,7 @@ import Listeners.MouseMotion;
 import Listeners.MouseWheel;
 import Objects.Entrance;
 import Objects.Path;
-import Objects.Podium;
+import Objects.Stage;
 import Objects.Toilet;
 import Objects.Wall;
 
@@ -103,7 +103,7 @@ public class Panel extends JPanel {
 	public DrawObject createNewDrawObject(int index) {
 		switch (index) {
 		case 0:
-			return new Podium(null);
+			return new Stage(null);
 		case 1:
 			return new Toilet(null);
 		case 2:

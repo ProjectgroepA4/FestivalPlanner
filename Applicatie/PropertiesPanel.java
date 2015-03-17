@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,11 +22,15 @@ public class PropertiesPanel extends JPanel {
 
 	DrawObject selectedObject = null;
 	Panel p = null;
+	
+	Dimension spacerDimension = new Dimension(200,30);
 
+	JLabel nameLabel;
 	JTextField locationXField;
 	JTextField locationYField;
 	JTextField scaleField;
 	JTextField rotationField;
+	
 
 	PropertiesPanel() {
 		super();
@@ -44,6 +49,18 @@ public class PropertiesPanel extends JPanel {
 		propPanel.setMaximumSize(new Dimension(200, 60));
 		propPanel.add(propLabel);
 		add(propPanel);
+		
+		//NAME
+		JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		nameLabel = new JLabel("No Selection");
+		nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		namePanel.setPreferredSize(new Dimension(200, 40));
+		namePanel.setMaximumSize(new Dimension(200, 40));
+		namePanel.add(nameLabel);
+		add(namePanel);
+		
+		// SPACER
+		add(Box.createRigidArea(spacerDimension));
 
 		// LOCATION
 		JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -66,7 +83,9 @@ public class PropertiesPanel extends JPanel {
 				locationXField.addKeyListener(new KeyListener() {
 
 					public void keyTyped(KeyEvent e) {
+					}
 
+					public void keyReleased(KeyEvent e) {
 						try {
 							locationXField.setBackground(Color.WHITE);
 							double xpos = Double.parseDouble(locationXField
@@ -77,10 +96,6 @@ public class PropertiesPanel extends JPanel {
 						} catch (NumberFormatException nfe) {
 							locationXField.setBackground(Color.RED);
 						}
-
-					}
-
-					public void keyReleased(KeyEvent e) {
 					}
 
 					public void keyPressed(KeyEvent e) {
@@ -217,11 +232,7 @@ public class PropertiesPanel extends JPanel {
 		}
 
 		// SPACER
-		JPanel spacerPanel = new JPanel();
-		spacerPanel.setPreferredSize(new Dimension(200, 50));
-		spacerPanel.setMaximumSize(new Dimension(200, 50));
-		spacerPanel.setBackground(new Color(220, 220, 220));
-		add(spacerPanel);
+		add(Box.createRigidArea(spacerDimension));
 
 		// EXAMPLE
 		JPanel examplePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -266,15 +277,18 @@ public class PropertiesPanel extends JPanel {
 		for (Component component : components) {
 			if (component instanceof JTextField) {
 				((JTextField) component).setText("");
+				((JTextField) component).setBackground(Color.WHITE);
 			}
 			if (component instanceof Container) {
 				clearFields((Container) component);
 			}
 		}
+		nameLabel.setText("No Selection");
 	}
 
 	private void fillFields() {
 		if (selectedObject != null) {
+			nameLabel.setText(selectedObject.getName());
 			locationXField.setText(Math.round(selectedObject.getPosition()
 					.getX()) + "");
 			locationYField.setText(Math.round(selectedObject.getPosition()

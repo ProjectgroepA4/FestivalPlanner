@@ -10,4 +10,9 @@ public class Entrance extends DrawObject {
 		super("images/entrance.png", position);
 	}
 
+	@Override
+	public String getName() {
+		return "Entrance";
+	}
+
 }
