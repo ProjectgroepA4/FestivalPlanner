@@ -1,15 +1,12 @@
 package Applicatie;
 
 import java.awt.BasicStroke;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
-
 import java.awt.geom.GeneralPath;
-
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -26,9 +23,9 @@ import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
 import Objects.Entrance;
+import Objects.Food;
 import Objects.Path;
 import Objects.Stage;
-
 import Objects.Toilet;
 import Objects.Wall;
 
@@ -37,7 +34,7 @@ public class Panel extends JPanel
 {
 
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
 
 	private int panelInfox, panelInfoy, scrollfactor;
 
@@ -75,6 +72,7 @@ public class Panel extends JPanel
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
+			foodImage = ImageIO.read(new File("images/foodIcon.png"));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -84,6 +82,7 @@ public class Panel extends JPanel
 		panelInfo.add(entranceImage);
 		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
+		panelInfo.add(foodImage);
 
 		panelInfox = 0;
 		panelInfoy = 0;
@@ -125,6 +124,8 @@ public class Panel extends JPanel
 				return new Path(null);
 			case 4:
 				return new Wall(null);
+			case 5:
+				return new Food(null);
 			default:
 				return null;
 		}
