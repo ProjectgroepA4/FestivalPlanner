@@ -1,10 +1,12 @@
 package Applicatie;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -130,6 +132,8 @@ public class Panel extends JPanel {
 		// g2.fill(new Ellipse2D.Double(0,0,300,300));
 
 		// g2.drawImage(podiumImage, 0, 0, null);
+
+		g2.drawLine(0, 150, getWidth(), 150);
 		for (BufferedImage image : panelInfo) {
 			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
 			panelInfox += image.getWidth();
@@ -140,10 +144,12 @@ public class Panel extends JPanel {
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 
-		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,
-				0, 100, 100));
+		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,0, 100, 100));
 		g2.setPaint(p);
 		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
+
+		BasicStroke stroke = new BasicStroke(10);
+		g2.setStroke(stroke);
 
 		for (DrawObject o : objects) {
 			o.draw(g2);
@@ -155,8 +161,7 @@ public class Panel extends JPanel {
 
 	public AffineTransform getCamera() {
 		AffineTransform tx = new AffineTransform();
-		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY()
-				+ getHeight() / 2);
+		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY() + getHeight() / 2);
 		tx.scale(cameraScale, cameraScale);
 		return tx;
 	}
