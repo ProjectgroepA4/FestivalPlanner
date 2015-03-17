@@ -1,12 +1,15 @@
 package Applicatie;
 
 import java.awt.BasicStroke;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
+
 import java.awt.geom.GeneralPath;
+
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -25,6 +28,7 @@ import Listeners.MouseWheel;
 import Objects.Entrance;
 import Objects.Path;
 import Objects.Stage;
+
 import Objects.Toilet;
 import Objects.Wall;
 
@@ -91,7 +95,6 @@ public class Panel extends JPanel {
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-
 	}
 
 	public int getPanelInfoLength() {
@@ -144,7 +147,8 @@ public class Panel extends JPanel {
 		AffineTransform oldTransform = g2.getTransform();
 		g2.setTransform(getCamera());
 
-		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,0, 100, 100));
+		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0,
+				0, 100, 100));
 		g2.setPaint(p);
 		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
 
@@ -161,7 +165,9 @@ public class Panel extends JPanel {
 
 	public AffineTransform getCamera() {
 		AffineTransform tx = new AffineTransform();
-		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY() + getHeight() / 2);
+		tx.translate(-cameraPoint.getX() + getWidth() / 2, -cameraPoint.getY()
+				+ getHeight() / 2);
+
 		tx.scale(cameraScale, cameraScale);
 		return tx;
 	}
@@ -285,9 +291,9 @@ public class Panel extends JPanel {
 
 	public void removeObject(DrawObject o) {
 		Iterator<DrawObject> itr = objects.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			DrawObject nextObject = (DrawObject) itr.next();
-			if(nextObject.equals(o)) {
+			if (nextObject.equals(o)) {
 				pp.clearSelected();
 				itr.remove();
 			}

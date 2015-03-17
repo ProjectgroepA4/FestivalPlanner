@@ -17,18 +17,6 @@ public class MouseWheel implements MouseWheelListener {
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		Point2D clickPoint = panel.getClickPoint(e.getPoint());
-		for (DrawObject o : panel.getObjects()) {
-			if (o.contains(clickPoint)) {
-				double scale = o.getScale() * 1
-						+ (e.getPreciseWheelRotation() / 10.0);
-				o.setScale(scale);
-				panel.getPP().update();
-				panel.repaint();
-				return;
-			}
-		}
-
 		if (e.getY() < 150) {
 
 			if (e.getPreciseWheelRotation() < 0) {

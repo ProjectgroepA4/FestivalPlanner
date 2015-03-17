@@ -25,15 +25,15 @@ public class PropertiesPanel extends JPanel {
 
 	DrawObject selectedObject = null;
 	Panel p = null;
-	
-	Dimension spacerDimension = new Dimension(200,30);
+
+	Dimension spacerDimension = new Dimension(200, 30);
 
 	JLabel nameLabel;
+
 	JTextField locationXField;
 	JTextField locationYField;
 	JTextField scaleField;
 	JTextField rotationField;
-	
 
 	PropertiesPanel() {
 		super();
@@ -52,8 +52,8 @@ public class PropertiesPanel extends JPanel {
 		propPanel.setMaximumSize(new Dimension(200, 60));
 		propPanel.add(propLabel);
 		add(propPanel);
-		
-		//NAME
+
+		// NAME
 		JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		nameLabel = new JLabel("No Selection");
 		nameLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -61,11 +61,11 @@ public class PropertiesPanel extends JPanel {
 		namePanel.setMaximumSize(new Dimension(200, 40));
 		namePanel.add(nameLabel);
 		add(namePanel);
-		
+
 		// SPACER
 		add(Box.createRigidArea(spacerDimension));
-		
-		//BUTTONS
+
+		// BUTTONS
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel buttonLabel = new JLabel("Actions");
 		buttonLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
@@ -73,8 +73,8 @@ public class PropertiesPanel extends JPanel {
 		buttonPanel.setMaximumSize(new Dimension(200, 40));
 		buttonPanel.add(buttonLabel);
 		add(buttonPanel);
-		
-		//DELETE
+
+		// DELETE
 		JPanel deletePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton deleteButton = new JButton("Delete");
 		deleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -87,7 +87,7 @@ public class PropertiesPanel extends JPanel {
 		deletePanel.setMaximumSize(new Dimension(200, 50));
 		deletePanel.add(deleteButton);
 		add(deletePanel);
-		
+
 		// SPACER
 		add(Box.createRigidArea(spacerDimension));
 
@@ -129,6 +129,7 @@ public class PropertiesPanel extends JPanel {
 
 					public void keyPressed(KeyEvent e) {
 					}
+
 				});
 			}
 			locationXPanel.add(locationXField);
@@ -307,17 +308,21 @@ public class PropertiesPanel extends JPanel {
 			if (component instanceof JTextField) {
 				((JTextField) component).setText("");
 				((JTextField) component).setBackground(Color.WHITE);
+
 			}
 			if (component instanceof Container) {
 				clearFields((Container) component);
 			}
 		}
+
 		nameLabel.setText("No Selection");
+
 	}
 
 	private void fillFields() {
 		if (selectedObject != null) {
 			nameLabel.setText(selectedObject.getName());
+
 			locationXField.setText(Math.round(selectedObject.getPosition()
 					.getX()) + "");
 			locationYField.setText(Math.round(selectedObject.getPosition()
