@@ -146,6 +146,9 @@ public class PropertiesPanel extends JPanel {
 				locationYField.addKeyListener(new KeyListener() {
 
 					public void keyTyped(KeyEvent e) {
+					}
+
+					public void keyReleased(KeyEvent e) {
 						try {
 							locationYField.setBackground(Color.WHITE);
 							double ypos = Double.parseDouble(locationYField
@@ -159,9 +162,6 @@ public class PropertiesPanel extends JPanel {
 							locationYField.setBackground(Color.RED);
 
 						}
-					}
-
-					public void keyReleased(KeyEvent e) {
 					}
 
 					public void keyPressed(KeyEvent e) {
@@ -192,7 +192,9 @@ public class PropertiesPanel extends JPanel {
 				scaleField.addKeyListener(new KeyListener() {
 
 					public void keyTyped(KeyEvent e) {
+					}
 
+					public void keyReleased(KeyEvent e) {
 						try {
 							scaleField.setBackground(Color.WHITE);
 							double scale = Double.parseDouble(scaleField
@@ -202,10 +204,6 @@ public class PropertiesPanel extends JPanel {
 						} catch (NumberFormatException nfe) {
 							scaleField.setBackground(Color.RED);
 						}
-
-					}
-
-					public void keyReleased(KeyEvent e) {
 					}
 
 					public void keyPressed(KeyEvent e) {
@@ -236,7 +234,9 @@ public class PropertiesPanel extends JPanel {
 				rotationField.addKeyListener(new KeyListener() {
 
 					public void keyTyped(KeyEvent e) {
+					}
 
+					public void keyReleased(KeyEvent e) {
 						try {
 							rotationField.setBackground(Color.WHITE);
 							int rotation = Integer.parseInt(rotationField
@@ -247,10 +247,6 @@ public class PropertiesPanel extends JPanel {
 						} catch (NumberFormatException nfe) {
 							rotationField.setBackground(Color.RED);
 						}
-
-					}
-
-					public void keyReleased(KeyEvent e) {
 					}
 
 					public void keyPressed(KeyEvent e) {
