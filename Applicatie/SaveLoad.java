@@ -1,4 +1,23 @@
-public void save()
+package Applicatie;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+
+import Agenda.Agenda;
+
+
+public class SaveLoad {
+
+	
+	public static void save(Panel panel)
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		
@@ -32,24 +51,24 @@ public void save()
 			{
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to overwrite: " + file.getName(), "Overwrite", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
 				{
-					saveTerrain(file);
+					saveTerrain(file, panel);
 				}
 			}
 			else
 			{
-				saveTerrain(file);
+				saveTerrain(file, panel);
 			}
 		}
 	}
 	
 	
-	public void saveTerrain(File file) {
+	public static void saveTerrain(File file, Panel panel) {
 
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(agenda);
-			for (TekenObject object : objects) {
+			//oos.writeObject(panel.agenda);
+			for (DrawObject object : panel.objects) {
 				oos.writeObject(object);
 			}
 			oos.close();
@@ -59,7 +78,7 @@ public void save()
 		}
 	}		
 	
-	public void load()
+	public static void load(Panel panel)
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileFilter() {
@@ -90,13 +109,13 @@ public void save()
 			}
 			else
 			{
-				fillTerrain(file);
+				fillTerrain(file, panel);
 				JOptionPane.showMessageDialog(null, "Loaded succesfully");
 			}
 		}
 		}
 	
-	public void fillTerrain(File file) {
+	public static void fillTerrain(File file, Panel panel) {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
 
@@ -108,10 +127,11 @@ public void save()
 			Object object;
 			object = ois.readObject();
 			try {
-				agenda = (Agenda) object;
-				object = ois.readObject();
+				//panel.agenda = (Agenda) object;
+				//object = ois.readObject();
+				panel.clearObjects();
 				while (object != null) {
-					objects.add((TekenObject) object); 					
+					panel.objects.add((DrawObject) object); 					
 					object = ois.readObject();
 				}
 			} catch (EOFException e) {
@@ -119,7 +139,8 @@ public void save()
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		for ( int i = 0; i < objects.size(); i++){
-			System.out.println(objects.get(i).getPosition());
-		}
 	}
+	
+	
+	
+}

@@ -10,6 +10,9 @@ import javax.swing.JOptionPane;
 
 public class MenuBar extends JMenuBar {
 		
+	
+	private static final long serialVersionUID = 1L;
+
 	public MenuBar(Window w)
 	{
 		super();
@@ -23,6 +26,22 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
+		JMenuItem save = new JMenuItem("Save"); 
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					SaveLoad.save(w.fp);
+			}
+		});
+		
+		JMenuItem load = new JMenuItem("Load"); 
+		load.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					SaveLoad.load(w.fp);
+			}
+		});
+		
+		file.add(load);
+		file.add(save);
 		file.add(exit);
 		
 		add(file);

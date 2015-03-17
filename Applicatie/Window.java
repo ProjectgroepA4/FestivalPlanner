@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 
 public class Window extends JFrame {
 	private static final long serialVersionUID = -1324363758675184283L;
+	
+	Panel fp;
 
 	Window()
 	{
@@ -17,8 +19,10 @@ public class Window extends JFrame {
 		
 		//CONTENT PANELS
 		JPanel contentPanel = new JPanel(new BorderLayout());
-		Panel fp = new Panel();
+		PropertiesPanel pp = new PropertiesPanel();
+		fp = new Panel(pp);
 		contentPanel.add(fp, BorderLayout.CENTER);
+		contentPanel.add(pp, BorderLayout.EAST);
 		
 		setContentPane(contentPanel);
 		//END CONTENT PANELS
