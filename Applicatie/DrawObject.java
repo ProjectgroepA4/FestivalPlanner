@@ -106,7 +106,7 @@ public abstract class DrawObject {
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
 		}
 		else {
-			shape = new Rectangle2D.Double(-7,-7,image.getWidth(null)+7, image.getHeight(null)+7);
+			shape = new Rectangle2D.Double(-9,-9,image.getWidth(null)+13, image.getHeight(null)+13);
 			return getTransformSelection().createTransformedShape(shape).contains(clickPoint);
 		}
 		
