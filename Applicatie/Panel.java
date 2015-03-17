@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -275,5 +276,17 @@ public class Panel extends JPanel {
 
 	public void setClickedOption(String clickedOption) {
 		this.clickedOption = clickedOption;
+	}
+
+	public void removeObject(DrawObject o) {
+		Iterator<DrawObject> itr = objects.iterator();
+		while(itr.hasNext()) {
+			DrawObject nextObject = (DrawObject) itr.next();
+			if(nextObject.equals(o)) {
+				pp.clearSelected();
+				itr.remove();
+			}
+			repaint();
+		}
 	}
 }

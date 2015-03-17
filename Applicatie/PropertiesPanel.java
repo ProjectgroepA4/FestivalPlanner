@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
@@ -13,6 +15,7 @@ import java.awt.geom.Point2D;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -58,6 +61,32 @@ public class PropertiesPanel extends JPanel {
 		namePanel.setMaximumSize(new Dimension(200, 40));
 		namePanel.add(nameLabel);
 		add(namePanel);
+		
+		// SPACER
+		add(Box.createRigidArea(spacerDimension));
+		
+		//BUTTONS
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel buttonLabel = new JLabel("Actions");
+		buttonLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
+		buttonPanel.setPreferredSize(new Dimension(200, 40));
+		buttonPanel.setMaximumSize(new Dimension(200, 40));
+		buttonPanel.add(buttonLabel);
+		add(buttonPanel);
+		
+		//DELETE
+		JPanel deletePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p.removeObject(selectedObject);
+			}
+		});
+		deletePanel.setPreferredSize(new Dimension(200, 50));
+		deletePanel.setMaximumSize(new Dimension(200, 50));
+		deletePanel.add(deleteButton);
+		add(deletePanel);
 		
 		// SPACER
 		add(Box.createRigidArea(spacerDimension));
