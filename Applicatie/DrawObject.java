@@ -148,17 +148,36 @@ public abstract class DrawObject
 		return points;
 	}
 	
-	public boolean collision(Point2D[] corners) {
-		Point2D[] ownCorners = getCorners();
-		for(int i = 0; i < corners.length; i++) {
-			Point2D corner = corners[i];
-			if(corner.getX() > ownCorners[0].getX() && corner.getX() < ownCorners[1].getX()) {
-				if(corner.getY() > ownCorners[0].getY() && corner.getY() < ownCorners[2].getY()) {
-					return true;
-				}
-			}
-		}
-		return false;
+	/**
+	 * 
+	 * @param corners
+	 * @return if there is a collision
+	 */
+	public boolean collision(DrawObject object) {
+		//Point2D[] ownCorners = getCorners();
+		Point2D[] objectCorners = object.getCorners();
+		Shape ownShape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
+		ownShape = getTransformSelection().createTransformedShape(ownShape);
+		//Shape otherShape = new Rectangle2D.Double(-9, -9,object.getImage().getWidth(null) + 13,object.getImage().getHeight(null) + 13);
+		//otherShape = getTransformSelection().createTransformedShape(otherShape);
+		if(ownShape.contains(objectCorners[0])) 
+			return true;
+		else if(ownShape.contains(objectCorners[1]))
+			return true;
+		else if(ownShape.contains(objectCorners[2]))
+			return true;
+		else if(ownShape.contains(objectCorners[3]))
+			return true;
+//		if(otherShape.contains(ownCorners[0]))
+//			return true;
+//		else if(otherShape.contains(ownCorners[1]))
+//			return true;
+//		else if(otherShape.contains(ownCorners[2]))
+//			return true;
+//		else if(otherShape.contains(ownCorners[3]))
+//			return true;
+		else
+			return false;
 	}
 
 	/**

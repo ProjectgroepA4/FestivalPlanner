@@ -1,6 +1,7 @@
 package Applicatie;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -53,12 +54,21 @@ public class Panel extends JPanel
 
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
+	Point2D selectionPosition = new Point(0,0);
 
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
 	// image aan panelInfo toe en het object aan panelTypes.
 	// en maak een case statement die een new Object returnt in
 	// createNewDrawObject.
+
+	public Point2D getSelectionPosition() {
+		return selectionPosition;
+	}
+
+	public void setSelectionPosition(Point2D selectionPosition) {
+		this.selectionPosition = selectionPosition;
+	}
 
 	Panel(PropertiesPanel pp)
 	{
@@ -339,4 +349,27 @@ public class Panel extends JPanel
 			repaint();
 		}
 	}
+	
+	public void clearObjectSelection() {
+		for(DrawObject o : objects) {
+			o.setSelected(false);
+		}
+	}
+	
+	public void checkCollision() {
+		boolean collision = false;
+		for(DrawObject o : getObjects()) {
+			if(getSelectedObject().collision(o) && o != getSelectedObject()) {
+				collision = true;
+				getSelectedObject().setRectangleColor(Color.RED);
+				break;
+			}
+			if(!collision) 
+				getSelectedObject().setRectangleColor(Color.BLACK);
+		}
+	}
+	
+	
+	
+	
 }

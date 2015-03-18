@@ -1,7 +1,6 @@
 package Listeners;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
@@ -22,7 +21,6 @@ public class MouseMotion extends MouseMotionAdapter
 	public void mouseDragged(MouseEvent e)
 	{
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
-		Point2D tempPoint = null;
 		if (panel.getDragObject() != null)
 		{
 			switch (panel.getClickedOption())
@@ -32,18 +30,7 @@ public class MouseMotion extends MouseMotionAdapter
 					if (panel.getDragObject() != null)
 						panel.getDragObject().setPosition(new Point2D.Double((panel.getDragObject().getPosition().getX()) - ((panel.getLastClickPosition().getX() - clickPoint.getX())) / panel.getDragObject().getScale(), 
 								(panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY()) / panel.getDragObject().getScale()));
-					for(DrawObject o : panel.getObjects()) {
-						if(o.collision(panel.getDragObject().getCorners()) && o != panel.getDragObject()) {
-							System.out.println("Hover");
-							collision = true;
-							panel.getDragObject().setRectangleColor(Color.RED);
-							break;
-						}
-						if(!collision) {
-							System.out.println("nega");
-							panel.getDragObject().setRectangleColor(Color.BLACK);
-						}
-					}
+					panel.checkCollision();
 					break;
 				case "upperLeft":
 					if (clickPoint.getX() < panel.getDragObject().getPosition().getX() && clickPoint.getY() < panel.getDragObject().getPosition().getY())

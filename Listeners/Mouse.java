@@ -1,16 +1,13 @@
 package Listeners;
 
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
-import java.util.Map;
 
 import Applicatie.DrawObject;
 import Applicatie.Panel;
-
-import Objects.Stage;
 
 public class Mouse extends MouseAdapter
 {
@@ -39,7 +36,13 @@ public class Mouse extends MouseAdapter
 				{
 					DrawObject tempDrawObj = panel.createNewDrawObject(i);
 					tempDrawObj.setPosition(clickPoint);
+					if(!panel.getObjects().isEmpty()) 
+						panel.clearObjectSelection();
 					panel.setDragObject(tempDrawObj);
+					panel.getDragObject().setSelected(true);
+					panel.getPP().setSelected(tempDrawObj);
+					panel.setSelectedObject(tempDrawObj);
+					selectedObject = tempDrawObj;
 					break;
 				}
 				i++;
@@ -58,11 +61,11 @@ public class Mouse extends MouseAdapter
 				{
 					if (o == selectedObject)
 					{
-						boolean upperLeft = o.containsCorner(clickPoint, 0);
-						boolean upperRight = o.containsCorner(clickPoint, 1);
-						boolean bottomLeft = o.containsCorner(clickPoint, 2);
-						boolean bottomRight = o.containsCorner(clickPoint, 3);
-						boolean rotate = o.containsCorner(clickPoint, 4);
+						boolean upperLeft = o.containsCorner(clickPoint,0);
+						boolean upperRight = o.containsCorner(clickPoint,1);
+						boolean bottomLeft = o.containsCorner(clickPoint,2);
+						boolean bottomRight = o.containsCorner(clickPoint,3);
+						boolean rotate = o.containsCorner(clickPoint,4);
 						if (upperLeft)
 						{
 							panel.setClickedOption("upperLeft");
@@ -95,13 +98,14 @@ public class Mouse extends MouseAdapter
 					panel.setDragObject(o);
 					panel.getPP().setSelected(o);
 					panel.setSelectedObject(o);
-
+					panel.setSelectionPosition(panel.getDragObject().getPosition());
 				}
 			}
 		}
 		if (panel.getDragObject() == null && selectedObject != null)
 		{
 			selectedObject.setSelected(false);
+			panel.setSelectedObject(null);
 			panel.getPP().clearSelected();
 			selectedObject = null;
 		}
@@ -110,8 +114,17 @@ public class Mouse extends MouseAdapter
 
 	public void mouseReleased(MouseEvent e)
 	{
-		panel.setDragObject(null);
-		panel.setClickedOption("drag");
+		if(panel.getDragObject() != null) {
+			if(panel.getDragObject().getRectangleColor() != Color.RED) {
+				panel.setDragObject(null);
+				panel.setClickedOption("drag");
+			}
+			else {
+				panel.getDragObject().setPosition(panel.getSelectionPosition());
+				panel.getDragObject().setRectangleColor(Color.BLACK);
+			}
+			panel.setSelectionPosition(panel.getSelectedObject().getPosition());
+		}
 		panel.repaint();
 	}
 }
