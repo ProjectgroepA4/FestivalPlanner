@@ -47,9 +47,6 @@ public class MouseWheel implements MouseWheelListener
 			{
 				panel.setCameraScale((float) cameraScale);
 			}
-			
-
-			System.out.println(cameraScale);
 
 		}
 

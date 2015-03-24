@@ -1,9 +1,11 @@
 package Listeners;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 
+import Applicatie.DrawObject;
 import Applicatie.Panel;
 
 public class MouseMotion extends MouseMotionAdapter
@@ -24,15 +26,17 @@ public class MouseMotion extends MouseMotionAdapter
 			switch (panel.getClickedOption())
 			{
 				case "drag":
+					boolean collision = false;
 					if (panel.getDragObject() != null)
 						panel.getDragObject().setPosition(new Point2D.Double((panel.getDragObject().getPosition().getX()) - ((panel.getLastClickPosition().getX() - clickPoint.getX())) / panel.getDragObject().getScale(), (panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY()) / panel.getDragObject().getScale()));
-
+					panel.checkCollision();
 					break;
 				case "upperLeft":
 					if (clickPoint.getX() < panel.getDragObject().getPosition().getX() && clickPoint.getY() < panel.getDragObject().getPosition().getY())
 					{
-						resizeBigger(clickPoint);
-					} else if (clickPoint.getX() > panel.getDragObject().getPosition().getX() && clickPoint.getY() > panel.getDragObject().getPosition().getY())
+						resizeBigger();
+					}
+					else if (clickPoint.getX() > panel.getDragObject().getPosition().getX() && clickPoint.getY() > panel.getDragObject().getPosition().getY())
 					{
 						resizeSmaller(clickPoint);
 					}
@@ -40,8 +44,9 @@ public class MouseMotion extends MouseMotionAdapter
 				case "upperRight":
 					if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY())
 					{
-						resizeBigger(clickPoint);
-					} else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY())
+						resizeBigger();
+					}
+					else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY())
 					{
 						resizeSmaller(clickPoint);
 					}
@@ -49,8 +54,9 @@ public class MouseMotion extends MouseMotionAdapter
 				case "bottomLeft":
 					if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
 					{
-						resizeBigger(clickPoint);
-					} else if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+						resizeBigger();
+					}
+					else if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
 					{
 						resizeSmaller(clickPoint);
 					}
@@ -58,8 +64,9 @@ public class MouseMotion extends MouseMotionAdapter
 				case "bottomRight":
 					if (clickPoint.getX() > panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() > panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
 					{
-						resizeBigger(clickPoint);
-					} else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
+						resizeBigger();
+					}
+					else if (clickPoint.getX() < panel.getDragObject().getRectangle().getX() + panel.getDragObject().getRectangle().getWidth() && clickPoint.getY() < panel.getDragObject().getRectangle().getY() + panel.getDragObject().getRectangle().getHeight())
 					{
 						resizeSmaller(clickPoint);
 					}
@@ -69,7 +76,8 @@ public class MouseMotion extends MouseMotionAdapter
 					panel.getDragObject().setRotation(tempval);
 					break;
 			}
-		} else
+		}
+		else
 		{
 			panel.setCameraPoint(new Point2D.Double(panel.getCameraPoint().getX() + (panel.getLastMousePosition().getX() - e.getX()), panel.getCameraPoint().getY() + (panel.getLastMousePosition().getY() - e.getY())));
 		}
@@ -80,12 +88,12 @@ public class MouseMotion extends MouseMotionAdapter
 		panel.getPP().update();
 	}
 
-	private void resizeBigger(Point2D clickPoint)
+	private void resizeBigger()
 	{
 		double scale = panel.getDragObject().getScale() + 0.05;
 
 		panel.getDragObject().setScale(scale);
-		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() + clickPoint.getX() / 100, panel.getDragObject().getPosition().getY() + clickPoint.getY() / 100));
+		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX(), panel.getDragObject().getPosition().getY() - 5));
 
 	}
 
@@ -96,7 +104,7 @@ public class MouseMotion extends MouseMotionAdapter
 		{
 			double scale = panel.getDragObject().getScale() - 0.05;
 			panel.getDragObject().setScale(scale);
-			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() - clickPoint.getX() / 100, panel.getDragObject().getPosition().getY() - clickPoint.getY()/ 100));
+			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() - clickPoint.getX(), panel.getDragObject().getPosition().getY() - clickPoint.getY()));
 
 		}
 	}
