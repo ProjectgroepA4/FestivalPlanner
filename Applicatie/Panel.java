@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import Agenda.Agenda;
 import Listeners.Mouse;
@@ -28,7 +31,7 @@ import Objects.Wall;
 
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel {
+public class Panel extends JPanel implements ActionListener {
 
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage, entranceImage, pathImage,
@@ -40,6 +43,7 @@ public class Panel extends JPanel {
 	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
 
 	ArrayList<DrawObject> objects = new ArrayList<>();
+	ArrayList<Visitor> visitors = new ArrayList<>();
 	DrawObject dragObject = null;
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
@@ -51,7 +55,9 @@ public class Panel extends JPanel {
 
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
-	public Agenda agenda;
+	Agenda agenda;
+	int currentTime = 540;
+	int tick = 0;
 
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
@@ -89,9 +95,16 @@ public class Panel extends JPanel {
 		addMouseListener(new Mouse(this));
 
 		addMouseMotionListener(new MouseMotion(this));
+		agenda = new Agenda();
+
 
 		addMouseWheelListener(new MouseWheel(this));
+		new Timer(1000/20, this).start();
 
+	}
+	
+	public void addVisitors(){
+		visitors.add(new Visitor("images/coin.png", new Point(100,300), agenda, objects));
 	}
 
 	public int getPanelInfoLength() {
@@ -154,9 +167,30 @@ public class Panel extends JPanel {
 		for (DrawObject o : objects) {
 			o.draw(g2);
 		}
+		
+		for (Visitor v : visitors){
+			v.draw(g2);
+		}
 
 		g2.setClip(null);
 		g2.setTransform(oldTransform);
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		tick++;
+		if ( tick >= 10){
+			tick = 0;
+			currentTime++;
+			System.out.println(currentTime);
+		}
+		
+		for (Visitor v: visitors){
+			v.update(objects, currentTime);
+		}
+		repaint();
+		
 	}
 
 	public AffineTransform getCamera() {

@@ -33,14 +33,23 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		JMenuItem load = new JMenuItem("Load"); 
+		JMenuItem load = new JMenuItem("Load terrain"); 
 		load.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					SaveLoad.load(w.fp);
 			}
 		});
 		
+		JMenuItem loadagenda = new JMenuItem("Load agenda"); 
+		loadagenda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				w.fp.agenda.loadAgenda();
+				w.fp.addVisitors();
+			}
+		});
+		
 		file.add(load);
+		file.add(loadagenda);
 		file.add(save);
 		file.add(exit);
 		

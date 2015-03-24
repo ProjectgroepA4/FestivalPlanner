@@ -1,4 +1,5 @@
 package Agenda;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -137,6 +138,7 @@ public class Agenda implements Serializable {
 	public void fillAgenda(File file) {
 		FileInputStream fis = null;
 		ObjectInputStream ois = null;
+
 		try {
 			
 			fis = new FileInputStream(file);
@@ -191,6 +193,7 @@ public class Agenda implements Serializable {
 	}
 
 	public void saveAgenda(File file) {
+
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -200,7 +203,7 @@ public class Agenda implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
+	}		
 	
 	public void clearAgenda()
 	{

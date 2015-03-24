@@ -13,7 +13,6 @@ import javax.swing.filechooser.FileFilter;
 
 import Agenda.Agenda;
 
-
 public class SaveLoad {
 
 	
@@ -67,7 +66,6 @@ public class SaveLoad {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			//oos.writeObject(panel.agenda);
 			for (DrawObject object : panel.objects) {
 				oos.writeObject(object);
 			}
@@ -113,7 +111,8 @@ public class SaveLoad {
 				JOptionPane.showMessageDialog(null, "Loaded succesfully");
 			}
 		}
-		}
+	}
+	
 	
 	public static void fillTerrain(File file, Panel panel) {
 		FileInputStream fis = null;
@@ -127,8 +126,6 @@ public class SaveLoad {
 			Object object;
 			object = ois.readObject();
 			try {
-				//panel.agenda = (Agenda) object;
-				//object = ois.readObject();
 				panel.clearObjects();
 				while (object != null) {
 					panel.objects.add((DrawObject) object); 					

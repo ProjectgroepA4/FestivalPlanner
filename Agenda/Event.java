@@ -1,7 +1,8 @@
 package Agenda;
+
+
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -13,6 +14,10 @@ public class Event implements Serializable {
 	private String eventName;
 	private GregorianCalendar startDate;
 	private GregorianCalendar endDate;
+	private int startHour;
+	private int startMinute;
+	private int stopHour;
+	private int stopMinute;
 	private Artist artist;
 	private Stage stage;
 	private String description;
@@ -27,6 +32,10 @@ public class Event implements Serializable {
 				startDay, startHour, startMinute);
 		this.endDate = new GregorianCalendar(endYear, endMonth - 1, endDay,
 				endHour, endMinute);
+		this.startHour = startHour;
+		this.startMinute = startMinute;
+		this.stopHour = stopHour;
+		this.stopMinute = stopMinute;
 		this.stage = stage;
 		this.artist = artist;
 		this.description = description;
@@ -43,6 +52,18 @@ public class Event implements Serializable {
 		this.stage = stage;
 		this.description = description;
 		this.expectedPopularity = expectedPopularity;
+	}
+	
+	public int getStart(){
+		return (startHour * 100) + startMinute;
+	}
+	
+	public int getStop(){
+		return (stopHour * 100) + stopMinute;
+	}
+	
+	public int getStopHour(){
+		return this.stopHour;
 	}
 
 	public String getEventName() {

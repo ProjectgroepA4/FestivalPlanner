@@ -68,9 +68,7 @@ public class DrawObject implements Serializable{
 			g.fill(bottomRightCorner); //bottomright
 			g.setColor(Color.RED);
 			rotateDot = new Ellipse2D.Double((rektAngle.getX() + (rektAngle.getWidth()/2))-8,rektAngle.getY()-8,15,15);
-			g.fill(rotateDot);
-			
-			
+			g.fill(rotateDot);	
 		}
 	}
 
@@ -206,6 +204,30 @@ public class DrawObject implements Serializable{
 	
 	public void setRectangle(Rectangle2D rectangle) {
 		rektAngle = rectangle;
+	}
+	
+	public int getX(){
+		return (int) position.getX();
+	}
+	
+	public int getY(){
+		return (int) position.getY();
+	}
+	
+	public int getEndX(){
+		Image image = new ImageIcon(filename).getImage();
+		//return (int) (position.getX() + (image.getWidth(null) * scale));
+		return (int) (position.getX() + image.getWidth(null));
+	}
+	
+	public int getEndY(){
+		Image image = new ImageIcon(filename).getImage();
+		//return (int) (position.getY() + (image.getHeight(null) * scale));
+		return (int) (position.getY() + image.getHeight(null));
+	}
+	
+	public String getFileName(){
+		return filename;
 	}
 	
 }
