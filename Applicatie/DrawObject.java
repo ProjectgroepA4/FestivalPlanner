@@ -44,7 +44,7 @@ public class DrawObject implements Serializable{
 	public void draw(Graphics2D g)
 	{
 		AffineTransform tx = getTransform();
-		Image image = new ImageIcon(filename).getImage();
+		Image image = Images.getImage(filename);
 		g.drawImage(image, tx, null);
 		if(selected) {
 //			g.rotate(Math.toRadians(rotation), image.getWidth(null)/2, image.getHeight(null)/2);
@@ -100,7 +100,7 @@ public class DrawObject implements Serializable{
 	
 	public boolean contains(Point2D clickPoint) {
 		Shape shape;
-		Image image = new ImageIcon(filename).getImage();
+		Image image = Images.getImage(filename);
 		if(rektAngle == null) {
 			shape = new Rectangle2D.Double(0,0,image.getWidth(null), image.getHeight(null));
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
@@ -186,7 +186,7 @@ public class DrawObject implements Serializable{
 	}
 
 	public Image getImage() {
-		Image image = new ImageIcon(filename).getImage();
+		Image image = Images.getImage(filename);
 		return image;
 	}
 
@@ -215,13 +215,13 @@ public class DrawObject implements Serializable{
 	}
 	
 	public int getEndX(){
-		Image image = new ImageIcon(filename).getImage();
+		Image image = Images.getImage(filename);
 		//return (int) (position.getX() + (image.getWidth(null) * scale));
 		return (int) (position.getX() + image.getWidth(null));
 	}
 	
 	public int getEndY(){
-		Image image = new ImageIcon(filename).getImage();
+		Image image = Images.getImage(filename);
 		//return (int) (position.getY() + (image.getHeight(null) * scale));
 		return (int) (position.getY() + image.getHeight(null));
 	}

@@ -67,6 +67,7 @@ public class Panel extends JPanel implements ActionListener {
 
 	Panel(PropertiesPanel pp) {
 		this.pp = pp;
+		new Images();
 		pp.setPanel(this);
 		try {
 			background = ImageIO.read(new File("images/grass.jpg"));
@@ -183,7 +184,7 @@ public class Panel extends JPanel implements ActionListener {
 		if ( tick >= 10){
 			tick = 0;
 			currentTime++;
-			System.out.println(currentTime);
+			//System.out.println(currentTime);
 		}
 		
 		for (Visitor v: visitors){

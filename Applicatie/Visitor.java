@@ -98,6 +98,7 @@ public class Visitor {
 
 		while (startTime < stopTime) {
 			int random = (int) Math.floor(Math.random() * 51);
+			System.out.println(random);
 			if (random < 30) {
 				Point2D position = null;
 				for (Event e : agenda.getEvents()) {
@@ -119,7 +120,7 @@ public class Visitor {
 			} else if (random >= 30 && random < 35) {
 				Point2D position = null;
 				for (DrawObject d : objects) {
-					if (d.getFileName().equals("images/entrance.png")) {
+					if (d.getFileName().equals("entrance")) {
 						position = d.getPosition();
 					}
 				}
@@ -132,7 +133,7 @@ public class Visitor {
 			} else if (random > 35) {
 				Point2D position = null;
 				for (DrawObject d : objects) {
-					if (d.getFileName().equals("images/wc.png")) {
+					if (d.getFileName().equals("wc")) {
 						position = d.getPosition();
 					}
 				}
