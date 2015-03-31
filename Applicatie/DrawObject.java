@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -54,7 +55,7 @@ public abstract class DrawObject
 			// image.getHeight(null)/2);
 
 			AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.getX() + image.getWidth(null) / 2, position.getY() + image.getHeight(null) / 2);
-			g.transform(rotate);
+			//g.transform(rotate);
 			g.setColor(rectangleColor);
 			g.setStroke(new BasicStroke(7));
 			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
@@ -116,7 +117,8 @@ public abstract class DrawObject
 			shape = new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
 
-		} else
+		}
+		else
 		{
 			shape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
 			return getTransformSelection().createTransformedShape(shape).contains(clickPoint);
@@ -124,59 +126,32 @@ public abstract class DrawObject
 
 	}
 
-	/**
-	 * Method that gets all the corner coordinates
-	 * index: 
-	 * 0 -> top left
-	 * 1 -> top right
-	 * 3 -> bottom left
-	 * 4 -> bottom right
-	 * @return corner coordinates 
-	 */
-	public Point2D[] getCorners() {
-		Rectangle2D tempRekt = new Rectangle2D.Double(0,0,image.getWidth(null),image.getHeight(null));
-		tempRekt.setFrame(getTransform().createTransformedShape(tempRekt).getBounds());
-		Point2D[] points = new Point2D[4];
-		Point2D point = new Point2D.Double(tempRekt.getX(),tempRekt.getY());
-		points[0] = point;
-		point = new Point2D.Double(tempRekt.getX()+tempRekt.getHeight(),tempRekt.getY());
-		points[1] = point;
-		point = new Point2D.Double(tempRekt.getX(),tempRekt.getY()+tempRekt.getHeight());
-		points[2] = point;
-		point = new Point2D.Double(tempRekt.getX()+tempRekt.getHeight(),tempRekt.getY()+tempRekt.getHeight());
-		points[3] = point;
-		return points;
+	public Point2D getObjectPoint(Point2D point)
+	{
+		try
+		{
+			return getTransform().inverseTransform(point, null);
+
+		}
+		catch (NoninvertibleTransformException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
+
 	/**
-	 * 
-	 * @param corners
-	 * @return if there is a collision
+	 * Checking collision.
+	 * @param object. the drawObject to check collision with.
+	 * @return if there is a collision.
 	 */
-	public boolean collision(DrawObject object) {
-		//Point2D[] ownCorners = getCorners();
-		Point2D[] objectCorners = object.getCorners();
-		Shape ownShape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
-		ownShape = getTransformSelection().createTransformedShape(ownShape);
-		//Shape otherShape = new Rectangle2D.Double(-9, -9,object.getImage().getWidth(null) + 13,object.getImage().getHeight(null) + 13);
-		//otherShape = getTransformSelection().createTransformedShape(otherShape);
-		if(ownShape.contains(objectCorners[0])) 
+	public boolean collision(DrawObject object)
+	{
+		Shape ownShape = getRectangle();
+		Rectangle2D otherRectangle = object.getTransform().createTransformedShape(object.getImageRectangle()).getBounds2D();
+		if(ownShape.intersects(otherRectangle))
 			return true;
-		else if(ownShape.contains(objectCorners[1]))
-			return true;
-		else if(ownShape.contains(objectCorners[2]))
-			return true;
-		else if(ownShape.contains(objectCorners[3]))
-			return true;
-//		if(otherShape.contains(ownCorners[0]))
-//			return true;
-//		else if(otherShape.contains(ownCorners[1]))
-//			return true;
-//		else if(otherShape.contains(ownCorners[2]))
-//			return true;
-//		else if(otherShape.contains(ownCorners[3]))
-//			return true;
-		else
+		else 
 			return false;
 	}
 
@@ -278,12 +253,18 @@ public abstract class DrawObject
 		rektAngle = rectangle;
 	}
 
-	public Color getRectangleColor() {
+	public Color getRectangleColor()
+	{
 		return rectangleColor;
 	}
 
-	public void setRectangleColor(Color rectangleColor) {
+	public void setRectangleColor(Color rectangleColor)
+	{
 		this.rectangleColor = rectangleColor;
+	}
+	
+	public Rectangle2D getImageRectangle() {
+		return new Rectangle2D.Double(0,0, image.getWidth(null), image.getHeight(null));
 	}
 
 }

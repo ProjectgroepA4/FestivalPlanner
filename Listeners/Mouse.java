@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import Applicatie.DrawObject;
 import Applicatie.Panel;
+import Objects.Stage;
 
 public class Mouse extends MouseAdapter
 {
@@ -61,11 +62,11 @@ public class Mouse extends MouseAdapter
 				{
 					if (o == selectedObject)
 					{
-						boolean upperLeft = o.containsCorner(clickPoint,0);
-						boolean upperRight = o.containsCorner(clickPoint,1);
-						boolean bottomLeft = o.containsCorner(clickPoint,2);
-						boolean bottomRight = o.containsCorner(clickPoint,3);
-						boolean rotate = o.containsCorner(clickPoint,4);
+						boolean upperLeft = o.containsCorner(clickPoint, 0);
+						boolean upperRight = o.containsCorner(clickPoint, 1);
+						boolean bottomLeft = o.containsCorner(clickPoint, 2);
+						boolean bottomRight = o.containsCorner(clickPoint, 3);
+						boolean rotate = o.containsCorner(clickPoint, 4);
 						if (upperLeft)
 						{
 							panel.setClickedOption("upperLeft");
@@ -99,6 +100,7 @@ public class Mouse extends MouseAdapter
 					panel.getPP().setSelected(o);
 					panel.setSelectedObject(o);
 					panel.setSelectionPosition(panel.getDragObject().getPosition());
+
 				}
 			}
 		}

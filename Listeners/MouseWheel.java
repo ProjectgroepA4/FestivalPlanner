@@ -43,7 +43,10 @@ public class MouseWheel implements MouseWheelListener
 		{
 			// cameraPoint
 			double cameraScale = panel.getCameraScale() * 1 - (e.getPreciseWheelRotation() / 10);
-			panel.setCameraScale((float) cameraScale);
+			if (cameraScale >= 0.1 && cameraScale < 4)
+			{
+				panel.setCameraScale((float) cameraScale);
+			}
 
 		}
 
