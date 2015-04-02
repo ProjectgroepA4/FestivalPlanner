@@ -11,6 +11,8 @@ public class Window extends JFrame
 {
 	private static final long serialVersionUID = -1324363758675184283L;
 
+	private Panel fp;
+	
 	Window() {
 		super("Festival Plannner");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,7 +22,7 @@ public class Window extends JFrame
 		// CONTENT PANELS
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		PropertiesPanel pp = new PropertiesPanel();
-		Panel fp = new Panel(pp);
+		fp = new Panel(pp);
 		contentPanel.add(fp, BorderLayout.CENTER);
 		contentPanel.add(pp, BorderLayout.EAST);
 
@@ -34,5 +36,9 @@ public class Window extends JFrame
 
 		setFocusable(true);
 		setVisible(true);
+	}
+	
+	public Panel getPanel() {
+		return fp;
 	}
 }

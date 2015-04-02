@@ -19,7 +19,6 @@ public abstract class DrawObject
 	double rotation;
 	double scale;
 	private Image image;
-	private Image rotateImage;
 	protected boolean selected;
 	private Rectangle2D rektAngle;
 	private Rectangle2D upperLeftCorner;
@@ -36,7 +35,6 @@ public abstract class DrawObject
 	public DrawObject(String filename, Point2D position)
 	{
 		image = new ImageIcon(filename).getImage();
-		rotateImage = new ImageIcon("rotate.png").getImage();
 		scale = 1;
 		rotation = 0;
 		this.position = position;
