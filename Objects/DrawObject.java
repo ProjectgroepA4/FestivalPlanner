@@ -1,4 +1,4 @@
-package Applicatie;
+package Objects;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -20,19 +20,28 @@ public abstract class DrawObject
 	protected double scale;
 	protected int width;
 	protected int height;
+	
+	protected int areaTop;
+	protected int areaBottom;
+	protected int areaLeft;
+	protected int areaRight;
+	
 	private Image image;
 	private Image rotateImage;
 	protected boolean selected;
 	private Rectangle2D rektAngle;
+	
 	private Rectangle2D upperLeftCorner;
 	private Rectangle2D upperRightCorner;
 	private Rectangle2D bottomLeftCorner;
 	private Rectangle2D bottomRightCorner;
 	private Ellipse2D rotateDot;
+	
 	static final int UPPERLEFT = 0;
 	static final int UPPERRIGHT = 1;
 	static final int BOTTOMLEFT = 2;
 	static final int BOTTOMRIGHT = 3;
+	
 	private Color rectangleColor;
 
 	public DrawObject(String filename, Point2D position)
@@ -45,6 +54,10 @@ public abstract class DrawObject
 		rotation = 0;
 		this.position = position;
 		rectangleColor = Color.BLACK;
+		areaTop = 0;
+		areaBottom = 0;
+		areaLeft = 0;
+		areaRight = 0;
 	}
 
 	public abstract String getName();
@@ -62,7 +75,7 @@ public abstract class DrawObject
 			g.transform(rotate);
 			g.setColor(rectangleColor);
 			g.setStroke(new BasicStroke(7));
-			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), width, height);
+			rektAngle = new Rectangle2D.Double((int) position.getX() - areaLeft, (int) position.getY() - areaTop, width + areaLeft + areaRight, height + areaTop + areaBottom);
 			tx = getTransformRectangle();
 			rektAngle.setFrame(tx.createTransformedShape(rektAngle).getBounds());
 			g.draw(rektAngle);
@@ -87,7 +100,7 @@ public abstract class DrawObject
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-		tx.rotate(Math.toRadians(rotation), width / 2, height / 2);
+		tx.rotate(Math.toRadians(rotation), (width+areaLeft+areaRight) / 2, (height+areaTop+areaBottom) / 2);
 		return tx;
 	}
 
@@ -118,13 +131,13 @@ public abstract class DrawObject
 		Shape shape;
 		if (rektAngle == null)
 		{
-			shape = new Rectangle2D.Double(0, 0, width, height);
+			shape = new Rectangle2D.Double(0-areaLeft, 0-areaTop, width+areaLeft+areaRight, height+areaTop+areaBottom);
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
 
 		}
 		else
 		{
-			shape = new Rectangle2D.Double(-9, -9, width + 13, height + 13);
+			shape = new Rectangle2D.Double(-9 - areaLeft, -9 - areaTop, width + 13 + areaLeft+areaRight, height + 13+areaTop+areaBottom);
 			return getTransformSelection().createTransformedShape(shape).contains(clickPoint);
 		}
 
@@ -152,7 +165,7 @@ public abstract class DrawObject
 	 */
 	public Point2D[] getCorners()
 	{
-		Rectangle2D tempRekt = new Rectangle2D.Double(0, 0, width, height);
+		Rectangle2D tempRekt = new Rectangle2D.Double(0-areaLeft, 0-areaTop, width+areaLeft+areaRight, height+areaTop+areaBottom);
 		tempRekt.setFrame(getTransform().createTransformedShape(tempRekt).getBounds());
 		Point2D[] points = new Point2D[4];
 		Point2D point = new Point2D.Double(tempRekt.getX(), tempRekt.getY());
@@ -175,7 +188,7 @@ public abstract class DrawObject
 	{
 		// Point2D[] ownCorners = getCorners();
 		Point2D[] objectCorners = object.getCorners();
-		Shape ownShape = new Rectangle2D.Double(-9, -9, width + 13, height + 13);
+		Shape ownShape = new Rectangle2D.Double(-9 - areaLeft, -9 - areaTop, width + 13 + areaLeft+areaRight, height + 13+areaTop+areaBottom);
 		ownShape = getTransformSelection().createTransformedShape(ownShape);
 		// Shape otherShape = new Rectangle2D.Double(-9,
 		// -9,object.getImage().getWidth(null) +
@@ -308,6 +321,46 @@ public abstract class DrawObject
 	public void setRectangleColor(Color rectangleColor)
 	{
 		this.rectangleColor = rectangleColor;
+	}
+
+	public int getAreaTop()
+	{
+		return areaTop;
+	}
+
+	public void setAreaTop(int areaTop)
+	{
+		this.areaTop = areaTop;
+	}
+
+	public int getAreaBottom()
+	{
+		return areaBottom;
+	}
+
+	public void setAreaBottom(int areaBottom)
+	{
+		this.areaBottom = areaBottom;
+	}
+
+	public int getAreaLeft()
+	{
+		return areaLeft;
+	}
+
+	public void setAreaLeft(int areaLeft)
+	{
+		this.areaLeft = areaLeft;
+	}
+
+	public int getAreaRight()
+	{
+		return areaRight;
+	}
+
+	public void setAreaRight(int areaRight)
+	{
+		this.areaRight = areaRight;
 	}
 
 }
