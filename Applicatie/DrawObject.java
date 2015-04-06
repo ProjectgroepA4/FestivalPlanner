@@ -15,9 +15,11 @@ import javax.swing.ImageIcon;
 
 public abstract class DrawObject
 {
-	Point2D position;
-	double rotation;
-	double scale;
+	protected Point2D position;
+	protected double rotation;
+	protected double scale;
+	protected int width;
+	protected int height;
 	private Image image;
 	private Image rotateImage;
 	protected boolean selected;
@@ -37,6 +39,8 @@ public abstract class DrawObject
 	{
 		image = new ImageIcon(filename).getImage();
 		rotateImage = new ImageIcon("rotate.png").getImage();
+		width = image.getWidth(null);
+		height = image.getHeight(null);
 		scale = 1;
 		rotation = 0;
 		this.position = position;
@@ -51,14 +55,14 @@ public abstract class DrawObject
 		g.drawImage(image, tx, null);
 		if (selected)
 		{
-			// g.rotate(Math.toRadians(rotation), image.getWidth(null)/2,
-			// image.getHeight(null)/2);
+			// g.rotate(Math.toRadians(rotation), width/2,
+			// height/2);
 
-			AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.getX() + image.getWidth(null) / 2, position.getY() + image.getHeight(null) / 2);
+			AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.getX() + width / 2, position.getY() + height / 2);
 			g.transform(rotate);
 			g.setColor(rectangleColor);
 			g.setStroke(new BasicStroke(7));
-			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
+			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), width, height);
 			tx = getTransformRectangle();
 			rektAngle.setFrame(tx.createTransformedShape(rektAngle).getBounds());
 			g.draw(rektAngle);
@@ -83,7 +87,7 @@ public abstract class DrawObject
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-		tx.rotate(Math.toRadians(rotation), image.getWidth(null) / 2, image.getHeight(null) / 2);
+		tx.rotate(Math.toRadians(rotation), width / 2, height / 2);
 		return tx;
 	}
 
@@ -114,13 +118,13 @@ public abstract class DrawObject
 		Shape shape;
 		if (rektAngle == null)
 		{
-			shape = new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
+			shape = new Rectangle2D.Double(0, 0, width, height);
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
 
 		}
 		else
 		{
-			shape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
+			shape = new Rectangle2D.Double(-9, -9, width + 13, height + 13);
 			return getTransformSelection().createTransformedShape(shape).contains(clickPoint);
 		}
 
@@ -148,7 +152,7 @@ public abstract class DrawObject
 	 */
 	public Point2D[] getCorners()
 	{
-		Rectangle2D tempRekt = new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
+		Rectangle2D tempRekt = new Rectangle2D.Double(0, 0, width, height);
 		tempRekt.setFrame(getTransform().createTransformedShape(tempRekt).getBounds());
 		Point2D[] points = new Point2D[4];
 		Point2D point = new Point2D.Double(tempRekt.getX(), tempRekt.getY());
@@ -171,7 +175,7 @@ public abstract class DrawObject
 	{
 		// Point2D[] ownCorners = getCorners();
 		Point2D[] objectCorners = object.getCorners();
-		Shape ownShape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
+		Shape ownShape = new Rectangle2D.Double(-9, -9, width + 13, height + 13);
 		ownShape = getTransformSelection().createTransformedShape(ownShape);
 		// Shape otherShape = new Rectangle2D.Double(-9,
 		// -9,object.getImage().getWidth(null) +
@@ -226,8 +230,8 @@ public abstract class DrawObject
 			case 4:
 				if (point.getX() > rotateDot.getX() && point.getX() < rotateDot.getX() + rotateDot.getWidth() && point.getY() > rotateDot.getY() && point.getY() < rotateDot.getY() + rotateDot.getHeight())
 					return true;
-				else
-					return false;
+			else
+				return false;
 
 		}
 		if (point.getX() > chosenCorner.getX() && point.getX() < chosenCorner.getX() + chosenCorner.getWidth() && point.getY() > chosenCorner.getY() && point.getY() < chosenCorner.getY() + chosenCorner.getHeight())
