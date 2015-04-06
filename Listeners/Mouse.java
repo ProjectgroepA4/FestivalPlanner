@@ -6,8 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import Applicatie.DrawObject;
 import Applicatie.Panel;
+import Objects.DrawObject;
 import Objects.Stage;
 
 public class Mouse extends MouseAdapter

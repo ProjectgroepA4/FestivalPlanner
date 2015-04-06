@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
+import Objects.DrawObject;
 import Objects.Entrance;
 import Objects.Food;
 import Objects.Path;
