@@ -19,10 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import Agenda.Agenda;
 import Listeners.Mouse;
@@ -65,6 +65,7 @@ public class Panel extends JPanel implements ActionListener
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
+	javax.swing.Timer t;
 	
 	int currentTime = 540;
 	int tick = 0;
@@ -124,9 +125,11 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		new javax.swing.Timer(1000/20, this).start();;
+		t = new Timer(1000/100, this);
 	}
 
+	
+	
 	public int getPanelInfoLength()
 	{
 		int panelInfoLength = 0;
@@ -142,7 +145,6 @@ public class Panel extends JPanel implements ActionListener
 	{
 		switch (index)
 		{
-
 			case 0:
 				return new Stage(null);
 			case 1:
@@ -168,6 +170,14 @@ public class Panel extends JPanel implements ActionListener
 	public void addVisitors()
 	{
 		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+	}
+	
+	public void addVisitors(int count)
+	{
+		for(int i = 0 ; i < count ; i++)
+		{
+			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+		}
 	}
 
 	public void paintComponent(Graphics g)
@@ -527,5 +537,15 @@ public class Panel extends JPanel implements ActionListener
 		}
 		repaint();
 		
+	}
+
+	public javax.swing.Timer getT()
+	{
+		return t;
+	}
+
+	public void setT(javax.swing.Timer t)
+	{
+		this.t = t;
 	}
 }

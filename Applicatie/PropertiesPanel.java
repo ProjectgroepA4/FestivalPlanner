@@ -33,11 +33,12 @@ public class PropertiesPanel extends JPanel
 	
 	Panel p = null;
 
-	Dimension spacerDimension = new Dimension(200, 30);
+	Dimension spacerDimension = new Dimension(200, 10);
 
 	
 	JLabel nameLabel;
 	JPanel areaPanel;
+	Component rigidArea;
 
 	JTextField locationXField;
 	JTextField locationYField;
@@ -91,6 +92,8 @@ public class PropertiesPanel extends JPanel
 		//AREA PANEL: AVAILABLE FOR ACTIONLISTENER
 		areaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		areaPanel.setVisible(false);
+		rigidArea = Box.createRigidArea(spacerDimension);
+		rigidArea.setVisible(false);
 
 		// BUTTONS ROW 1
 		JPanel row1ButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -114,6 +117,7 @@ public class PropertiesPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				areaPanel.setVisible(!areaPanel.isVisible());
+				rigidArea.setVisible(!rigidArea.isVisible());
 			}
 		});
 		row1ButtonPanel.setPreferredSize(new Dimension(200, 50));
@@ -122,23 +126,24 @@ public class PropertiesPanel extends JPanel
 		row1ButtonPanel.add(areaButton);
 		add(row1ButtonPanel);
 		
+		add(rigidArea);
 		
 		//AREA PANEL
 		JLabel areaLabel = new JLabel("Area size");
 		areaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		areaPanel.setPreferredSize(new Dimension(200, 150));
-		areaPanel.setMaximumSize(new Dimension(200, 250));
+		areaPanel.setPreferredSize(new Dimension(200, 180));
+		areaPanel.setMaximumSize(new Dimension(200, 180));
 		areaPanel.add(areaLabel);
 		add(areaPanel);
 		{
 			JPanel areaTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaTopPanel.setPreferredSize(new Dimension(200, 50));
+			areaTopPanel.setPreferredSize(new Dimension(200, 30));
 			areaPanel.add(areaTopPanel);
 
-			JLabel areaTopLabel = new JLabel("Top");
+			JLabel areaTopLabel = new JLabel("Top      ");
 			areaTopPanel.add(areaTopLabel);
 			areaTopField = new JTextField();
-			areaTopField.setPreferredSize(new Dimension(140, 25));
+			areaTopField.setPreferredSize(new Dimension(120, 25));
 			{
 				areaTopField.addKeyListener(new KeyListener()
 				{
@@ -166,7 +171,7 @@ public class PropertiesPanel extends JPanel
 		}
 		{
 			JPanel areaBottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaBottomPanel.setPreferredSize(new Dimension(200, 50));
+			areaBottomPanel.setPreferredSize(new Dimension(200, 30));
 			areaPanel.add(areaBottomPanel);
 
 			JLabel areaBottomLabel = new JLabel("Bottom");
@@ -200,13 +205,13 @@ public class PropertiesPanel extends JPanel
 		}
 		{
 			JPanel areaLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaLeftPanel.setPreferredSize(new Dimension(200, 50));
+			areaLeftPanel.setPreferredSize(new Dimension(200, 30));
 			areaPanel.add(areaLeftPanel);
 
-			JLabel areaLeftLabel = new JLabel("Left");
+			JLabel areaLeftLabel = new JLabel("Left      ");
 			areaLeftPanel.add(areaLeftLabel);
 			areaLeftField = new JTextField();
-			areaLeftField.setPreferredSize(new Dimension(138, 25));
+			areaLeftField.setPreferredSize(new Dimension(120, 25));
 			{
 				areaLeftField.addKeyListener(new KeyListener()
 				{
@@ -234,13 +239,13 @@ public class PropertiesPanel extends JPanel
 		}
 		{
 			JPanel areaRightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaRightPanel.setPreferredSize(new Dimension(200, 50));
+			areaRightPanel.setPreferredSize(new Dimension(200, 30));
 			areaPanel.add(areaRightPanel);
 
-			JLabel areaRightLabel = new JLabel("Right");
+			JLabel areaRightLabel = new JLabel("Right    ");
 			areaRightPanel.add(areaRightLabel);
 			areaRightField = new JTextField();
-			areaRightField.setPreferredSize(new Dimension(130, 25));
+			areaRightField.setPreferredSize(new Dimension(120, 25));
 			{
 				areaRightField.addKeyListener(new KeyListener()
 				{
@@ -274,13 +279,13 @@ public class PropertiesPanel extends JPanel
 		JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel locationLabel = new JLabel("Location");
 		locationLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		locationPanel.setPreferredSize(new Dimension(200, 150));
-		locationPanel.setMaximumSize(new Dimension(200, 150));
+		locationPanel.setPreferredSize(new Dimension(200, 110));
+		locationPanel.setMaximumSize(new Dimension(200, 110));
 		locationPanel.add(locationLabel);
 		add(locationPanel);
 		{
 			JPanel locationXPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			locationXPanel.setPreferredSize(new Dimension(200, 50));
+			locationXPanel.setPreferredSize(new Dimension(200, 30));
 			locationPanel.add(locationXPanel);
 
 			JLabel locationXLabel = new JLabel("X");
@@ -318,7 +323,7 @@ public class PropertiesPanel extends JPanel
 		}
 		{
 			JPanel locationYPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			locationYPanel.setPreferredSize(new Dimension(200, 50));
+			locationYPanel.setPreferredSize(new Dimension(200, 30));
 			locationPanel.add(locationYPanel);
 
 			JLabel locationYLabel = new JLabel("Y");
@@ -362,13 +367,13 @@ public class PropertiesPanel extends JPanel
 		JPanel scalePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel scaleLabel = new JLabel("Scale");
 		scaleLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		scalePanel.setPreferredSize(new Dimension(200, 100));
-		scalePanel.setMaximumSize(new Dimension(200, 100));
+		scalePanel.setPreferredSize(new Dimension(200, 70));
+		scalePanel.setMaximumSize(new Dimension(200, 70));
 		scalePanel.add(scaleLabel);
 		add(scalePanel);
 		{
 			JPanel scalePanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			scalePanel2.setPreferredSize(new Dimension(200, 50));
+			scalePanel2.setPreferredSize(new Dimension(200, 30));
 			scalePanel.add(scalePanel2);
 
 			JLabel scale2Label = new JLabel(" ");
@@ -409,13 +414,13 @@ public class PropertiesPanel extends JPanel
 		JPanel rotationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel rotationLabel = new JLabel("Rotation");
 		rotationLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		rotationPanel.setPreferredSize(new Dimension(200, 100));
-		rotationPanel.setMaximumSize(new Dimension(200, 100));
+		rotationPanel.setPreferredSize(new Dimension(200, 80));
+		rotationPanel.setMaximumSize(new Dimension(200, 80));
 		rotationPanel.add(rotationLabel);
 		add(rotationPanel);
 		{
 			JPanel rotationPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			rotationPanel2.setPreferredSize(new Dimension(200, 50));
+			rotationPanel2.setPreferredSize(new Dimension(200, 30));
 			rotationPanel.add(rotationPanel2);
 
 			JLabel rotation2Label = new JLabel(" ");
@@ -522,6 +527,7 @@ public class PropertiesPanel extends JPanel
 
 		nameLabel.setText("No Selection");
 		areaPanel.setVisible(false);
+		rigidArea.setVisible(false);
 	}
 
 	private void fillFields()
