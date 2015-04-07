@@ -23,19 +23,17 @@ import javax.swing.JTextField;
 import Objects.DrawObject;
 import Objects.Path;
 
-
 @SuppressWarnings("serial")
 public class PropertiesPanel extends JPanel
 {
 
 	DrawObject selectedObject = null;
 	Path selectedPath = null;
-	
+
 	Panel p = null;
 
 	Dimension spacerDimension = new Dimension(200, 10);
 
-	
 	JLabel nameLabel;
 	JPanel areaPanel;
 	Component rigidArea;
@@ -88,10 +86,11 @@ public class PropertiesPanel extends JPanel
 		buttonPanel.setMaximumSize(new Dimension(200, 40));
 		buttonPanel.add(buttonLabel);
 		add(buttonPanel);
-		
-		//AREA PANEL: AVAILABLE FOR ACTIONLISTENER
+
+		// AREA PANEL: AVAILABLE FOR ACTIONLISTENER
 		areaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		areaPanel.setVisible(false);
+
 		rigidArea = Box.createRigidArea(spacerDimension);
 		rigidArea.setVisible(false);
 
@@ -103,9 +102,10 @@ public class PropertiesPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(selectedObject != null)
+				if (selectedObject != null)
 					p.removeObject(selectedObject);
-				else if(selectedPath != null) {
+				else if (selectedPath != null)
+				{
 					p.removePath(selectedPath);
 				}
 			}
@@ -118,6 +118,7 @@ public class PropertiesPanel extends JPanel
 			{
 				areaPanel.setVisible(!areaPanel.isVisible());
 				rigidArea.setVisible(!rigidArea.isVisible());
+
 			}
 		});
 		row1ButtonPanel.setPreferredSize(new Dimension(200, 50));
@@ -125,30 +126,33 @@ public class PropertiesPanel extends JPanel
 		row1ButtonPanel.add(deleteButton);
 		row1ButtonPanel.add(areaButton);
 		add(row1ButtonPanel);
-		
+
 		add(rigidArea);
-		
-		//AREA PANEL
+
+		// AREA PANEL
 		JLabel areaLabel = new JLabel("Area size");
 		areaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		areaPanel.setPreferredSize(new Dimension(200, 180));
-		areaPanel.setMaximumSize(new Dimension(200, 180));
+		areaPanel.setPreferredSize(new Dimension(200, 150));
+		areaPanel.setMaximumSize(new Dimension(200, 250));
 		areaPanel.add(areaLabel);
 		add(areaPanel);
 		{
 			JPanel areaTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaTopPanel.setPreferredSize(new Dimension(200, 30));
+			areaTopPanel.setPreferredSize(new Dimension(200, 50));
 			areaPanel.add(areaTopPanel);
 
-			JLabel areaTopLabel = new JLabel("Top      ");
+			JLabel areaTopLabel = new JLabel("Top");
 			areaTopPanel.add(areaTopLabel);
 			areaTopField = new JTextField();
-			areaTopField.setPreferredSize(new Dimension(120, 25));
+			areaTopField.setPreferredSize(new Dimension(140, 25));
+
 			{
 				areaTopField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -158,20 +162,24 @@ public class PropertiesPanel extends JPanel
 							int top = Integer.parseInt(areaTopField.getText());
 							selectedObject.setAreaTop(top);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaTopField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaTopPanel.add(areaTopField);
 		}
 		{
 			JPanel areaBottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaBottomPanel.setPreferredSize(new Dimension(200, 30));
+			areaBottomPanel.setPreferredSize(new Dimension(200, 50));
+
 			areaPanel.add(areaBottomPanel);
 
 			JLabel areaBottomLabel = new JLabel("Bottom");
@@ -182,7 +190,9 @@ public class PropertiesPanel extends JPanel
 				areaBottomField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -192,31 +202,36 @@ public class PropertiesPanel extends JPanel
 							int bottom = Integer.parseInt(areaBottomField.getText());
 							selectedObject.setAreaBottom(bottom);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaBottomField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaBottomPanel.add(areaBottomField);
 		}
 		{
 			JPanel areaLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaLeftPanel.setPreferredSize(new Dimension(200, 30));
+			areaLeftPanel.setPreferredSize(new Dimension(200, 50));
 			areaPanel.add(areaLeftPanel);
 
-			JLabel areaLeftLabel = new JLabel("Left      ");
+			JLabel areaLeftLabel = new JLabel("Left");
 			areaLeftPanel.add(areaLeftLabel);
 			areaLeftField = new JTextField();
-			areaLeftField.setPreferredSize(new Dimension(120, 25));
+			areaLeftField.setPreferredSize(new Dimension(138, 25));
 			{
 				areaLeftField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -226,31 +241,37 @@ public class PropertiesPanel extends JPanel
 							int left = Integer.parseInt(areaLeftField.getText());
 							selectedObject.setAreaLeft(left);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaLeftField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaLeftPanel.add(areaLeftField);
 		}
 		{
 			JPanel areaRightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			areaRightPanel.setPreferredSize(new Dimension(200, 30));
+
+			areaRightPanel.setPreferredSize(new Dimension(200, 50));
 			areaPanel.add(areaRightPanel);
 
-			JLabel areaRightLabel = new JLabel("Right    ");
+			JLabel areaRightLabel = new JLabel("Right");
 			areaRightPanel.add(areaRightLabel);
 			areaRightField = new JTextField();
-			areaRightField.setPreferredSize(new Dimension(120, 25));
+			areaRightField.setPreferredSize(new Dimension(130, 25));
 			{
 				areaRightField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -260,13 +281,16 @@ public class PropertiesPanel extends JPanel
 							int right = Integer.parseInt(areaRightField.getText());
 							selectedObject.setAreaRight(right);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaRightField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaRightPanel.add(areaRightField);
@@ -308,7 +332,8 @@ public class PropertiesPanel extends JPanel
 							double xpos = Double.parseDouble(locationXField.getText());
 							selectedObject.setPosition(new Point2D.Double(xpos, selectedObject.getPosition().getY()));
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							locationXField.setBackground(Color.RED);
 						}
@@ -347,7 +372,8 @@ public class PropertiesPanel extends JPanel
 							selectedObject.setPosition(new Point2D.Double(selectedObject.getPosition().getX(), ypos));
 							;
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 
 							locationYField.setBackground(Color.RED);
@@ -396,7 +422,8 @@ public class PropertiesPanel extends JPanel
 							double scale = Double.parseDouble(scaleField.getText());
 							selectedObject.setScale(scale);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							scaleField.setBackground(Color.RED);
 						}
@@ -444,7 +471,8 @@ public class PropertiesPanel extends JPanel
 							rotationField.setText(rotation + "");
 							selectedObject.setRotation(rotation);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							rotationField.setBackground(Color.RED);
 						}
@@ -491,8 +519,8 @@ public class PropertiesPanel extends JPanel
 
 	public void update()
 	{
-		if(selectedObject != null)
-			fillFields();	
+		if (selectedObject != null)
+			fillFields();
 	}
 
 	private void enableComponents(Container container, boolean enable)
@@ -532,18 +560,18 @@ public class PropertiesPanel extends JPanel
 
 	private void fillFields()
 	{
-		
-			nameLabel.setText(selectedObject.getName());
 
-			locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
-			locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
-			scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
-			rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
-			
-			areaTopField.setText(selectedObject.getAreaTop() + "");
-			areaBottomField.setText(selectedObject.getAreaBottom() + "");
-			areaLeftField.setText(selectedObject.getAreaLeft() + "");
-			areaRightField.setText(selectedObject.getAreaRight() + "");
+		nameLabel.setText(selectedObject.getName());
+
+		locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
+		locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
+		scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
+		rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
+
+		areaTopField.setText(selectedObject.getAreaTop() + "");
+		areaBottomField.setText(selectedObject.getAreaBottom() + "");
+		areaLeftField.setText(selectedObject.getAreaLeft() + "");
+		areaRightField.setText(selectedObject.getAreaRight() + "");
 
 	}
 
@@ -551,14 +579,16 @@ public class PropertiesPanel extends JPanel
 	{
 		this.p = p;
 	}
-	
-	public void setSelectedPath(Path path) {
+
+	public void setSelectedPath(Path path)
+	{
 		selectedObject = null;
 		selectedPath = path;
 		fillPathFields();
 	}
-	
-	private void fillPathFields() {
+
+	private void fillPathFields()
+	{
 		nameLabel.setText("Path");
 		enableComponents(this, true);
 		locationXField.setEnabled(false);

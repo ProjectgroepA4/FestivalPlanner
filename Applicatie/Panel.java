@@ -38,9 +38,10 @@ import Objects.Toilet;
 import Objects.Wall;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel implements ActionListener 
+public class Panel extends JPanel implements ActionListener
 {
 
+	BufferedImage grass, sand;
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
 
@@ -56,6 +57,8 @@ public class Panel extends JPanel implements ActionListener
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
 	private Path currentPath;
+	private int width = 1920;
+	private int height = 1080;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -66,9 +69,10 @@ public class Panel extends JPanel implements ActionListener
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
 	javax.swing.Timer t;
-	
+
 	int currentTime = 540;
 	int tick = 0;
+
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
 	// image aan panelInfo toe en het object aan panelTypes.
@@ -91,13 +95,15 @@ public class Panel extends JPanel implements ActionListener
 		pp.setPanel(this);
 		try
 		{
-			background = ImageIO.read(new File("images/grass.jpg"));
+			grass = ImageIO.read(new File("images/grass.jpg"));
+			sand = ImageIO.read(new File("images/sand.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
+			background = grass;
 		}
 		catch (IOException e)
 		{
@@ -109,7 +115,7 @@ public class Panel extends JPanel implements ActionListener
 		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
-		
+
 		agenda = new Agenda();
 
 		panelInfox = 0;
@@ -125,11 +131,9 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		t = new Timer(1000/100, this);
+		t = new Timer(1000 / 100, this);
 	}
 
-	
-	
 	public int getPanelInfoLength()
 	{
 		int panelInfoLength = 0;
@@ -171,10 +175,10 @@ public class Panel extends JPanel implements ActionListener
 	{
 		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 	}
-	
+
 	public void addVisitors(int count)
 	{
-		for(int i = 0 ; i < count ; i++)
+		for (int i = 0; i < count; i++)
 		{
 			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 		}
@@ -202,7 +206,8 @@ public class Panel extends JPanel implements ActionListener
 
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
+
+		g2.fill(new Rectangle2D.Double(-width / 2, -height / 2, width, height));
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
@@ -215,11 +220,12 @@ public class Panel extends JPanel implements ActionListener
 		{
 			o.draw(g2);
 		}
-		
-		for (Visitor v : visitors){
+
+		for (Visitor v : visitors)
+		{
 			v.draw(g2);
 		}
-		
+
 		g2.setTransform(oldTransform);
 		if (currentPath != null)
 		{ // Display text while in path making modes.
@@ -524,19 +530,22 @@ public class Panel extends JPanel implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 		tick++;
-		if ( tick >= 10 && visitors.size() > 0){
+		if (tick >= 10 && visitors.size() > 0)
+		{
 			tick = 0;
 			currentTime++;
 			System.out.println(currentTime);
 		}
-		
-		for (Visitor v: visitors){
+
+		for (Visitor v : visitors)
+		{
 			v.update(objects, currentTime, visitors);
 		}
 		repaint();
-		
+
 	}
 
 	public javax.swing.Timer getT()
@@ -547,5 +556,24 @@ public class Panel extends JPanel implements ActionListener
 	public void setT(javax.swing.Timer t)
 	{
 		this.t = t;
+	}
+
+	public void newWorld(int width, int height, int terrainIndex)
+	{
+		this.width = width;
+		this.height = height;
+		paths.clear();
+		objects.clear();
+		cameraScale = 1;
+		switch (terrainIndex)
+		{
+			case 0:
+				background = grass;
+				break;
+			case 1:
+				background = sand;
+				break;
+		}
+		repaint();
 	}
 }
