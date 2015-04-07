@@ -104,6 +104,7 @@ public abstract class DrawObject implements Serializable
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
+		System.out.println(position.getX());
 		tx.rotate(Math.toRadians(rotation), (width + areaLeft + areaRight) / 2, (height + areaTop + areaBottom) / 2);
 		return tx;
 	}

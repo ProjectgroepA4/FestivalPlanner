@@ -16,6 +16,7 @@ public class Visitor
 
 	Point2D position;
 	double rotation;
+	double scale;
 	double speed;
 	String filename;
 	ArrayList<Action> actions;
@@ -28,6 +29,7 @@ public class Visitor
 		this.filename = filename;
 		this.rotation = 0;
 		this.speed = 1 + Math.random() * 4;
+		scale = 1;
 		actions = new ArrayList<Action>();
 		this.agenda = agenda;
 		this.objects = objects;
@@ -43,16 +45,18 @@ public class Visitor
 
 	private AffineTransform getTransform()
 	{
-		AffineTransform tx = new AffineTransform();
-		tx.translate(position.getX(), position.getY());
 		Image image = Images.getImage(filename);
+		AffineTransform tx = new AffineTransform();
+		tx.scale(scale, scale);
+		tx.translate(position.getX(), position.getY());
+//		System.out.println(position.getX());
 		tx.rotate(rotation, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		return tx;
 	}
 
 	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors)
 	{
-		Point2D target = new Point(-100, -100);
+		Point2D target = new Point(500, 500);
 		for (Action a : actions)
 		{
 			if (currentTime >= a.getStartTime() && currentTime < a.getStoptime())

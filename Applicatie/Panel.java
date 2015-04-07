@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -35,7 +38,7 @@ import Objects.Toilet;
 import Objects.Wall;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel
+public class Panel extends JPanel implements ActionListener 
 {
 
 	BufferedImage background;
@@ -62,6 +65,9 @@ public class Panel extends JPanel
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
+	
+	int currentTime = 540;
+	int tick = 0;
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
 	// image aan panelInfo toe en het object aan panelTypes.
@@ -118,6 +124,7 @@ public class Panel extends JPanel
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
+		new javax.swing.Timer(1000/20, this).start();;
 	}
 
 	public int getPanelInfoLength()
@@ -198,6 +205,11 @@ public class Panel extends JPanel
 		{
 			o.draw(g2);
 		}
+		
+		for (Visitor v : visitors){
+			v.draw(g2);
+		}
+		
 		g2.setTransform(oldTransform);
 		if (currentPath != null)
 		{ // Display text while in path making modes.
@@ -205,7 +217,6 @@ public class Panel extends JPanel
 			g2.setFont(new Font("Verdana", Font.ITALIC, 25));
 			g2.drawString("Press enter to finish the path.", 20, 185);
 		}
-
 		g2.setClip(null);
 
 	}
@@ -500,5 +511,21 @@ public class Panel extends JPanel
 	public void setAgenda(Agenda agenda)
 	{
 		this.agenda = agenda;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		tick++;
+		if ( tick >= 10 && visitors.size() > 0){
+			tick = 0;
+			currentTime++;
+			System.out.println(currentTime);
+		}
+		
+		for (Visitor v: visitors){
+			v.update(objects, currentTime, visitors);
+		}
+		repaint();
+		
 	}
 }
