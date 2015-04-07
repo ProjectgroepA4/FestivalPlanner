@@ -156,7 +156,7 @@ public abstract class DrawObject
 	}
 
 	/**
-	 * <<<<<<< HEAD:Applicatie/DrawObject.java Method that gets all the corner
+	 * Method that gets all the corner
 	 * coordinates index: 0 -> top left 1 -> top right 3 -> bottom left 4 ->
 	 * bottom right
 	 * 
@@ -179,7 +179,7 @@ public abstract class DrawObject
 	}
 
 	/**
-	 * ======= >>>>>>> origin/kenneth:Objects/DrawObject.java Checking
+	 * Checking
 	 * collision.
 	 * 
 	 * @param object
