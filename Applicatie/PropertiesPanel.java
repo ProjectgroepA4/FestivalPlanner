@@ -20,7 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Objects.DrawObject;
 import Objects.Path;
+
 
 @SuppressWarnings("serial")
 public class PropertiesPanel extends JPanel
@@ -35,11 +37,16 @@ public class PropertiesPanel extends JPanel
 
 	
 	JLabel nameLabel;
+	JPanel areaPanel;
 
 	JTextField locationXField;
 	JTextField locationYField;
 	JTextField scaleField;
 	JTextField rotationField;
+	JTextField areaTopField;
+	JTextField areaBottomField;
+	JTextField areaLeftField;
+	JTextField areaRightField;
 
 	PropertiesPanel()
 	{
@@ -80,9 +87,13 @@ public class PropertiesPanel extends JPanel
 		buttonPanel.setMaximumSize(new Dimension(200, 40));
 		buttonPanel.add(buttonLabel);
 		add(buttonPanel);
+		
+		//AREA PANEL: AVAILABLE FOR ACTIONLISTENER
+		areaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		areaPanel.setVisible(false);
 
-		// DELETE
-		JPanel deletePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		// BUTTONS ROW 1
+		JPanel row1ButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton deleteButton = new JButton("Delete");
 		deleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		deleteButton.addActionListener(new ActionListener()
@@ -96,10 +107,165 @@ public class PropertiesPanel extends JPanel
 				}
 			}
 		});
-		deletePanel.setPreferredSize(new Dimension(200, 50));
-		deletePanel.setMaximumSize(new Dimension(200, 50));
-		deletePanel.add(deleteButton);
-		add(deletePanel);
+		JButton areaButton = new JButton("Area");
+		areaButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		areaButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				areaPanel.setVisible(!areaPanel.isVisible());
+			}
+		});
+		row1ButtonPanel.setPreferredSize(new Dimension(200, 50));
+		row1ButtonPanel.setMaximumSize(new Dimension(200, 50));
+		row1ButtonPanel.add(deleteButton);
+		row1ButtonPanel.add(areaButton);
+		add(row1ButtonPanel);
+		
+		
+		//AREA PANEL
+		JLabel areaLabel = new JLabel("Area size");
+		areaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
+		areaPanel.setPreferredSize(new Dimension(200, 150));
+		areaPanel.setMaximumSize(new Dimension(200, 250));
+		areaPanel.add(areaLabel);
+		add(areaPanel);
+		{
+			JPanel areaTopPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			areaTopPanel.setPreferredSize(new Dimension(200, 50));
+			areaPanel.add(areaTopPanel);
+
+			JLabel areaTopLabel = new JLabel("Top");
+			areaTopPanel.add(areaTopLabel);
+			areaTopField = new JTextField();
+			areaTopField.setPreferredSize(new Dimension(140, 25));
+			{
+				areaTopField.addKeyListener(new KeyListener()
+				{
+
+					public void keyTyped(KeyEvent e){}
+
+					public void keyReleased(KeyEvent e)
+					{
+						try
+						{
+							areaTopField.setBackground(Color.WHITE);
+							int top = Integer.parseInt(areaTopField.getText());
+							selectedObject.setAreaTop(top);
+							p.update();
+						} catch (NumberFormatException nfe)
+						{
+							areaTopField.setBackground(Color.RED);
+						}
+					}
+
+					public void keyPressed(KeyEvent e){}
+				});
+			}
+			areaTopPanel.add(areaTopField);
+		}
+		{
+			JPanel areaBottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			areaBottomPanel.setPreferredSize(new Dimension(200, 50));
+			areaPanel.add(areaBottomPanel);
+
+			JLabel areaBottomLabel = new JLabel("Bottom");
+			areaBottomPanel.add(areaBottomLabel);
+			areaBottomField = new JTextField();
+			areaBottomField.setPreferredSize(new Dimension(120, 25));
+			{
+				areaBottomField.addKeyListener(new KeyListener()
+				{
+
+					public void keyTyped(KeyEvent e){}
+
+					public void keyReleased(KeyEvent e)
+					{
+						try
+						{
+							areaBottomField.setBackground(Color.WHITE);
+							int bottom = Integer.parseInt(areaBottomField.getText());
+							selectedObject.setAreaBottom(bottom);
+							p.update();
+						} catch (NumberFormatException nfe)
+						{
+							areaBottomField.setBackground(Color.RED);
+						}
+					}
+
+					public void keyPressed(KeyEvent e){}
+				});
+			}
+			areaBottomPanel.add(areaBottomField);
+		}
+		{
+			JPanel areaLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			areaLeftPanel.setPreferredSize(new Dimension(200, 50));
+			areaPanel.add(areaLeftPanel);
+
+			JLabel areaLeftLabel = new JLabel("Left");
+			areaLeftPanel.add(areaLeftLabel);
+			areaLeftField = new JTextField();
+			areaLeftField.setPreferredSize(new Dimension(138, 25));
+			{
+				areaLeftField.addKeyListener(new KeyListener()
+				{
+
+					public void keyTyped(KeyEvent e){}
+
+					public void keyReleased(KeyEvent e)
+					{
+						try
+						{
+							areaLeftField.setBackground(Color.WHITE);
+							int left = Integer.parseInt(areaLeftField.getText());
+							selectedObject.setAreaLeft(left);
+							p.update();
+						} catch (NumberFormatException nfe)
+						{
+							areaLeftField.setBackground(Color.RED);
+						}
+					}
+
+					public void keyPressed(KeyEvent e){}
+				});
+			}
+			areaLeftPanel.add(areaLeftField);
+		}
+		{
+			JPanel areaRightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			areaRightPanel.setPreferredSize(new Dimension(200, 50));
+			areaPanel.add(areaRightPanel);
+
+			JLabel areaRightLabel = new JLabel("Right");
+			areaRightPanel.add(areaRightLabel);
+			areaRightField = new JTextField();
+			areaRightField.setPreferredSize(new Dimension(130, 25));
+			{
+				areaRightField.addKeyListener(new KeyListener()
+				{
+
+					public void keyTyped(KeyEvent e){}
+
+					public void keyReleased(KeyEvent e)
+					{
+						try
+						{
+							areaRightField.setBackground(Color.WHITE);
+							int right = Integer.parseInt(areaRightField.getText());
+							selectedObject.setAreaRight(right);
+							p.update();
+						} catch (NumberFormatException nfe)
+						{
+							areaRightField.setBackground(Color.RED);
+						}
+					}
+
+					public void keyPressed(KeyEvent e){}
+				});
+			}
+			areaRightPanel.add(areaRightField);
+		}
 
 		// SPACER
 		add(Box.createRigidArea(spacerDimension));
@@ -355,7 +521,7 @@ public class PropertiesPanel extends JPanel
 		}
 
 		nameLabel.setText("No Selection");
-
+		areaPanel.setVisible(false);
 	}
 
 	private void fillFields()
@@ -367,6 +533,12 @@ public class PropertiesPanel extends JPanel
 			locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
 			scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
 			rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
+			
+			areaTopField.setText(selectedObject.getAreaTop() + "");
+			areaBottomField.setText(selectedObject.getAreaBottom() + "");
+			areaLeftField.setText(selectedObject.getAreaLeft() + "");
+			areaRightField.setText(selectedObject.getAreaRight() + "");
+
 	}
 
 	public void setPanel(Panel p)

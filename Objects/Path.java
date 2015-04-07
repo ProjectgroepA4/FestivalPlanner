@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
  */
 public class Path {
 
+
 	private ArrayList<Point2D> points;
 	private ArrayList<Shape> lines;
 	private Point2D tempPoint;

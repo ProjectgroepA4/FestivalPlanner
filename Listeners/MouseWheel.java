@@ -4,8 +4,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 
-import Applicatie.DrawObject;
 import Applicatie.Panel;
+import Objects.DrawObject;
 
 public class MouseWheel implements MouseWheelListener
 {

@@ -1,4 +1,4 @@
-package Applicatie;
+package Objects;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -18,14 +18,23 @@ public abstract class DrawObject
 	Point2D position;
 	double rotation;
 	double scale;
+	int width;
+	int height;
 	private Image image;
 	protected boolean selected;
+
+	protected int areaTop;
+	protected int areaBottom;
+	protected int areaLeft;
+	protected int areaRight;
+
 	private Rectangle2D rektAngle;
 	private Rectangle2D upperLeftCorner;
 	private Rectangle2D upperRightCorner;
 	private Rectangle2D bottomLeftCorner;
 	private Rectangle2D bottomRightCorner;
 	private Ellipse2D rotateDot;
+
 	static final int UPPERLEFT = 0;
 	static final int UPPERRIGHT = 1;
 	static final int BOTTOMLEFT = 2;
@@ -35,10 +44,19 @@ public abstract class DrawObject
 	public DrawObject(String filename, Point2D position)
 	{
 		image = new ImageIcon(filename).getImage();
+
+		width = image.getWidth(null);
+		height = image.getHeight(null);
+
 		scale = 1;
 		rotation = 0;
 		this.position = position;
 		rectangleColor = Color.BLACK;
+
+		areaTop = 0;
+		areaBottom = 0;
+		areaLeft = 0;
+		areaRight = 0;
 	}
 
 	public abstract String getName();
@@ -49,14 +67,13 @@ public abstract class DrawObject
 		g.drawImage(image, tx, null);
 		if (selected)
 		{
-			// g.rotate(Math.toRadians(rotation), image.getWidth(null)/2,
-			// image.getHeight(null)/2);
-
+			// g.rotate(Math.toRadians(rotation), width/2,
+			// height/2);
 			AffineTransform rotate = AffineTransform.getRotateInstance(Math.toRadians(rotation), position.getX() + image.getWidth(null) / 2, position.getY() + image.getHeight(null) / 2);
-			//g.transform(rotate);
+			// g.transform(rotate);
 			g.setColor(rectangleColor);
 			g.setStroke(new BasicStroke(7));
-			rektAngle = new Rectangle2D.Double((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
+			rektAngle = new Rectangle2D.Double((int) position.getX() - areaLeft, (int) position.getY() - areaTop, width + areaLeft + areaRight, height + areaTop + areaBottom);
 			tx = getTransformRectangle();
 			rektAngle.setFrame(tx.createTransformedShape(rektAngle).getBounds());
 			g.draw(rektAngle);
@@ -81,7 +98,7 @@ public abstract class DrawObject
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-		tx.rotate(Math.toRadians(rotation), image.getWidth(null) / 2, image.getHeight(null) / 2);
+		tx.rotate(Math.toRadians(rotation), (width + areaLeft + areaRight) / 2, (height + areaTop + areaBottom) / 2);
 		return tx;
 	}
 
@@ -112,13 +129,13 @@ public abstract class DrawObject
 		Shape shape;
 		if (rektAngle == null)
 		{
-			shape = new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
+			shape = new Rectangle2D.Double(0 - areaLeft, 0 - areaTop, width + areaLeft + areaRight, height + areaTop + areaBottom);
 			return getTransform().createTransformedShape(shape).contains(clickPoint);
 
 		}
 		else
 		{
-			shape = new Rectangle2D.Double(-9, -9, image.getWidth(null) + 13, image.getHeight(null) + 13);
+			shape = new Rectangle2D.Double(-9 - areaLeft, -9 - areaTop, width + 13 + areaLeft + areaRight, height + 13 + areaTop + areaBottom);
 			return getTransformSelection().createTransformedShape(shape).contains(clickPoint);
 		}
 
@@ -139,8 +156,9 @@ public abstract class DrawObject
 	}
 
 	/**
-	 * Method that gets all the corner coordinates index: 0 -> top left 1 -> top
-	 * right 3 -> bottom left 4 -> bottom right
+	 * <<<<<<< HEAD:Applicatie/DrawObject.java Method that gets all the corner
+	 * coordinates index: 0 -> top left 1 -> top right 3 -> bottom left 4 ->
+	 * bottom right
 	 * 
 	 * @return corner coordinates
 	 */
@@ -161,17 +179,20 @@ public abstract class DrawObject
 	}
 
 	/**
-	 * Checking collision.
-	 * @param object. the drawObject to check collision with.
+	 * ======= >>>>>>> origin/kenneth:Objects/DrawObject.java Checking
+	 * collision.
+	 * 
+	 * @param object
+	 *            . the drawObject to check collision with.
 	 * @return if there is a collision.
 	 */
 	public boolean collision(DrawObject object)
 	{
 		Shape ownShape = getRectangle();
 		Rectangle2D otherRectangle = object.getTransform().createTransformedShape(object.getImageRectangle()).getBounds2D();
-		if(ownShape.intersects(otherRectangle))
+		if (ownShape.intersects(otherRectangle))
 			return true;
-		else 
+		else
 			return false;
 	}
 
@@ -282,9 +303,50 @@ public abstract class DrawObject
 	{
 		this.rectangleColor = rectangleColor;
 	}
-	
-	public Rectangle2D getImageRectangle() {
-		return new Rectangle2D.Double(0,0, image.getWidth(null), image.getHeight(null));
+
+	public Rectangle2D getImageRectangle()
+	{
+		return new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
+	}
+
+	public int getAreaTop()
+	{
+		return areaTop;
+	}
+
+	public void setAreaTop(int areaTop)
+	{
+		this.areaTop = areaTop;
+	}
+
+	public int getAreaBottom()
+	{
+		return areaBottom;
+	}
+
+	public void setAreaBottom(int areaBottom)
+	{
+		this.areaBottom = areaBottom;
+	}
+
+	public int getAreaLeft()
+	{
+		return areaLeft;
+	}
+
+	public void setAreaLeft(int areaLeft)
+	{
+		this.areaLeft = areaLeft;
+	}
+
+	public int getAreaRight()
+	{
+		return areaRight;
+	}
+
+	public void setAreaRight(int areaRight)
+	{
+		this.areaRight = areaRight;
 	}
 
 }
