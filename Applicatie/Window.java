@@ -1,6 +1,7 @@
 package Applicatie;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,7 +17,8 @@ public class Window extends JFrame
 	Window() {
 		super("Festival Plannner");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(500, 600);
+		//setSize(500, 600);
+		setMinimumSize(new Dimension(1160, 680));
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		// CONTENT PANELS
@@ -24,7 +26,11 @@ public class Window extends JFrame
 		PropertiesPanel pp = new PropertiesPanel();
 		fp = new Panel(pp);
 		contentPanel.add(fp, BorderLayout.CENTER);
+		ControlPanel cp = new ControlPanel(fp);
+		contentPanel.add(cp, BorderLayout.SOUTH);
 		contentPanel.add(pp, BorderLayout.EAST);
+		contentPanel.add(fp, BorderLayout.CENTER);
+		
 
 		addKeyListener(new Keyboard(fp));
 		setContentPane(contentPanel);

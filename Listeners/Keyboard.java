@@ -5,7 +5,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 
+import Applicatie.NewWorldPanel;
 import Applicatie.Panel;
+import Applicatie.SaveLoad;
 
 public class Keyboard implements KeyListener {
 
@@ -53,6 +55,15 @@ public class Keyboard implements KeyListener {
 		}
 		else if(e.getKeyCode() == e.VK_P) {
 			panel.startPath();
+		}
+		else if(e.getKeyCode() == e.VK_N) {
+			NewWorldPanel world = new NewWorldPanel(panel);
+		}
+		else if(e.getKeyCode() == e.VK_S) {
+			SaveLoad.save(panel);
+		}
+		else if(e.getKeyCode() == e.VK_O) {
+			SaveLoad.load(panel);
 		}
 		panel.repaint();
 	}

@@ -7,7 +7,7 @@ public class Entrance extends DrawObject
 
 	public Entrance(Point2D position)
 	{
-		super("images/entrance.png", position);
+		super("entrance", position);
 	}
 
 	@Override

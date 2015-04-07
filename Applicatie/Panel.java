@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -20,7 +22,9 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
+import Agenda.Agenda;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
@@ -34,10 +38,10 @@ import Objects.Toilet;
 import Objects.Wall;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel
+public class Panel extends JPanel implements ActionListener
 {
 
-	BufferedImage grass,sand;
+	BufferedImage grass, sand;
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
 
@@ -45,6 +49,7 @@ public class Panel extends JPanel
 
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
 	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
+	ArrayList<Visitor> visitors = new ArrayList<>();
 
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	ArrayList<Path> paths = new ArrayList<>();
@@ -57,12 +62,16 @@ public class Panel extends JPanel
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
-
 	PropertiesPanel pp;
-
+	Agenda agenda;
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
-	Point2D selectionPosition = new Point(0,0);
+	Point2D selectionPosition = new Point(0, 0);
+	Images images = new Images();
+	javax.swing.Timer t;
+
+	int currentTime = 540;
+	int tick = 0;
 
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
@@ -70,11 +79,13 @@ public class Panel extends JPanel
 	// en maak een case statement die een new Object returnt in
 	// createNewDrawObject.
 
-	public Point2D getSelectionPosition() {
+	public Point2D getSelectionPosition()
+	{
 		return selectionPosition;
 	}
 
-	public void setSelectionPosition(Point2D selectionPosition) {
+	public void setSelectionPosition(Point2D selectionPosition)
+	{
 		this.selectionPosition = selectionPosition;
 	}
 
@@ -93,7 +104,8 @@ public class Panel extends JPanel
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
 			background = grass;
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -103,6 +115,8 @@ public class Panel extends JPanel
 		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
+
+		agenda = new Agenda();
 
 		panelInfox = 0;
 		panelInfoy = 0;
@@ -117,6 +131,7 @@ public class Panel extends JPanel
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
+		t = new Timer(1000 / 100, this);
 	}
 
 	public int getPanelInfoLength()
@@ -134,7 +149,6 @@ public class Panel extends JPanel
 	{
 		switch (index)
 		{
-
 			case 0:
 				return new Stage(null);
 			case 1:
@@ -155,6 +169,19 @@ public class Panel extends JPanel
 	public void add(DrawObject dragObject)
 	{
 		objects.add(dragObject);
+	}
+
+	public void addVisitors()
+	{
+		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+	}
+
+	public void addVisitors(int count)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+		}
 	}
 
 	public void paintComponent(Graphics g)
@@ -179,27 +206,35 @@ public class Panel extends JPanel
 
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-width/2,-height/2, width, height));
+
+		g2.fill(new Rectangle2D.Double(-width / 2, -height / 2, width, height));
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
-		
-		for(Path path : paths) {
+
+		for (Path path : paths)
+		{
 			path.draw(g2);
 		}
 		for (DrawObject o : objects)
 		{
 			o.draw(g2);
 		}
-		g2.setTransform(oldTransform);
-		if(currentPath != null) { //Display text while in path making modes.
-			g2.setColor(Color.WHITE);
-			g2.setFont(new Font("Verdana",Font.ITALIC,25));
-			g2.drawString("Press enter to finish the path.",20,185);
+
+		for (Visitor v : visitors)
+		{
+			v.draw(g2);
 		}
 
+		g2.setTransform(oldTransform);
+		if (currentPath != null)
+		{ // Display text while in path making modes.
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("Verdana", Font.ITALIC, 25));
+			g2.drawString("Press enter to finish the path.", 20, 185);
+		}
 		g2.setClip(null);
-		
+
 	}
 
 	public AffineTransform getCamera()
@@ -215,7 +250,8 @@ public class Panel extends JPanel
 		try
 		{
 			return getCamera().inverseTransform(point, null);
-		} catch (NoninvertibleTransformException e1)
+		}
+		catch (NoninvertibleTransformException e1)
 		{
 			e1.printStackTrace();
 		}
@@ -275,6 +311,11 @@ public class Panel extends JPanel
 	public void setLastClickPosition(Point2D lastClickPosition)
 	{
 		this.lastClickPosition = lastClickPosition;
+	}
+
+	public void clearObjects()
+	{
+		objects.clear();
 	}
 
 	public Point getLastMousePosition()
@@ -359,7 +400,9 @@ public class Panel extends JPanel
 
 	/**
 	 * Remove a DrawObject from the list.
-	 * @param o - the DrawObject you want to remove from the list.
+	 * 
+	 * @param o
+	 *            - the DrawObject you want to remove from the list.
 	 */
 	public void removeObject(DrawObject o)
 	{
@@ -375,61 +418,77 @@ public class Panel extends JPanel
 			repaint();
 		}
 	}
-	
-	public void clearObjectSelection() {
-		for(DrawObject o : objects) {
+
+	public void clearObjectSelection()
+	{
+		for (DrawObject o : objects)
+		{
 			o.setSelected(false);
 		}
 	}
-	
-	public void checkCollision() {
+
+	public void checkCollision()
+	{
 		boolean collision = false;
-		for(DrawObject o : getObjects()) {
-			if(getSelectedObject().collision(o) && o != getSelectedObject()) {
+		for (DrawObject o : getObjects())
+		{
+			if (getSelectedObject().collision(o) && o != getSelectedObject())
+			{
 				collision = true;
 				getSelectedObject().setRectangleColor(Color.RED);
 				break;
 			}
-			if(!collision) 
+			if (!collision)
 				getSelectedObject().setRectangleColor(Color.BLACK);
 		}
 	}
-	
+
 	/**
 	 * Begin making a new path.
 	 */
-	public void startPath() {
+	public void startPath()
+	{
 		setClickedOption("Path");
 		currentPath = new Path();
 		paths.add(currentPath);
 		pp.setSelectedPath(currentPath);
 	}
-	
+
 	/**
 	 * Get the current selected Path.
+	 * 
 	 * @return - the selected Path.
 	 */
-	public Path getCurrentPath() {
+	public Path getCurrentPath()
+	{
 		return currentPath;
 	}
-	
+
 	/**
 	 * Set the selected Path object.
-	 * @param path - the selected Path object.
+	 * 
+	 * @param path
+	 *            - the selected Path object.
 	 */
-	public void setcurrentPath(Path path) {
+	public void setcurrentPath(Path path)
+	{
 		currentPath = path;
 		pp.setSelectedPath(currentPath);
 	}
-	
+
 	/**
 	 * Checks if the point is contained in one of the path's.
-	 * @param point - The point to check for.
+	 * 
+	 * @param point
+	 *            - The point to check for.
 	 * @return if the point is contained in one of the path's.
 	 */
-	public boolean checkPath(Point2D point) {
-		for(Path path : paths) {
-			if(path.containsPoint(point)) {
+	public boolean checkPath(Point2D point)
+	{
+		for (Path path : paths)
+		{
+			if (path.containsPoint(point))
+			{
 				setcurrentPath(path);
 				setClickedOption("Path");
 				return true;
@@ -437,15 +496,20 @@ public class Panel extends JPanel
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Remove a path from the list.
-	 * @param path - the path you want to remove from the list.
+	 * 
+	 * @param path
+	 *            - the path you want to remove from the list.
 	 */
-	public void removePath(Path path) {
+	public void removePath(Path path)
+	{
 		Iterator<Path> it = paths.iterator();
-		while(it.hasNext()) {
-			if(it.next().equals(path)) {
+		while (it.hasNext())
+		{
+			if (it.next().equals(path))
+			{
 				pp.clearSelected();
 				setClickedOption("drag");
 				currentPath = null;
@@ -454,14 +518,55 @@ public class Panel extends JPanel
 			repaint();
 		}
 	}
-	
-	public void newWorld(int width, int height, int terrainIndex) {
+
+	public Agenda getAgenda()
+	{
+		return agenda;
+	}
+
+	public void setAgenda(Agenda agenda)
+	{
+		this.agenda = agenda;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		tick++;
+		if (tick >= 10 && visitors.size() > 0)
+		{
+			tick = 0;
+			currentTime++;
+			System.out.println(currentTime);
+		}
+
+		for (Visitor v : visitors)
+		{
+			v.update(objects, currentTime, visitors);
+		}
+		repaint();
+
+	}
+
+	public javax.swing.Timer getT()
+	{
+		return t;
+	}
+
+	public void setT(javax.swing.Timer t)
+	{
+		this.t = t;
+	}
+
+	public void newWorld(int width, int height, int terrainIndex)
+	{
 		this.width = width;
 		this.height = height;
 		paths.clear();
 		objects.clear();
 		cameraScale = 1;
-		switch(terrainIndex) {
+		switch (terrainIndex)
+		{
 			case 0:
 				background = grass;
 				break;

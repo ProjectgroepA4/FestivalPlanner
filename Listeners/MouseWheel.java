@@ -1,5 +1,6 @@
 package Listeners;
 
+import java.awt.Point;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
@@ -46,7 +47,13 @@ public class MouseWheel implements MouseWheelListener
 			if (cameraScale >= 0.1 && cameraScale < 4)
 			{
 				panel.setCameraScale((float) cameraScale);
-			}
+				//panel.setCameraPoint(new Point2D.Double(e.getX()-(panel.getWidth()/2)-panel.getCameraPoint().getX(), e.getY()-(panel.getHeight()/2) - panel.getCameraPoint().getY()));
+				//panel.setCameraPoint( new Point2D.Double( 
+				//							-panel.getClickPoint(new Point(e.getX(), e.getY())).getX(),
+				//							-panel.getClickPoint(new Point(e.getX(), e.getY())).getY()
+				//							));
+				//TODO FIX
+				}
 
 		}
 

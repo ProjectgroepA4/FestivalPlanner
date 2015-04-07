@@ -23,21 +23,20 @@ import javax.swing.JTextField;
 import Objects.DrawObject;
 import Objects.Path;
 
-
 @SuppressWarnings("serial")
 public class PropertiesPanel extends JPanel
 {
 
 	DrawObject selectedObject = null;
 	Path selectedPath = null;
-	
+
 	Panel p = null;
 
-	Dimension spacerDimension = new Dimension(200, 30);
+	Dimension spacerDimension = new Dimension(200, 10);
 
-	
 	JLabel nameLabel;
 	JPanel areaPanel;
+	Component rigidArea;
 
 	JTextField locationXField;
 	JTextField locationYField;
@@ -87,10 +86,13 @@ public class PropertiesPanel extends JPanel
 		buttonPanel.setMaximumSize(new Dimension(200, 40));
 		buttonPanel.add(buttonLabel);
 		add(buttonPanel);
-		
-		//AREA PANEL: AVAILABLE FOR ACTIONLISTENER
+
+		// AREA PANEL: AVAILABLE FOR ACTIONLISTENER
 		areaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		areaPanel.setVisible(false);
+
+		rigidArea = Box.createRigidArea(spacerDimension);
+		rigidArea.setVisible(false);
 
 		// BUTTONS ROW 1
 		JPanel row1ButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -100,9 +102,10 @@ public class PropertiesPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(selectedObject != null)
+				if (selectedObject != null)
 					p.removeObject(selectedObject);
-				else if(selectedPath != null) {
+				else if (selectedPath != null)
+				{
 					p.removePath(selectedPath);
 				}
 			}
@@ -114,6 +117,8 @@ public class PropertiesPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				areaPanel.setVisible(!areaPanel.isVisible());
+				rigidArea.setVisible(!rigidArea.isVisible());
+
 			}
 		});
 		row1ButtonPanel.setPreferredSize(new Dimension(200, 50));
@@ -121,9 +126,10 @@ public class PropertiesPanel extends JPanel
 		row1ButtonPanel.add(deleteButton);
 		row1ButtonPanel.add(areaButton);
 		add(row1ButtonPanel);
-		
-		
-		//AREA PANEL
+
+		add(rigidArea);
+
+		// AREA PANEL
 		JLabel areaLabel = new JLabel("Area size");
 		areaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
 		areaPanel.setPreferredSize(new Dimension(200, 150));
@@ -139,11 +145,14 @@ public class PropertiesPanel extends JPanel
 			areaTopPanel.add(areaTopLabel);
 			areaTopField = new JTextField();
 			areaTopField.setPreferredSize(new Dimension(140, 25));
+
 			{
 				areaTopField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -153,13 +162,16 @@ public class PropertiesPanel extends JPanel
 							int top = Integer.parseInt(areaTopField.getText());
 							selectedObject.setAreaTop(top);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaTopField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaTopPanel.add(areaTopField);
@@ -167,6 +179,7 @@ public class PropertiesPanel extends JPanel
 		{
 			JPanel areaBottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			areaBottomPanel.setPreferredSize(new Dimension(200, 50));
+
 			areaPanel.add(areaBottomPanel);
 
 			JLabel areaBottomLabel = new JLabel("Bottom");
@@ -177,7 +190,9 @@ public class PropertiesPanel extends JPanel
 				areaBottomField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -187,13 +202,16 @@ public class PropertiesPanel extends JPanel
 							int bottom = Integer.parseInt(areaBottomField.getText());
 							selectedObject.setAreaBottom(bottom);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaBottomField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaBottomPanel.add(areaBottomField);
@@ -211,7 +229,9 @@ public class PropertiesPanel extends JPanel
 				areaLeftField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -221,19 +241,23 @@ public class PropertiesPanel extends JPanel
 							int left = Integer.parseInt(areaLeftField.getText());
 							selectedObject.setAreaLeft(left);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaLeftField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaLeftPanel.add(areaLeftField);
 		}
 		{
 			JPanel areaRightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
 			areaRightPanel.setPreferredSize(new Dimension(200, 50));
 			areaPanel.add(areaRightPanel);
 
@@ -245,7 +269,9 @@ public class PropertiesPanel extends JPanel
 				areaRightField.addKeyListener(new KeyListener()
 				{
 
-					public void keyTyped(KeyEvent e){}
+					public void keyTyped(KeyEvent e)
+					{
+					}
 
 					public void keyReleased(KeyEvent e)
 					{
@@ -255,13 +281,16 @@ public class PropertiesPanel extends JPanel
 							int right = Integer.parseInt(areaRightField.getText());
 							selectedObject.setAreaRight(right);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							areaRightField.setBackground(Color.RED);
 						}
 					}
 
-					public void keyPressed(KeyEvent e){}
+					public void keyPressed(KeyEvent e)
+					{
+					}
 				});
 			}
 			areaRightPanel.add(areaRightField);
@@ -274,13 +303,13 @@ public class PropertiesPanel extends JPanel
 		JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel locationLabel = new JLabel("Location");
 		locationLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		locationPanel.setPreferredSize(new Dimension(200, 150));
-		locationPanel.setMaximumSize(new Dimension(200, 150));
+		locationPanel.setPreferredSize(new Dimension(200, 110));
+		locationPanel.setMaximumSize(new Dimension(200, 110));
 		locationPanel.add(locationLabel);
 		add(locationPanel);
 		{
 			JPanel locationXPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			locationXPanel.setPreferredSize(new Dimension(200, 50));
+			locationXPanel.setPreferredSize(new Dimension(200, 30));
 			locationPanel.add(locationXPanel);
 
 			JLabel locationXLabel = new JLabel("X");
@@ -303,7 +332,8 @@ public class PropertiesPanel extends JPanel
 							double xpos = Double.parseDouble(locationXField.getText());
 							selectedObject.setPosition(new Point2D.Double(xpos, selectedObject.getPosition().getY()));
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							locationXField.setBackground(Color.RED);
 						}
@@ -318,7 +348,7 @@ public class PropertiesPanel extends JPanel
 		}
 		{
 			JPanel locationYPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			locationYPanel.setPreferredSize(new Dimension(200, 50));
+			locationYPanel.setPreferredSize(new Dimension(200, 30));
 			locationPanel.add(locationYPanel);
 
 			JLabel locationYLabel = new JLabel("Y");
@@ -342,7 +372,8 @@ public class PropertiesPanel extends JPanel
 							selectedObject.setPosition(new Point2D.Double(selectedObject.getPosition().getX(), ypos));
 							;
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 
 							locationYField.setBackground(Color.RED);
@@ -362,13 +393,13 @@ public class PropertiesPanel extends JPanel
 		JPanel scalePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel scaleLabel = new JLabel("Scale");
 		scaleLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		scalePanel.setPreferredSize(new Dimension(200, 100));
-		scalePanel.setMaximumSize(new Dimension(200, 100));
+		scalePanel.setPreferredSize(new Dimension(200, 70));
+		scalePanel.setMaximumSize(new Dimension(200, 70));
 		scalePanel.add(scaleLabel);
 		add(scalePanel);
 		{
 			JPanel scalePanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			scalePanel2.setPreferredSize(new Dimension(200, 50));
+			scalePanel2.setPreferredSize(new Dimension(200, 30));
 			scalePanel.add(scalePanel2);
 
 			JLabel scale2Label = new JLabel(" ");
@@ -391,7 +422,8 @@ public class PropertiesPanel extends JPanel
 							double scale = Double.parseDouble(scaleField.getText());
 							selectedObject.setScale(scale);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							scaleField.setBackground(Color.RED);
 						}
@@ -409,13 +441,13 @@ public class PropertiesPanel extends JPanel
 		JPanel rotationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel rotationLabel = new JLabel("Rotation");
 		rotationLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		rotationPanel.setPreferredSize(new Dimension(200, 100));
-		rotationPanel.setMaximumSize(new Dimension(200, 100));
+		rotationPanel.setPreferredSize(new Dimension(200, 80));
+		rotationPanel.setMaximumSize(new Dimension(200, 80));
 		rotationPanel.add(rotationLabel);
 		add(rotationPanel);
 		{
 			JPanel rotationPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			rotationPanel2.setPreferredSize(new Dimension(200, 50));
+			rotationPanel2.setPreferredSize(new Dimension(200, 30));
 			rotationPanel.add(rotationPanel2);
 
 			JLabel rotation2Label = new JLabel(" ");
@@ -439,7 +471,8 @@ public class PropertiesPanel extends JPanel
 							rotationField.setText(rotation + "");
 							selectedObject.setRotation(rotation);
 							p.update();
-						} catch (NumberFormatException nfe)
+						}
+						catch (NumberFormatException nfe)
 						{
 							rotationField.setBackground(Color.RED);
 						}
@@ -486,8 +519,8 @@ public class PropertiesPanel extends JPanel
 
 	public void update()
 	{
-		if(selectedObject != null)
-			fillFields();	
+		if (selectedObject != null)
+			fillFields();
 	}
 
 	private void enableComponents(Container container, boolean enable)
@@ -522,22 +555,23 @@ public class PropertiesPanel extends JPanel
 
 		nameLabel.setText("No Selection");
 		areaPanel.setVisible(false);
+		rigidArea.setVisible(false);
 	}
 
 	private void fillFields()
 	{
-		
-			nameLabel.setText(selectedObject.getName());
 
-			locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
-			locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
-			scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
-			rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
-			
-			areaTopField.setText(selectedObject.getAreaTop() + "");
-			areaBottomField.setText(selectedObject.getAreaBottom() + "");
-			areaLeftField.setText(selectedObject.getAreaLeft() + "");
-			areaRightField.setText(selectedObject.getAreaRight() + "");
+		nameLabel.setText(selectedObject.getName());
+
+		locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
+		locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
+		scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
+		rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
+
+		areaTopField.setText(selectedObject.getAreaTop() + "");
+		areaBottomField.setText(selectedObject.getAreaBottom() + "");
+		areaLeftField.setText(selectedObject.getAreaLeft() + "");
+		areaRightField.setText(selectedObject.getAreaRight() + "");
 
 	}
 
@@ -545,14 +579,16 @@ public class PropertiesPanel extends JPanel
 	{
 		this.p = p;
 	}
-	
-	public void setSelectedPath(Path path) {
+
+	public void setSelectedPath(Path path)
+	{
 		selectedObject = null;
 		selectedPath = path;
 		fillPathFields();
 	}
-	
-	private void fillPathFields() {
+
+	private void fillPathFields()
+	{
 		nameLabel.setText("Path");
 		enableComponents(this, true);
 		locationXField.setEnabled(false);

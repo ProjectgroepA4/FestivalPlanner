@@ -7,7 +7,7 @@ public class Wall extends DrawObject
 
 	public Wall(Point2D position)
 	{
-		super("images/wall.png", position);
+		super("wall", position);
 	}
 
 	@Override
