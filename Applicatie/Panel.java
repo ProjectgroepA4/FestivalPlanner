@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -125,7 +124,6 @@ public class Panel extends JPanel
 	{
 		switch (index)
 		{
-
 			case 0:
 				return new Stage(null);
 			case 1:
