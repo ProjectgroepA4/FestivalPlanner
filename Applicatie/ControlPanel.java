@@ -109,7 +109,7 @@ public class ControlPanel extends JPanel
 			peopleButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
 				{
-					p.addVisitors(300);
+					p.addVisitors(1);
 				}
 			});
 			peoplePanel.add(peopleButton);
