@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 
-import Applicatie.DrawObject;
 import Applicatie.Panel;
+import Objects.DrawObject;
 
 public class MouseMotion extends MouseMotionAdapter
 {

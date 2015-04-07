@@ -8,10 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -23,15 +20,15 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
+import Objects.DrawObject;
 import Objects.Entrance;
 import Objects.Food;
-import Objects.Path;
 import Objects.OldPath;
+import Objects.Path;
 import Objects.Stage;
 import Objects.Toilet;
 import Objects.Wall;
@@ -40,6 +37,7 @@ import Objects.Wall;
 public class Panel extends JPanel
 {
 
+	BufferedImage grass,sand;
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
 
@@ -54,6 +52,8 @@ public class Panel extends JPanel
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
 	private Path currentPath;
+	private int width = 1920;
+	private int height = 1080;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -84,13 +84,15 @@ public class Panel extends JPanel
 		pp.setPanel(this);
 		try
 		{
-			background = ImageIO.read(new File("images/grass.jpg"));
+			grass = ImageIO.read(new File("images/grass.jpg"));
+			sand = ImageIO.read(new File("images/sand.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
+			background = grass;
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -177,7 +179,7 @@ public class Panel extends JPanel
 
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
+		g2.fill(new Rectangle2D.Double(-width/2,-height/2, width, height));
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
@@ -451,5 +453,22 @@ public class Panel extends JPanel
 			}
 			repaint();
 		}
+	}
+	
+	public void newWorld(int width, int height, int terrainIndex) {
+		this.width = width;
+		this.height = height;
+		paths.clear();
+		objects.clear();
+		cameraScale = 1;
+		switch(terrainIndex) {
+			case 0:
+				background = grass;
+				break;
+			case 1:
+				background = sand;
+				break;
+		}
+		repaint();
 	}
 }
