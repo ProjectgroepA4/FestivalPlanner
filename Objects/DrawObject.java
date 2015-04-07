@@ -10,18 +10,22 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
-public abstract class DrawObject
+import Applicatie.Images;
+
+public abstract class DrawObject implements Serializable
 {
 	Point2D position;
 	double rotation;
 	double scale;
 	int width;
 	int height;
-	private Image image;
+//	private Image image;
 	protected boolean selected;
+	private String filename;
 
 	protected int areaTop;
 	protected int areaBottom;
@@ -43,11 +47,12 @@ public abstract class DrawObject
 
 	public DrawObject(String filename, Point2D position)
 	{
-		image = new ImageIcon(filename).getImage();
+//		image = new ImageIcon(filename).getImage();
 
+		Image image = Images.getImage(filename);
 		width = image.getWidth(null);
 		height = image.getHeight(null);
-
+		this.filename = filename;
 		scale = 1;
 		rotation = 0;
 		this.position = position;
@@ -64,6 +69,7 @@ public abstract class DrawObject
 	public void draw(Graphics2D g)
 	{
 		AffineTransform tx = getTransform();
+		Image image = Images.getImage(filename);
 		g.drawImage(image, tx, null);
 		if (selected)
 		{
@@ -156,31 +162,7 @@ public abstract class DrawObject
 	}
 
 	/**
-	 * Method that gets all the corner
-	 * coordinates index: 0 -> top left 1 -> top right 3 -> bottom left 4 ->
-	 * bottom right
-	 * 
-	 * @return corner coordinates
-	 */
-	public Point2D[] getCorners()
-	{
-		Rectangle2D tempRekt = new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
-		tempRekt.setFrame(getTransform().createTransformedShape(tempRekt).getBounds());
-		Point2D[] points = new Point2D[4];
-		Point2D point = new Point2D.Double(tempRekt.getX(), tempRekt.getY());
-		points[0] = point;
-		point = new Point2D.Double(tempRekt.getX() + tempRekt.getHeight(), tempRekt.getY());
-		points[1] = point;
-		point = new Point2D.Double(tempRekt.getX(), tempRekt.getY() + tempRekt.getHeight());
-		points[2] = point;
-		point = new Point2D.Double(tempRekt.getX() + tempRekt.getHeight(), tempRekt.getY() + tempRekt.getHeight());
-		points[3] = point;
-		return points;
-	}
-
-	/**
-	 * Checking
-	 * collision.
+	 * Checking collision.
 	 * 
 	 * @param object
 	 *            . the drawObject to check collision with.
@@ -269,16 +251,6 @@ public abstract class DrawObject
 		this.scale = scale;
 	}
 
-	public Image getImage()
-	{
-		return image;
-	}
-
-	public void setImage(Image image)
-	{
-		this.image = image;
-	}
-
 	public boolean isSelected()
 	{
 		return selected;
@@ -306,6 +278,7 @@ public abstract class DrawObject
 
 	public Rectangle2D getImageRectangle()
 	{
+		Image image = Images.getImage(filename);
 		return new Rectangle2D.Double(0, 0, image.getWidth(null), image.getHeight(null));
 	}
 
@@ -347,6 +320,23 @@ public abstract class DrawObject
 	public void setAreaRight(int areaRight)
 	{
 		this.areaRight = areaRight;
+	}
+
+	public int getEndX()
+	{
+		Image image = Images.getImage(filename);
+		return (int) (position.getX() + image.getWidth(null));
+	}
+
+	public int getEndY()
+	{
+		Image image = Images.getImage(filename);
+		return (int) (position.getY() + image.getHeight(null));
+	}
+
+	public String getFileName()
+	{
+		return filename;
 	}
 
 }

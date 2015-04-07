@@ -6,7 +6,7 @@ public class Stage extends DrawObject
 {
 	public Stage(Point2D position)
 	{
-		super("images/stage4.png", position);
+		super("stage", position);
 	}
 
 	@Override
