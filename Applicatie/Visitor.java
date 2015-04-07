@@ -27,14 +27,15 @@ public class Visitor {
 		this.position = position;
 		this.filename = filename;
 		this.rotation = 0;
-        this.speed = 1 + Math.random()*4;
+        this.speed = 1 + Math.random()*5;
 		actions = new ArrayList<Action>();
 		this.agenda = agenda;
 		this.objects = objects;
 		fillActions();
 	}
 
-	public void draw(Graphics2D g2) {
+	public void draw(Graphics2D g2) 
+	{
 		AffineTransform tx = getTransform();
 		Image image = Images.getImage(filename);
 		g2.drawImage(image, tx, null);
@@ -69,9 +70,9 @@ public class Visitor {
 		int dify = (int)(target.getY() - position.getY());
 		int distance =  (int) Math.sqrt((difx*difx)+(dify*dify));
 		
-		if (rotation > newRot && distance > 10){
+		if (rotation > newRot && distance > 15){
 			rotation -= 0.15;
-		} else if (rotation < newRot && distance > 10){
+		} else if (rotation < newRot && distance > 15){
 			rotation += 0.15;
 		}
 
@@ -81,7 +82,7 @@ public class Visitor {
 		float directionX = (float)Math.cos(rotation);
 		float directionY = (float)Math.sin(rotation);
 		
-		if (distance > 10){
+		if (distance > 15){
 			position = new Point2D.Double((position.getX() + directionX * speed),(position.getY() + directionY * speed));
 		}
 		
@@ -99,7 +100,6 @@ public class Visitor {
 		}
 		if (possible == false) {
 			position = oldPosition;
-			rotation += 0.2;
 		}
 	}
 
@@ -116,7 +116,7 @@ public class Visitor {
 							&& convertMinutesToHours(startTime) < e.getStop()) {
 						for (DrawObject d : objects) {
 							if (d.getFileName().equals(e.getStage().getName())) {
-								position = d.getPosition();
+								position = d.getMiddlePoint();
 							}
 						}
 					}
@@ -131,7 +131,7 @@ public class Visitor {
 				Point2D position = null;
 				for (DrawObject d : objects) {
 					if (d.getFileName().equals("entrance")) {
-						position = d.getPosition();
+						position = d.getMiddlePoint();
 					}
 				}
 				if (position != null) {
@@ -144,7 +144,8 @@ public class Visitor {
 				Point2D position = null;
 				for (DrawObject d : objects) {
 					if (d.getFileName().equals("wc")) {
-						position = d.getPosition();
+						position = d.getMiddlePoint();
+						
 					}
 				}
 				if (position != null) {

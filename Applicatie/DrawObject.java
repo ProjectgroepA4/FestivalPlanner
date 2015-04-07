@@ -236,4 +236,10 @@ public abstract class DrawObject implements Serializable{
 		return filename;
 	}
 	
+	public Point2D getMiddlePoint(){
+		Image image = Images.getImage(filename);
+		Point2D p = new Point2D.Double((position.getX() + (image.getWidth(null)/2)), (position.getY() + (image.getHeight(null)/2)));
+		return p;
+	}
+	
 }

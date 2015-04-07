@@ -14,5 +14,4 @@ public class Entrance extends DrawObject {
 	public String getName() {
 		return "Entrance";
 	}
-
 }
