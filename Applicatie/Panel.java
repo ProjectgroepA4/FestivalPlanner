@@ -17,7 +17,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -63,12 +65,16 @@ public class Panel extends JPanel implements ActionListener
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
 	PropertiesPanel pp;
+	ControlPanel cp;
 	Agenda agenda;
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
 	javax.swing.Timer t;
+	
+	SimpleDateFormat formatter;
+	GregorianCalendar date;
 
 	int currentTime = 540;
 	int tick = 0;
@@ -89,10 +95,14 @@ public class Panel extends JPanel implements ActionListener
 		this.selectionPosition = selectionPosition;
 	}
 
-	Panel(PropertiesPanel pp)
+	Panel(PropertiesPanel pp, ControlPanel cp)
 	{
 		this.pp = pp;
+		this.cp = cp;
+		cp.setPanel(this);
 		pp.setPanel(this);
+		date = new GregorianCalendar();
+		formatter = new SimpleDateFormat("H:s dd-MM-yyyy");
 		try
 		{
 			grass = ImageIO.read(new File("images/grass.jpg"));
@@ -537,6 +547,8 @@ public class Panel extends JPanel implements ActionListener
 		{
 			tick = 0;
 			currentTime++;
+			date.setTimeInMillis(date.getTimeInMillis() + 1000);
+			cp.setTime(formatter.format(date.getTime()));
 			System.out.println(currentTime);
 		}
 

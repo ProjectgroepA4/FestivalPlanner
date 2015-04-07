@@ -19,13 +19,13 @@ public class ControlPanel extends JPanel
 	private static final long serialVersionUID = 6805244250902524351L;
 
 	private Panel p;
+	JLabel timeLabel;
 	
-	public ControlPanel(Panel p)
+	public ControlPanel()
 	{
 		super();
 		BoxLayout box = new BoxLayout(this, BoxLayout.X_AXIS);
 		setLayout(box);
-		this.p = p;
 		setPreferredSize(new Dimension(0,50));
 		setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 		setBackground(new Color(220, 220, 220));
@@ -74,11 +74,11 @@ public class ControlPanel extends JPanel
 		add(Box.createRigidArea(new Dimension(10,50)));
 		
 		JPanel timePanel  = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		timePanel.setPreferredSize(new Dimension(280,50));
-		timePanel.setMaximumSize(new Dimension(280,50));
+		timePanel.setPreferredSize(new Dimension(300,50));
+		timePanel.setMaximumSize(new Dimension(300,50));
 		add(timePanel);
 		{
-			JLabel timeLabel = new JLabel("00:00 00-00-000");
+			timeLabel = new JLabel("00:00 00-00-000");
 			timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			timePanel.add(timeLabel);
 			
@@ -126,6 +126,21 @@ public class ControlPanel extends JPanel
 			runningLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			runningPanel.add(runningLabel);
 		}
+		
+	}
+	
+	public void setPanel(Panel p)
+	{
+		this.p = p;
+	}
+	
+	public void setTime(String time)
+	{
+		timeLabel.setText(time);
+	}
+	
+	public void setPeople(int people)
+	{
 		
 	}
 }
