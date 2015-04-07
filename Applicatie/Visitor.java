@@ -105,13 +105,13 @@ public class Visitor
 				possible = false;
 			}
 		}
-//		for (Visitor object : visitors)
-//		{
-//			if (hitTestVisitor(object) && object != this)
-//			{
-//				possible = false;
-//			}
-//		}
+		for (Visitor object : visitors)
+		{
+			if (hitTestVisitor(object) && object != this)
+			{
+				possible = false;
+			}
+		}
 		if (possible == false)
 		{
 			position = oldPosition;
@@ -216,8 +216,8 @@ public class Visitor
 
 	}
 
-//	public boolean hitTestVisitor(Visitor v)
-//	{
-//		return (getEndX() >= v.position.getX() && getEndY() >= v.position.getY() && v.getEndX() >= position.getX() && v.getEndY() >= position.getY());
-//	}
+	public boolean hitTestVisitor(Visitor v)
+	{
+		return (getEndX() >= v.position.getX() && getEndY() >= v.position.getY() && v.getEndX() >= position.getX() && v.getEndY() >= position.getY());
+	}
 }
