@@ -190,8 +190,12 @@ public abstract class DrawObject
 	{
 		Shape ownShape = getRectangle();
 		Rectangle2D otherRectangle = object.getTransform().createTransformedShape(object.getImageRectangle()).getBounds2D();
-		if (ownShape.intersects(otherRectangle))
-			return true;
+		if(ownShape != null && otherRectangle != null) {
+			if (ownShape.intersects(otherRectangle))
+				return true;
+			else
+				return false;
+		}
 		else
 			return false;
 	}
