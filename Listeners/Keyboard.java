@@ -20,6 +20,8 @@ public class Keyboard implements KeyListener {
 		if(e.getKeyCode() == e.VK_DELETE ) {
 			if(panel.getSelectedObject() != null) 
 				panel.removeObject(panel.getSelectedObject());
+			else if(panel.getCurrentPath() != null) 
+				panel.removePath(panel.getCurrentPath());
 		}
 		else if(e.getKeyCode() == e.VK_LEFT) {
 			if(panel.getSelectedObject() != null) 
@@ -40,6 +42,17 @@ public class Keyboard implements KeyListener {
 			if(panel.getSelectedObject() != null) 
 				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX(),panel.getSelectedObject().getPosition().getY()+5));
 			panel.checkCollision();
+		}
+		else if(e.getKeyCode() == e.VK_ENTER) {
+			if(panel.getClickedOption().equals("Path")) {
+				panel.setClickedOption("drag");
+				panel.getCurrentPath().setTempPoint(null);
+				panel.setcurrentPath(null);
+				panel.getPP().clearSelected();
+			}
+		}
+		else if(e.getKeyCode() == e.VK_P) {
+			panel.startPath();
 		}
 		panel.repaint();
 	}

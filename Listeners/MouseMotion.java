@@ -26,7 +26,6 @@ public class MouseMotion extends MouseMotionAdapter
 			switch (panel.getClickedOption())
 			{
 				case "drag":
-					boolean collision = false;
 					if (panel.getDragObject() != null)
 						panel.getDragObject().setPosition(new Point2D.Double((panel.getDragObject().getPosition().getX()) - ((panel.getLastClickPosition().getX() - clickPoint.getX())) / panel.getDragObject().getScale(), (panel.getDragObject().getPosition().getY()) - (panel.getLastClickPosition().getY() - clickPoint.getY()) / panel.getDragObject().getScale()));
 					panel.checkCollision();
@@ -87,14 +86,19 @@ public class MouseMotion extends MouseMotionAdapter
 		panel.setLastClickPosition(clickPoint);
 		panel.getPP().update();
 	}
+	
+	public void mouseMoved(MouseEvent e) {
+		if(panel.getClickedOption().equals("Path")) 
+			panel.getCurrentPath().setTempPoint(panel.getClickPoint(e.getPoint()));
+		panel.repaint();
+	}
 
 	private void resizeBigger()
 	{
-		double scale = panel.getDragObject().getScale() + 0.05;
-
+		double scale = panel.getDragObject().getScale()*1 + 0.02;
 		panel.getDragObject().setScale(scale);
-		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX(), panel.getDragObject().getPosition().getY() - 5));
-
+		panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() -2, panel.getDragObject().getPosition().getY() - 2));
+		panel.checkCollision();
 	}
 
 	private void resizeSmaller(Point2D clickPoint)
@@ -102,10 +106,10 @@ public class MouseMotion extends MouseMotionAdapter
 		System.out.println(clickPoint.getX());
 		if (panel.getDragObject().getScale() > 0.2)
 		{
-			double scale = panel.getDragObject().getScale() - 0.05;
+			double scale = panel.getDragObject().getScale()*1 - 0.02;
 			panel.getDragObject().setScale(scale);
-			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() - clickPoint.getX(), panel.getDragObject().getPosition().getY() - clickPoint.getY()));
-
+			panel.getDragObject().setPosition(new Point2D.Double(panel.getDragObject().getPosition().getX() +2, panel.getDragObject().getPosition().getY() +2 ));
+			panel.checkCollision();
 		}
 	}
 }

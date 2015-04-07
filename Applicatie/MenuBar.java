@@ -17,6 +17,17 @@ public class MenuBar extends JMenuBar
 
 		JMenu file = new JMenu("File");
 
+		JMenuItem newPath = new JMenuItem("New Path");
+		newPath.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				w.getPanel().startPath();
+			}
+		});
+		
+		file.add(newPath);
+		
 		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener()
 		{

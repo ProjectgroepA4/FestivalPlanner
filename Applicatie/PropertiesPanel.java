@@ -20,15 +20,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Objects.Path;
+
 @SuppressWarnings("serial")
 public class PropertiesPanel extends JPanel
 {
 
 	DrawObject selectedObject = null;
+	Path selectedPath = null;
+	
 	Panel p = null;
 
 	Dimension spacerDimension = new Dimension(200, 30);
 
+	
 	JLabel nameLabel;
 
 	JTextField locationXField;
@@ -84,7 +89,11 @@ public class PropertiesPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				p.removeObject(selectedObject);
+				if(selectedObject != null)
+					p.removeObject(selectedObject);
+				else if(selectedPath != null) {
+					p.removePath(selectedPath);
+				}
 			}
 		});
 		deletePanel.setPreferredSize(new Dimension(200, 50));
@@ -296,6 +305,7 @@ public class PropertiesPanel extends JPanel
 	public void setSelected(DrawObject drOb)
 	{
 		selectedObject = drOb;
+		selectedPath = null;
 		fillFields();
 		enableComponents(this, true);
 	}
@@ -305,11 +315,13 @@ public class PropertiesPanel extends JPanel
 		enableComponents(this, false);
 		clearFields(this);
 		selectedObject = null;
+		selectedPath = null;
 	}
 
 	public void update()
 	{
-		fillFields();
+		if(selectedObject != null)
+			fillFields();	
 	}
 
 	private void enableComponents(Container container, boolean enable)
@@ -348,21 +360,32 @@ public class PropertiesPanel extends JPanel
 
 	private void fillFields()
 	{
-		if (selectedObject != null)
-		{
+		
 			nameLabel.setText(selectedObject.getName());
 
 			locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
 			locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
 			scaleField.setText((double) Math.round(selectedObject.getScale() * 10) / 10 + "");
 			rotationField.setText(Math.round(selectedObject.getRotation() % 360) + "");
-
-		}
-
 	}
 
 	public void setPanel(Panel p)
 	{
 		this.p = p;
+	}
+	
+	public void setSelectedPath(Path path) {
+		selectedObject = null;
+		selectedPath = path;
+		fillPathFields();
+	}
+	
+	private void fillPathFields() {
+		nameLabel.setText("Path");
+		enableComponents(this, true);
+		locationXField.setEnabled(false);
+		locationYField.setEnabled(false);
+		scaleField.setEnabled(false);
+		rotationField.setEnabled(false);
 	}
 }

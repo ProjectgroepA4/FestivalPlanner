@@ -2,12 +2,13 @@ package Applicatie;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -25,6 +26,7 @@ import Listeners.MouseMotion;
 import Listeners.MouseWheel;
 import Objects.Entrance;
 import Objects.Food;
+import Objects.OldPath;
 import Objects.Path;
 import Objects.Stage;
 import Objects.Toilet;
@@ -43,9 +45,11 @@ public class Panel extends JPanel
 	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
 
 	ArrayList<DrawObject> objects = new ArrayList<>();
+	ArrayList<Path> paths = new ArrayList<>();
 	DrawObject dragObject = null;
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
+	private Path currentPath;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -132,7 +136,7 @@ public class Panel extends JPanel
 			case 2:
 				return new Entrance(null);
 			case 3:
-				return new Path(null);
+				return new OldPath(null);
 			case 4:
 				return new Wall(null);
 			case 5:
@@ -152,8 +156,10 @@ public class Panel extends JPanel
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 300));
-
+		Stroke old = g2.getStroke();
+		g2.setStroke(new BasicStroke(10));
 		g2.drawLine(0, 150, getWidth(), 150);
+		g2.setStroke(old);
 		for (BufferedImage image : panelInfo)
 		{
 			g2.drawImage(image, panelInfox + scrollfactor, panelInfoy, null);
@@ -171,13 +177,23 @@ public class Panel extends JPanel
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
+		
+		for(Path path : paths) {
+			path.draw(g2);
+		}
 		for (DrawObject o : objects)
 		{
 			o.draw(g2);
 		}
+		g2.setTransform(oldTransform);
+		if(currentPath != null) { //Display text while in path making modes.
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("Verdana",Font.ITALIC,25));
+			g2.drawString("Press enter to finish the path.",20,185);
+		}
 
 		g2.setClip(null);
-		g2.setTransform(oldTransform);
+		
 	}
 
 	public AffineTransform getCamera()
@@ -335,6 +351,10 @@ public class Panel extends JPanel
 		this.clickedOption = clickedOption;
 	}
 
+	/**
+	 * Remove a DrawObject from the list.
+	 * @param o - the DrawObject you want to remove from the list.
+	 */
 	public void removeObject(DrawObject o)
 	{
 		Iterator<DrawObject> itr = objects.iterator();
@@ -369,7 +389,63 @@ public class Panel extends JPanel
 		}
 	}
 	
+	/**
+	 * Begin making a new path.
+	 */
+	public void startPath() {
+		setClickedOption("Path");
+		currentPath = new Path();
+		paths.add(currentPath);
+		pp.setSelectedPath(currentPath);
+	}
 	
+	/**
+	 * Get the current selected Path.
+	 * @return - the selected Path.
+	 */
+	public Path getCurrentPath() {
+		return currentPath;
+	}
 	
+	/**
+	 * Set the selected Path object.
+	 * @param path - the selected Path object.
+	 */
+	public void setcurrentPath(Path path) {
+		currentPath = path;
+		pp.setSelectedPath(currentPath);
+	}
 	
+	/**
+	 * Checks if the point is contained in one of the path's.
+	 * @param point - The point to check for.
+	 * @return if the point is contained in one of the path's.
+	 */
+	public boolean checkPath(Point2D point) {
+		for(Path path : paths) {
+			if(path.containsPoint(point)) {
+				setcurrentPath(path);
+				setClickedOption("Path");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Remove a path from the list.
+	 * @param path - the path you want to remove from the list.
+	 */
+	public void removePath(Path path) {
+		Iterator<Path> it = paths.iterator();
+		while(it.hasNext()) {
+			if(it.next().equals(path)) {
+				pp.clearSelected();
+				setClickedOption("drag");
+				currentPath = null;
+				it.remove();
+			}
+			repaint();
+		}
+	}
 }
