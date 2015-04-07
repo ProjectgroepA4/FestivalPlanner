@@ -28,6 +28,16 @@ public class MenuBar extends JMenuBar
 		});
 		file.add(item);
 		
+		JMenuItem agenda = new JMenuItem("Open Agenda");
+		agenda.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				new Agenda.Window();
+			}
+		});
+		file.add(agenda);
+		
 		item = new JMenuItem("Open");
 		item.addActionListener(new ActionListener() {
 			
@@ -55,7 +65,8 @@ public class MenuBar extends JMenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				System.exit(0);
+				w.setVisible(false);
+				w.dispose();
 			}
 		});
 
