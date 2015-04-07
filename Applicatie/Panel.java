@@ -542,7 +542,7 @@ public class Panel extends JPanel implements ActionListener
 
 		for (Visitor v : visitors)
 		{
-			v.update(objects, currentTime, visitors);
+			v.update(objects, currentTime, visitors, paths);
 		}
 		repaint();
 

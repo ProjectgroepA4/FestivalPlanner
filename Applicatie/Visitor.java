@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Agenda.Agenda;
 import Agenda.Event;
 import Objects.DrawObject;
+import Objects.Path;
 
 public class Visitor
 {
@@ -49,12 +50,12 @@ public class Visitor
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-//		System.out.println(position.getX());
+		// System.out.println(position.getX());
 		tx.rotate(rotation, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		return tx;
 	}
 
-	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors)
+	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
 		Point2D target = new Point(500, 500);
 		for (Action a : actions)
@@ -65,57 +66,79 @@ public class Visitor
 			}
 
 		}
-		moveToTarget(target, objects, visitors);
+		moveToTarget(target, objects, visitors, paths);
 	}
 
-	public void moveToTarget(Point2D target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors)
+	public void moveToTarget(Point2D target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
-
-		double newRot = Math.atan2(target.getY() - position.getY(), target.getX() - position.getX());
-
-		int difx = (int) (target.getX() - position.getX());
-		int dify = (int) (target.getY() - position.getY());
-		int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
-
-		if (rotation > newRot && distance > 10)
+		boolean hasPathBelow = false;
+		for (Path p : paths)
 		{
-			rotation -= 0.15;
-		}
-		else if (rotation < newRot && distance > 10)
-		{
-			rotation += 0.15;
-		}
-
-		Point2D oldPosition = position;
-
-		// face direction
-		float directionX = (float) Math.cos(rotation);
-		float directionY = (float) Math.sin(rotation);
-
-		if (distance > 10)
-		{
-			position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
-		}
-
-		boolean possible = true;
-		for (DrawObject object : objects)
-		{
-			if (hitTest(object))
+			System.out.println(position);
+			System.out.println(p.getPoints());
+			if (p.containsPoint(position))
 			{
-				possible = false;
+				hasPathBelow = true;
+				break;
 			}
 		}
-		for (Visitor object : visitors)
+
+		if (hasPathBelow)
 		{
-			if (hitTestVisitor(object) && object != this)
+			double newRot = Math.atan2(target.getY() - position.getY(), target.getX() - position.getX());
+
+			int difx = (int) (target.getX() - position.getX());
+			int dify = (int) (target.getY() - position.getY());
+			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
+
+			if (rotation > newRot && distance > 10)
 			{
-				possible = false;
+				rotation -= 0.15;
+			}
+			else if (rotation < newRot && distance > 10)
+			{
+				rotation += 0.15;
+			}
+
+			Point2D oldPosition = position;
+
+			// face direction
+			float directionX = (float) Math.cos(rotation);
+			float directionY = (float) Math.sin(rotation);
+
+			if (distance > 10)
+			{
+				position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
+			}
+
+			boolean possible = true;
+			for (DrawObject object : objects)
+			{
+				if (hitTest(object))
+				{
+					possible = false;
+				}
+			}
+			for (Visitor object : visitors)
+			{
+				if (hitTestVisitor(object) && object != this)
+				{
+					possible = false;
+				}
+			}
+			if (possible == false)
+			{
+				position = oldPosition;
+				rotation += 0.2;
 			}
 		}
-		if (possible == false)
+		else
 		{
-			position = oldPosition;
-			rotation += 0.2;
+			for(Path p : paths)
+			{
+//				System.out.println(p.getPoints());
+				break;
+			}
 		}
 	}
 
