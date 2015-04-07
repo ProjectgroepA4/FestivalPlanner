@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import Objects.DrawObject;
+
 public class SaveLoad {
 
 	
@@ -21,7 +23,7 @@ public class SaveLoad {
 		fileChooser.setFileFilter(new FileFilter() {
 				@Override
 				public boolean accept(File pathname) {
-					if(pathname.isFile() && pathname.getName().endsWith(".agn"))
+					if(pathname.isFile() && pathname.getName().endsWith(".ter"))
 					{
 						return true;
 					}else if(pathname.isDirectory()){return true;}else{return false;}
@@ -29,7 +31,7 @@ public class SaveLoad {
 
 				@Override
 				public String getDescription() {
-					return ".agn";	
+					return ".ter";	
 				}
 			
 		});
@@ -39,9 +41,9 @@ public class SaveLoad {
 		if(userSelection == JFileChooser.APPROVE_OPTION)
 		{
 			File file = fileChooser.getSelectedFile();
-			if(!file.getName().endsWith(".agn"))
+			if(!file.getName().endsWith(".ter"))
 			{
-				file = new File(file.getAbsolutePath() + ".agn");
+				file = new File(file.getAbsolutePath() + ".ter");
 			}
 			
 			if(file.exists())
@@ -80,7 +82,7 @@ public class SaveLoad {
 		fileChooser.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				if(pathname.isFile() && pathname.getName().endsWith(".agn"))
+				if(pathname.isFile() && pathname.getName().endsWith(".ter"))
 				{
 					return true;
 				}else if(pathname.isDirectory()){return true;}else{return false;}
@@ -88,7 +90,7 @@ public class SaveLoad {
 
 			@Override
 			public String getDescription() {
-				return ".agn";
+				return ".ter";
 			}
 		
 		});

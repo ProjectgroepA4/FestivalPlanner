@@ -205,7 +205,8 @@ public class Window extends JFrame {
 	public void onExit() {
 		if(JOptionPane.showConfirmDialog(null, "Are you sure you want to close this program?", "Close Agenda", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
 		{
-			System.exit(0);
+			setVisible(false);
+			dispose();
 		}
 	}
 	
