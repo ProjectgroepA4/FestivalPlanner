@@ -43,7 +43,7 @@ public class MenuBar extends JMenuBar
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				SaveLoad.load(w.getPanel());
 			}
 		});
 		file.add(item);
@@ -53,7 +53,19 @@ public class MenuBar extends JMenuBar
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				SaveLoad.save(w.getPanel());
+			}
+		});
+		file.add(item);
+		
+		file.addSeparator();
+		
+		item = new JMenuItem("Agenda");
+		item.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				new Agenda.Window();
 			}
 		});
 		file.add(item);
@@ -65,7 +77,8 @@ public class MenuBar extends JMenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				System.exit(0);
+				w.setVisible(false);
+				w.dispose();
 			}
 		});
 

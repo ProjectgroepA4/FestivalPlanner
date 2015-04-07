@@ -12,6 +12,7 @@ import Agenda.Event;
 import Objects.DrawObject;
 import Objects.Path;
 
+
 public class Visitor
 {
 
@@ -50,7 +51,6 @@ public class Visitor
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-		// System.out.println(position.getX());
 		tx.rotate(rotation, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		return tx;
 	}
@@ -66,6 +66,7 @@ public class Visitor
 			}
 
 		}
+
 		moveToTarget(target, objects, visitors, paths);
 	}
 
