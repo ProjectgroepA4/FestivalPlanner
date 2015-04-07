@@ -74,6 +74,25 @@ public class Path
 	}
 
 	/**
+	 * Check if one of the lines contains the given point and return the Shape.
+	 * 
+	 * @param point
+	 *            - The point of your object.
+	 * @return if the Shape contains the point.
+	 */
+	public Shape containsPointShape(Point2D point)
+	{
+		for (Shape line : getPath())
+		{
+			if (line.contains(point))
+			{
+				return line;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Check if one of the lines contains the given point.
 	 * 
 	 * @param point

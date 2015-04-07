@@ -3,15 +3,18 @@ package Applicatie;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Agenda.Agenda;
 import Agenda.Event;
 import Objects.DrawObject;
 import Objects.Path;
-
 
 public class Visitor
 {
@@ -66,30 +69,34 @@ public class Visitor
 			}
 
 		}
-
+		
 		moveToTarget(target, objects, visitors, paths);
 	}
 
 	public void moveToTarget(Point2D target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
+		Point2D tar = target;
 		boolean hasPathBelow = false;
 		for (Path p : paths)
 		{
-			System.out.println(position);
-			System.out.println(p.getPoints());
 			if (p.containsPoint(position))
 			{
 				hasPathBelow = true;
 				break;
 			}
+			Shape containsShape = p.containsPointShape(position);
+			if(containsShape != null)
+			{
+				tar = new Point2D.Double(containsShape.getBounds().getCenterX(), containsShape.getBounds().getCenterY());
+			}
 		}
 
 		if (hasPathBelow)
 		{
-			double newRot = Math.atan2(target.getY() - position.getY(), target.getX() - position.getX());
+			double newRot = Math.atan2(tar.getY() - position.getY(), tar.getX() - position.getX());
 
-			int difx = (int) (target.getX() - position.getX());
-			int dify = (int) (target.getY() - position.getY());
+			int difx = (int) (tar.getX() - position.getX());
+			int dify = (int) (tar.getY() - position.getY());
 			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
 
 			if (rotation > newRot && distance > 10)
@@ -135,10 +142,105 @@ public class Visitor
 		}
 		else
 		{
-			for(Path p : paths)
+			HashMap<Double, Shape> values = new HashMap<Double, Shape>();
+			for (Path p : paths)
 			{
-//				System.out.println(p.getPoints());
-				break;
+				for (Shape s : p.getPath())
+				{
+					Rectangle b = s.getBounds();
+					double maxx = b.getMaxX();
+					double minx = b.getMinX();
+					double maxy = b.getMaxY();
+					double miny = b.getMinY();
+
+					Point2D.Double[] points = new Point2D.Double[4];
+					points[0] = new Point2D.Double(minx, miny);
+					points[1] = new Point2D.Double(minx, maxy);
+					points[2] = new Point2D.Double(maxx, miny);
+					points[3] = new Point2D.Double(maxx, maxy);
+
+					Double lastdistance = null;
+					for (Point2D.Double point : points)
+					{
+						double distance = Point2D.distance(point.getX(), point.getY(), position.getX(), position.getY());
+						if (lastdistance == null)
+						{
+							lastdistance = distance;
+							continue;
+						}
+						if (distance < lastdistance)
+						{
+							lastdistance = distance;
+						}
+					}
+					values.put(lastdistance, s);
+
+				}
+			}
+			Double lastdistance = null;
+			Shape lastShape = null;
+			for (Map.Entry<Double, Shape> e : values.entrySet())
+			{
+				double distance = e.getKey();
+				if (lastdistance == null)
+				{
+					lastdistance = distance;
+					continue;
+				}
+				if (distance < lastdistance)
+				{
+					lastdistance = distance;
+				}
+			}
+			lastShape = values.get(lastdistance);
+			
+			Point2D.Double target2 = new Point2D.Double(lastShape.getBounds().getCenterX(), lastShape.getBounds().getCenterY());
+			
+			double newRot = Math.atan2(target2.getY() - position.getY(), target2.getX() - position.getX());
+
+			int difx = (int) (target2.getX() - position.getX());
+			int dify = (int) (target2.getY() - position.getY());
+			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
+
+			if (rotation > newRot && distance > 10)
+			{
+				rotation -= 0.15;
+			}
+			else if (rotation < newRot && distance > 10)
+			{
+				rotation += 0.15;
+			}
+
+			Point2D oldPosition = position;
+
+			// face direction
+			float directionX = (float) Math.cos(rotation);
+			float directionY = (float) Math.sin(rotation);
+
+			if (distance > 10)
+			{
+				position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
+			}
+
+			boolean possible = true;
+			for (DrawObject object : objects)
+			{
+				if (hitTest(object))
+				{
+					possible = false;
+				}
+			}
+			for (Visitor object : visitors)
+			{
+				if (hitTestVisitor(object) && object != this)
+				{
+					possible = false;
+				}
+			}
+			if (possible == false)
+			{
+				position = oldPosition;
+				rotation += 0.2;
 			}
 		}
 	}

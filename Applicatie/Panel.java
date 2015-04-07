@@ -131,7 +131,7 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		t = new Timer(1000 / 100, this);
+		t = new Timer(1000 / 10, this);
 	}
 
 	public int getPanelInfoLength()
@@ -548,12 +548,12 @@ public class Panel extends JPanel implements ActionListener
 
 	}
 
-	public javax.swing.Timer getT()
+	public Timer getT()
 	{
 		return t;
 	}
 
-	public void setT(javax.swing.Timer t)
+	public void setT(Timer t)
 	{
 		this.t = t;
 	}
