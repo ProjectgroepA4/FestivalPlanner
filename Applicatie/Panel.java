@@ -105,7 +105,7 @@ public class Panel extends JPanel implements ActionListener {
 	}
 	
 	public void addVisitors(){
-		visitors.add(new Visitor("images/coin.png", new Point(100,300), agenda, objects));
+		visitors.add(new Visitor("visitor", new Point(100,300), agenda, objects));
 	}
 
 	public int getPanelInfoLength() {
@@ -181,14 +181,14 @@ public class Panel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		tick++;
-		if ( tick >= 10){
+		if ( tick >= 10 && visitors.size() > 0){
 			tick = 0;
 			currentTime++;
-			//System.out.println(currentTime);
+			System.out.println(currentTime);
 		}
 		
 		for (Visitor v: visitors){
-			v.update(objects, currentTime);
+			v.update(objects, currentTime, visitors);
 		}
 		repaint();
 		

@@ -10,8 +10,7 @@ public class Images{
 	
 	private static Map<String, Image> images;
 	
-	public Images() {
-		
+	public Images() {	
 		images = new HashMap<String, Image>();
 		
 		images.put("entrance", loadImage("images/entrance.png"));
@@ -20,7 +19,7 @@ public class Images{
 		images.put("stage", loadImage("images/stage4.png"));
 		images.put("wall", loadImage("images/wall.png"));
 		images.put("stage1", loadImage("images/stage3.png"));
-		
+		images.put("visitor", loadImage("images/visitor.png"));
 	}
 	
 	public static Image loadImage(String path) {

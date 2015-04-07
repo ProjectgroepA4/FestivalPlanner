@@ -14,7 +14,11 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 
-public class DrawObject implements Serializable{
+public abstract class DrawObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Point2D position;
 	double rotation;
 	double scale;
@@ -40,6 +44,8 @@ public class DrawObject implements Serializable{
 		rotation = 0;
 		this.position = position;
 	}
+	
+	public abstract String getName();
 	
 	public void draw(Graphics2D g)
 	{

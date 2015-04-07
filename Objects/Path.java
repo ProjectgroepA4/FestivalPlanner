@@ -10,7 +10,6 @@ public class Path extends DrawObject {
 		super("path", position);
 	}
 
-	@Override
 	public String getName() {
 		return "Path";
 	}

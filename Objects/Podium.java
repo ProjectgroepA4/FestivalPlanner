@@ -10,4 +10,10 @@ public class Podium extends DrawObject {
 		super("stage", position);
 	}
 
+	@Override
+	public String getName() {
+		
+		return "stage";
+	}
+
 }

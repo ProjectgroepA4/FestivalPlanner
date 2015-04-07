@@ -11,8 +11,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import Agenda.Agenda;
-
 public class SaveLoad {
 
 	
