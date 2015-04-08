@@ -116,6 +116,7 @@ public class Path
 		return false;
 	}
 
+
 	public boolean intersectsRect(Rectangle2D rect)
 	{
 		for (Shape line : getPath())
@@ -145,6 +146,7 @@ public class Path
 			lines.add(stroke.createStrokedShape(line));
 		}
 		return lines;
+
 	}
 
 	public void addWaypoint(int i, Panel panel)
@@ -159,6 +161,7 @@ public class Path
 		}
 
 	}
+
 
 	/**
 	 * Add a point to the path.

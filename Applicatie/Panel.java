@@ -74,7 +74,7 @@ public class Panel extends JPanel implements ActionListener
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
 	javax.swing.Timer t;
-
+	
 	SimpleDateFormat formatter;
 	GregorianCalendar date;
 
@@ -148,7 +148,6 @@ public class Panel extends JPanel implements ActionListener
 		addMouseWheelListener(new MouseWheel(this));
 
 		addFocusListener(new WindowFocusListener(this));
-
 		t = new Timer(1000 / 10, this);
 	}
 
@@ -220,14 +219,27 @@ public class Panel extends JPanel implements ActionListener
 
 	public void addVisitors()
 	{
-		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+		ArrayList<DrawObject> entrances = new ArrayList<>();
+		for(DrawObject object : objects) {
+			if(object instanceof Entrance) {
+				entrances.add(object);
+			}
+		}
+		if(!entrances.isEmpty()) {
+			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
+			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
+			visitors.add(new Visitor("visitor",point, agenda, objects));
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "You don't have a entrance");
+		}
 	}
 
 	public void addVisitors(int count)
 	{
 		for (int i = 0; i < count; i++)
 		{
-			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+			addVisitors();
 		}
 	}
 
@@ -663,6 +675,7 @@ public class Panel extends JPanel implements ActionListener
 			case 4:
 				background = stone;
 				break;
+
 		}
 		repaint();
 	}

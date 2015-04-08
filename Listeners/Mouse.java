@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import Applicatie.Panel;
 import Applicatie.PathPopup;
+
 import Applicatie.Waypoint;
 import Applicatie.WaypointPopup;
 import Objects.DrawObject;
@@ -78,6 +79,7 @@ public class Mouse extends MouseAdapter
 							if (o instanceof Waypoint)
 							{
 								new WaypointPopup(o, panel);
+
 							}
 						}
 						if (o == selectedObject)
