@@ -94,7 +94,6 @@ public class Visitor
 			}
 
 		}
-		System.out.println(actions.size());
 
 		// moveToTarget(target, objects, visitors, paths);
 		move(target, panel);
@@ -102,7 +101,7 @@ public class Visitor
 
 	public void move(DrawObject tar, Panel panel)
 	{
-		Point2D targetPoint = panel.getWaypoint(target).getPosition();
+		Point2D targetPoint = panel.getWaypoint(target).getAccuratePoint();
 
 		double newRot = Math.atan2(targetPoint.getY() - position.getY(), targetPoint.getX() - position.getX());
 
@@ -118,7 +117,6 @@ public class Visitor
 		{
 			rotation += 0.15;
 		}
-
 		Point2D oldPosition = position;
 
 		// face direction

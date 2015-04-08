@@ -13,6 +13,11 @@ public class Waypoint extends DrawObject
 		super("waypoint", position);
 	}
 
+	public Point2D getAccuratePoint()
+	{
+		return new Point2D.Double(super.getPosition().getX() + (super.getImageRectangle().getWidth()/2), super.getPosition().getY() + super.getImageRectangle().getHeight());
+	}
+	
 	@Override
 	public String getName()
 	{
@@ -36,7 +41,6 @@ public class Waypoint extends DrawObject
 
 	public void setSelf(int self)
 	{
-		System.out.println(self);
 		this.self = self;
 	}
 

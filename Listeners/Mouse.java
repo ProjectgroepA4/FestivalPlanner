@@ -169,8 +169,15 @@ public class Mouse extends MouseAdapter
 			}
 			else
 			{
-				panel.getDragObject().setPosition(panel.getSelectionPosition());
-				panel.getDragObject().setRectangleColor(Color.BLACK);
+				if (panel.getDragObject() instanceof Waypoint == false)
+				{
+					panel.getDragObject().setPosition(panel.getSelectionPosition());
+					panel.getDragObject().setRectangleColor(Color.BLACK);
+				}
+				else
+				{
+					panel.getDragObject().setRectangleColor(Color.BLACK);
+				}
 			}
 			panel.setSelectionPosition(panel.getSelectedObject().getPosition());
 		}
