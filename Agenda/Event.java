@@ -34,8 +34,8 @@ public class Event implements Serializable {
 				endHour, endMinute);
 		this.startHour = startHour;
 		this.startMinute = startMinute;
-		this.stopHour = stopHour;
-		this.stopMinute = stopMinute;
+		this.stopHour = endHour;
+		this.stopMinute = endMinute;
 		this.stage = stage;
 		this.artist = artist;
 		this.description = description;
@@ -55,11 +55,11 @@ public class Event implements Serializable {
 	}
 	
 	public int getStart(){
-		return (startHour * 100) + startMinute;
+		return (startHour * 60) + startMinute;
 	}
 	
 	public int getStop(){
-		return (stopHour * 100) + stopMinute;
+		return (stopHour * 60) + stopMinute;
 	}
 	
 	public int getStopHour(){

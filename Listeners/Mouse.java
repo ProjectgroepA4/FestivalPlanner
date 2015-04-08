@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.SwingUtilities;
@@ -14,7 +13,6 @@ import Applicatie.Waypoint;
 import Applicatie.WaypointPopup;
 import Objects.DrawObject;
 import Objects.Path;
-import Objects.Entrance;
 
 public class Mouse extends MouseAdapter
 {
@@ -76,7 +74,8 @@ public class Mouse extends MouseAdapter
 						{
 							if (o instanceof Waypoint)
 							{
-								new WaypointPopup(o);
+								new WaypointPopup(o, panel);
+
 							}
 						}
 						if (o == selectedObject)
@@ -122,7 +121,19 @@ public class Mouse extends MouseAdapter
 
 					}
 				}
-				panel.checkPath(clickPoint);
+				Path clickedPath = panel.getClickedPath(clickPoint);
+				if (clickedPath != null)
+				{
+					if (SwingUtilities.isRightMouseButton(e))
+					{
+						//new PathPopup(clickedPath, panel);
+					}
+				}
+				else
+				{
+					panel.checkPath(clickPoint);
+				}
+
 			}
 			if (panel.getDragObject() == null && selectedObject != null)
 			{
@@ -134,7 +145,9 @@ public class Mouse extends MouseAdapter
 		}
 		else
 		{ // Making path.
+
 			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(), clickPoint.getY()));
+
 		}
 		panel.repaint();
 	}

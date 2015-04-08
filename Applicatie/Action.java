@@ -11,13 +11,15 @@ public class Action
 	private int starttime;
 	private int duration;
 	private DrawObject target;
+	private Waypoint waypoint;
 
-	public Action(Point2D position, int starttime, int duration, DrawObject tar)
+	public Action(Point2D position, int starttime, int duration, DrawObject tar, Waypoint waypoint)
 	{
 		this.position = position;
 		this.starttime = starttime;
 		this.duration = duration;
 		this.target = tar;
+		this.waypoint = waypoint;
 	}
 
 	public Point2D getPosition()
@@ -43,5 +45,9 @@ public class Action
 	public int getDuration()
 	{
 		return duration;
+	}
+
+	public Waypoint getWaypoint(){
+		return waypoint;
 	}
 }

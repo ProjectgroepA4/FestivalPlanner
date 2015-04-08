@@ -73,7 +73,7 @@ public class Panel extends JPanel implements ActionListener
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
-	javax.swing.Timer t;
+	Timer t;
 	
 	SimpleDateFormat formatter;
 	GregorianCalendar date;
@@ -146,9 +146,8 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		
+
 		addFocusListener(new WindowFocusListener(this));
-		
 		t = new Timer(1000 / 10, this);
 	}
 
@@ -171,18 +170,21 @@ public class Panel extends JPanel implements ActionListener
 				ArrayList<AgendaStage> stages = agenda.getStages();
 				Object[] s = new Object[stages.size()];
 				AgendaStage stage = null;
-				if (stages.size() != 0) {
-					for (int i = 0; i < stages.size(); i++) {
+				if (stages.size() != 0)
+				{
+					for (int i = 0; i < stages.size(); i++)
+					{
 						s[i] = stages.get(i);
 					}
 
-					stage = (AgendaStage) JOptionPane.showInputDialog(null,
-							"Select the right Stage", "Select Stage",
-							JOptionPane.PLAIN_MESSAGE, null, s, "stage");
+					stage = (AgendaStage) JOptionPane.showInputDialog(null, "Select the right Stage", "Select Stage", JOptionPane.PLAIN_MESSAGE, null, s, "stage");
 				}
-				if (stage != null){
+				if (stage != null)
+				{
 					return new Stage(null, stage);
-				} else {
+				}
+				else
+				{
 					return null;
 				}
 			case 1:
@@ -209,13 +211,37 @@ public class Panel extends JPanel implements ActionListener
 	{
 		waypoints.add(w);
 	}
+	
+	public Waypoint getWaypoint(int i)
+	{
+		for(Waypoint w : waypoints)
+		{
+			if(w.getSelf() == i)
+			{
+				return w;
+			}
+		}
+		return null;
+	}
 
 	public ArrayList<Waypoint> getWaypoints()
 	{
 		return waypoints;
 	}
 
-	public void addVisitors()
+	public void addVisitors(ArrayList<DrawObject> entrances)
+	{
+		if(!entrances.isEmpty()) {
+			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
+			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
+			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "You don't have an entrance");
+		}
+	}
+
+	public void addVisitors(int count)
 	{
 		ArrayList<DrawObject> entrances = new ArrayList<>();
 		for(DrawObject object : objects) {
@@ -223,22 +249,11 @@ public class Panel extends JPanel implements ActionListener
 				entrances.add(object);
 			}
 		}
-		if(!entrances.isEmpty()) {
-			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
-			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
-			visitors.add(new Visitor("visitor",point, agenda, objects));
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "You don't have a entrance");
-		}
-	}
-
-	public void addVisitors(int count)
-	{
 		for (int i = 0; i < count; i++)
 		{
-			addVisitors();
+			addVisitors(entrances);
 		}
+		cp.setPeople(visitors.size());
 	}
 
 	public void paintComponent(Graphics g)
@@ -549,12 +564,26 @@ public class Panel extends JPanel implements ActionListener
 		{
 			if (path.containsPoint(point))
 			{
+
 				setcurrentPath(path);
 				setClickedOption("Path");
+
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public Path getClickedPath(Point2D point)
+	{
+		for (Path path : paths)
+		{
+			if (path.containsPoint(point))
+			{
+				return path;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -588,17 +617,17 @@ public class Panel extends JPanel implements ActionListener
 	{
 		this.agenda = agenda;
 	}
-	
+
 	public static int getFieldWidth()
 	{
 		return width;
 	}
-	
+
 	public static int getFieldHeight()
 	{
 		return height;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -614,7 +643,7 @@ public class Panel extends JPanel implements ActionListener
 
 		for (Visitor v : visitors)
 		{
-			v.update(objects, currentTime, visitors, paths);
+			v.update(objects, currentTime, visitors, paths, this);
 		}
 		repaint();
 
@@ -641,24 +670,26 @@ public class Panel extends JPanel implements ActionListener
 		this.height = height;
 		paths.clear();
 		objects.clear();
+		visitors.clear();
 		cameraScale = 1;
 		switch (terrainIndex)
 		{
-		case 0:
-			background = grass;
-			break;
-		case 1:
-			background = grass2;
-			break;
-		case 2:
-			background = sand;
-			break;
-		case 3:
-			background = sand2;
-			break;
-		case 4:
-			background = stone;
-			break;
+			case 0:
+				background = grass;
+				break;
+			case 1:
+				background = grass2;
+				break;
+			case 2:
+				background = sand;
+				break;
+			case 3:
+				background = sand2;
+				break;
+			case 4:
+				background = stone;
+				break;
+
 		}
 		repaint();
 	}
