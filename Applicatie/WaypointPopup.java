@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,7 +21,7 @@ public class WaypointPopup extends JFrame {
 	private static final long serialVersionUID = 1;
 	private JLabel title;
 
-	public WaypointPopup(DrawObject w)
+	public WaypointPopup(DrawObject w, Panel panel)
 	{
 		super("Edit WayPoint");
 		Waypoint wp = (Waypoint) w;
@@ -91,13 +90,13 @@ public class WaypointPopup extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			{
 				wp.setSelf(Integer.valueOf(tf.getText()));
+				panel.addWaypoint(wp);
 				dispose();
 				String options[] = tx.getText().split("-");
 				int ioptions[] = new int[options.length];
 				for(int i = 0; i < options.length; i++)
 				{
 					ioptions[i] = Integer.valueOf(options[i]);
-					System.out.println(ioptions[i]);
 				}
 				wp.setOptions(ioptions);
 				

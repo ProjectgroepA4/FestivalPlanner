@@ -42,8 +42,8 @@ public class Visitor
 		this.objects = objects;
 		fillActions();
 		System.out.println(actions.size());
-		target = 0;
-		finalTarget = 0;
+		target = 1;
+		finalTarget = 2;
 	}
 
 	public void draw(Graphics2D g2)
@@ -65,17 +65,17 @@ public class Visitor
 
 	public DrawObject getEntrance()
 	{
-		for(DrawObject o : objects)
+		for (DrawObject o : objects)
 		{
-			if(o instanceof Entrance)
+			if (o instanceof Entrance)
 			{
 				return o;
 			}
 		}
 		return null;
 	}
-	
-	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors, ArrayList<Path> paths)
+
+	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors, ArrayList<Path> paths, Panel panel)
 	{
 		DrawObject target = getEntrance();
 		for (Action a : actions)
@@ -87,14 +87,78 @@ public class Visitor
 
 		}
 
-		moveToTarget(target, objects, visitors, paths);
+		// moveToTarget(target, objects, visitors, paths);
+		move(target, panel);
 	}
 
-	public void move(DrawObject tar)
+	public void move(DrawObject tar, Panel panel)
 	{
-		
+		Point2D targetPoint = panel.getWaypoint(target).getPosition();
+
+		double newRot = Math.atan2(targetPoint.getY() - position.getY(), targetPoint.getX() - position.getX());
+
+		int difx = (int) (targetPoint.getX() - position.getX());
+		int dify = (int) (targetPoint.getY() - position.getY());
+		int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
+
+		if (rotation > newRot && distance > 10)
+		{
+			rotation -= 0.15;
+		}
+		else if (rotation < newRot && distance > 10)
+		{
+			rotation += 0.15;
+		}
+
+		Point2D oldPosition = position;
+
+		// face direction
+		float directionX = (float) Math.cos(rotation);
+		float directionY = (float) Math.sin(rotation);
+
+		if (distance > 10)
+		{
+			position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
+		}
+
+		boolean possible = true;
+		for (DrawObject object : objects)
+		{
+			if (object instanceof Entrance || object instanceof Waypoint)
+			{
+				continue;
+			}
+			if (hitTest(object))
+			{
+				possible = false;
+			}
+		}
+		if (possible == false)
+		{
+			position = oldPosition;
+			rotation += 0.2;
+		}
+		if(checkIfOnWaypoint(panel))
+		{
+			for(int i : panel.getWaypoint(target).getOptions())
+			{
+				if(i == finalTarget)
+				{
+					target = finalTarget;
+				}
+			}
+		}
 	}
-	
+
+	public boolean checkIfOnWaypoint(Panel panel)
+	{
+		if (panel.getWaypoint(target).contains(position))
+		{	
+			return true;
+		}
+		return false;
+	}
+
 	public void moveToTarget(DrawObject target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
 		Point2D tar = target.getPosition();
@@ -107,7 +171,7 @@ public class Visitor
 				break;
 			}
 			Shape containsShape = p.containsPointShape(position);
-			if(containsShape != null)
+			if (containsShape != null)
 			{
 				tar = new Point2D.Double(containsShape.getBounds().getCenterX(), containsShape.getBounds().getCenterY());
 			}
@@ -215,9 +279,9 @@ public class Visitor
 				}
 			}
 			lastShape = values.get(lastdistance);
-			
+
 			Point2D.Double target2 = new Point2D.Double(lastShape.getBounds().getCenterX(), lastShape.getBounds().getCenterY());
-			
+
 			double newRot = Math.atan2(target2.getY() - position.getY(), target2.getX() - position.getX());
 
 			int difx = (int) (target2.getX() - position.getX());
