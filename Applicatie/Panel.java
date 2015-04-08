@@ -389,6 +389,9 @@ public class Panel extends JPanel implements ActionListener
 	public void clearObjects()
 	{
 		objects.clear();
+		visitors.clear();
+		waypoints.clear();
+		paths.clear();
 	}
 
 	public Point getLastMousePosition()

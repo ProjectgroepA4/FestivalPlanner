@@ -10,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -23,13 +24,15 @@ import Applicatie.Waypoint;
  * @author Wesley de Hek
  * @version 1.2
  */
-public class Path
+public class Path implements Serializable
 {
 
+	private static final long serialVersionUID = 5345485798486018597L;
+	
 	private ArrayList<Point2D> points;
 	private ArrayList<Shape> lines;
 	private Point2D tempPoint;
-	private BufferedImage pathBackground;
+	public transient BufferedImage pathBackground = null;;
 	private ArrayList<Waypoint> waypoints;
 
 	/**
@@ -40,6 +43,18 @@ public class Path
 		points = new ArrayList<>();
 		lines = new ArrayList<>();
 		waypoints = new ArrayList<Waypoint>();
+		try
+		{
+			pathBackground = ImageIO.read(new File("images/newPath.png"));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateImage()
+	{
 		try
 		{
 			pathBackground = ImageIO.read(new File("images/newPath.png"));
