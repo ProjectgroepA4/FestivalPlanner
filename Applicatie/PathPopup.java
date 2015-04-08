@@ -2,10 +2,12 @@ package Applicatie;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,20 +23,21 @@ public class PathPopup extends JFrame
 
 	public PathPopup(Path p, Panel panel)
 	{
-		super("Artist editscreen!");
+		super("");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		JPanel content = new JPanel(new BorderLayout());
+		JPanel content = new JPanel();
+		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 		JPanel south = new JPanel(new FlowLayout());
-		JPanel center = new JPanel(new GridLayout(5, 2));
-		content.add(south, BorderLayout.SOUTH);
-		content.add(center, BorderLayout.CENTER);
-
+		JPanel center = new JPanel();
 		JPanel panel1 = new JPanel();
-		JLabel name = new JLabel("Path");
+		JLabel name = new JLabel("Add WayPoint");
+		name.setFont(new Font("Dialog", Font.BOLD, 20));
 		panel1.add(name);
-		center.add(panel1);
+		content.add(panel1);
+		content.add(center);
+		content.add(south);
 
-		JTextField tf = new JTextField(5);
+		JTextField tf = new JTextField(10);
 		center.add(tf);
 
 		JButton edit = new JButton("Done");
@@ -47,11 +50,22 @@ public class PathPopup extends JFrame
 				dispose();
 			}
 		});
+		
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				dispose();
+			}
+		});
 		south.add(edit);
-
+		south.add(cancel);
+		
 		setContentPane(content);
 		setVisible(true);
-		setSize(500, 320);
+		setSize(200, 150);
 	}
 
 }
