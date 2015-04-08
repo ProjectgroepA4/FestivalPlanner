@@ -1,28 +1,33 @@
 package Objects;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import Agenda.Agenda;
 import Agenda.AgendaStage;
 
-public class Stage extends DrawObject {
+public class Stage extends DrawObject
+{
 	AgendaStage stage;
-
-	public Stage(Point2D position, AgendaStage stage) {
+	
+	public Stage(Point2D position, AgendaStage st)
+	{
 		super("stage", position);
-		this.stage = stage;
+		stage = st;
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return "Stage";
 	}
 
-	public AgendaStage getStage() {
+	public AgendaStage getStage()
+	{
 		return stage;
+	}
+
+	public void setStage(AgendaStage stage)
+	{
+		this.stage = stage;
 	}
 
 }

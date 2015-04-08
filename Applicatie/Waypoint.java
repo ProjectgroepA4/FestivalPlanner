@@ -36,6 +36,7 @@ public class Waypoint extends DrawObject
 
 	public void setSelf(int self)
 	{
+		System.out.println(self);
 		this.self = self;
 	}
 

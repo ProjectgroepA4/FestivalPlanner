@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import Applicatie.Panel;
+import Applicatie.Waypoint;
+
 /**
  * Create's a path.
  * 
@@ -27,6 +30,7 @@ public class Path
 	private ArrayList<Shape> lines;
 	private Point2D tempPoint;
 	private BufferedImage pathBackground;
+	private ArrayList<Waypoint> waypoints;
 
 	/**
 	 * Constructor.
@@ -35,6 +39,7 @@ public class Path
 	{
 		points = new ArrayList<>();
 		lines = new ArrayList<>();
+		waypoints = new ArrayList<Waypoint>();
 		try
 		{
 			pathBackground = ImageIO.read(new File("images/newPath.png"));
@@ -91,7 +96,7 @@ public class Path
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Check if one of the lines contains the given point.
 	 * 
@@ -110,12 +115,13 @@ public class Path
 		}
 		return false;
 	}
-	
+
+
 	public boolean intersectsRect(Rectangle2D rect)
 	{
-		for(Shape line : getPath())
+		for (Shape line : getPath())
 		{
-			if(line.intersects(rect))
+			if (line.intersects(rect))
 			{
 				return true;
 			}
@@ -140,7 +146,22 @@ public class Path
 			lines.add(stroke.createStrokedShape(line));
 		}
 		return lines;
+
 	}
+
+	public void addWaypoint(int i, Panel panel)
+	{
+		for (Waypoint w : panel.getWaypoints())
+		{
+			if (w.getSelf() == i)
+			{
+				waypoints.add(w);
+				return;
+			}
+		}
+
+	}
+
 
 	/**
 	 * Add a point to the path.

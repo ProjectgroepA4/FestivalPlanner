@@ -23,7 +23,7 @@ public class SaveLoad {
 		fileChooser.setFileFilter(new FileFilter() {
 				@Override
 				public boolean accept(File pathname) {
-					if(pathname.isFile() && pathname.getName().endsWith(".ter"))
+					if(pathname.isFile() && pathname.getName().endsWith(".agn"))
 					{
 						return true;
 					}else if(pathname.isDirectory()){return true;}else{return false;}
@@ -31,7 +31,7 @@ public class SaveLoad {
 
 				@Override
 				public String getDescription() {
-					return ".ter";	
+					return ".agn";	
 				}
 			
 		});
@@ -41,9 +41,9 @@ public class SaveLoad {
 		if(userSelection == JFileChooser.APPROVE_OPTION)
 		{
 			File file = fileChooser.getSelectedFile();
-			if(!file.getName().endsWith(".ter"))
+			if(!file.getName().endsWith(".agn"))
 			{
-				file = new File(file.getAbsolutePath() + ".ter");
+				file = new File(file.getAbsolutePath() + ".agn");
 			}
 			
 			if(file.exists())
@@ -82,7 +82,7 @@ public class SaveLoad {
 		fileChooser.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				if(pathname.isFile() && pathname.getName().endsWith(".ter"))
+				if(pathname.isFile() && pathname.getName().endsWith(".agn"))
 				{
 					return true;
 				}else if(pathname.isDirectory()){return true;}else{return false;}
@@ -90,7 +90,7 @@ public class SaveLoad {
 
 			@Override
 			public String getDescription() {
-				return ".ter";
+				return ".agn";
 			}
 		
 		});

@@ -28,7 +28,7 @@ public class MenuBar extends JMenuBar
 		});
 		file.add(item);
 		
-		JMenuItem agenda = new JMenuItem("Open Planner");
+		JMenuItem agenda = new JMenuItem("Open Agenda");
 		agenda.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -38,17 +38,7 @@ public class MenuBar extends JMenuBar
 		});
 		file.add(agenda);
 		
-		item = new JMenuItem("Load agenda");
-		item.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				w.getPanel().agenda.loadAgenda();
-			}
-		});
-		file.add(item);
-		
-		item = new JMenuItem("Load terrain");
+		item = new JMenuItem("Open");
 		item.addActionListener(new ActionListener() {
 			
 			@Override
@@ -58,7 +48,7 @@ public class MenuBar extends JMenuBar
 		});
 		file.add(item);
 		
-		item = new JMenuItem("Save terrain");
+		item = new JMenuItem("Save");
 		item.addActionListener(new ActionListener() {
 			
 			@Override
@@ -69,6 +59,16 @@ public class MenuBar extends JMenuBar
 		file.add(item);
 		
 		file.addSeparator();
+		
+		item = new JMenuItem("Load agenda");
+		item.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				w.getPanel().agenda.loadAgenda();
+			}
+		});
+		file.add(item);
 		
 		item = new JMenuItem("Agenda");
 		item.addActionListener(new ActionListener()
