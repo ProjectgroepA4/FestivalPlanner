@@ -98,6 +98,7 @@ public class PropertiesPanel extends JPanel
 		// BUTTONS ROW 1
 		JPanel row1ButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton deleteButton = new JButton("Delete");
+		deleteButton.setFocusable(false);
 		deleteButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		deleteButton.addActionListener(new ActionListener()
 		{
@@ -112,6 +113,7 @@ public class PropertiesPanel extends JPanel
 			}
 		});
 		JButton areaButton = new JButton("Area");
+		areaButton.setFocusable(false);
 		areaButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		areaButton.addActionListener(new ActionListener()
 		{
@@ -331,7 +333,8 @@ public class PropertiesPanel extends JPanel
 						{
 							locationXField.setBackground(Color.WHITE);
 							double xpos = Double.parseDouble(locationXField.getText());
-							selectedObject.setPosition(new Point2D.Double(xpos, selectedObject.getPosition().getY()));
+							selectedObject.setPosition(new Point2D.Double(xpos, selectedObject.getPosition().getY()), true);
+							update();
 							p.update();
 						}
 						catch (NumberFormatException nfe)
@@ -370,8 +373,8 @@ public class PropertiesPanel extends JPanel
 						{
 							locationYField.setBackground(Color.WHITE);
 							double ypos = Double.parseDouble(locationYField.getText());
-							selectedObject.setPosition(new Point2D.Double(selectedObject.getPosition().getX(), ypos));
-							;
+							selectedObject.setPosition(new Point2D.Double(selectedObject.getPosition().getX(), ypos), true);
+							update();
 							p.update();
 						}
 						catch (NumberFormatException nfe)

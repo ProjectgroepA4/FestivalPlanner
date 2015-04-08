@@ -135,40 +135,10 @@ public class Mouse extends MouseAdapter
 
 	public void mouseReleased(MouseEvent e)
 	{
-		if (panel.getDragObject() != null)
-		{
-			if (panel.getDragObject().getRectangleColor() != Color.RED)
-			{
-				if (panel.getDragObject() instanceof Entrance)
-				{
-					Rectangle2D rect = panel.getDragObject().getRectangle();
-					double xl = (panel.getFieldWidth() / 2) + rect.getMinX();
-					double xr = panel.getFieldWidth() - xl + rect.getWidth();
-					double yt = (panel.getFieldHeight() / 2) + rect.getMinY();
-					double yb = panel.getFieldHeight() - yt + rect.getHeight();
-					if (xl < xr && xl < yt && xl < yb)
-					{
-						panel.getDragObject().setPosition(new Point2D.Double(-panel.getFieldWidth() / 2, rect.getMinY()));
-					}
-					else if (xr < xl && xr < yt && xr < yb)
-					{
-						panel.getDragObject().setPosition(new Point2D.Double(panel.getFieldWidth() / 2 - rect.getWidth(), rect.getMinY()));
-					}
-					else if (yt < xl && yt < xr && yt < yb)
-					{
-						panel.getDragObject().setPosition(new Point2D.Double(rect.getMinX(), -panel.getFieldHeight() / 2));
-					}
-					else if (yb < xl && yb < yt && yb < xr)
-					{
-						panel.getDragObject().setPosition(new Point2D.Double(rect.getMinX(), panel.getFieldHeight() / 2 - rect.getHeight()));
-					}
-					else
-					{
-						panel.getDragObject().setPosition(new Point2D.Double(-panel.getFieldWidth() / 2, -panel.getFieldHeight() / 2));
-					}
-
-				}
-
+		if(panel.getDragObject() != null) {
+			if(panel.getDragObject().getRectangleColor() != Color.RED) {
+				panel.getDragObject().setPosition(panel.getDragObject().getPosition(), true);
+				panel.getPP().update();
 				panel.setDragObject(null);
 				panel.setClickedOption("drag");
 			}

@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class NewWorldPanel extends JFrame {
 
-	BufferedImage grass,sand,selectedImage;
+	BufferedImage grass,sand,grass2, sand2,stone, selectedImage;
 	
 	public NewWorldPanel(Panel topPanel) {
 		super("New World");
@@ -32,13 +32,16 @@ public class NewWorldPanel extends JFrame {
 		
 		try {
 			grass = ImageIO.read(new File("images/grassIcon.jpg"));
-			sand = ImageIO.read(new File("images/sand.jpg"));
+			sand = ImageIO.read(new File("images/sandIcon.jpg"));
+			grass2 = ImageIO.read(new File("images/grassIcon2.png"));
+			sand2 = ImageIO.read(new File("images/sandIcon2.jpg"));
+			stone = ImageIO.read(new File("images/stoneIcon.jpg"));
 			selectedImage = grass;
 		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		String[] terrains = {"Grass", "Sand"};
+		String[] terrains = {"Grass", "Grass 2","Sand", "Sand 2", "Stone"};
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		JButton button;
 		JLabel label;
@@ -88,7 +91,16 @@ public class NewWorldPanel extends JFrame {
 							selectedImage = grass;
 							break;
 						case 1:
+							selectedImage = grass2;
+							break;
+						case 2:
 							selectedImage = sand;
+							break;
+						case 3:
+							selectedImage = sand2;
+							break;
+						case 4:
+							selectedImage = stone;
 							break;
 					}
 					imageLabel.setIcon(new ImageIcon(selectedImage));
