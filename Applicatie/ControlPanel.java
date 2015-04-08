@@ -22,6 +22,7 @@ public class ControlPanel extends JPanel
 	private int people;
 	JLabel timeLabel;
 	JLabel peopleLabel;
+	JLabel runningLabel;
 	
 	public ControlPanel()
 	{
@@ -51,6 +52,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().start();
+					runningLabel.setText("Simulation Started");
 				}
 			});
 			simulatorPanel.add(playButton);
@@ -62,6 +64,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().stop();
+					runningLabel.setText("Simulation Paused");
 				}
 			});
 			simulatorPanel.add(pauseButton);
@@ -73,6 +76,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().stop();
+					runningLabel.setText("Simulation Stopped");
 				}
 			});
 			simulatorPanel.add(stopButton);
@@ -131,7 +135,7 @@ public class ControlPanel extends JPanel
 		runningPanel.setMaximumSize(new Dimension(195,50));
 		add(runningPanel);
 		{
-			JLabel runningLabel = new JLabel("Simulation stopped");
+			runningLabel = new JLabel("Simulation stopped");
 			runningLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			runningPanel.add(runningLabel);
 		}
