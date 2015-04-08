@@ -58,7 +58,7 @@ public class AddStagePanel extends JFrame{
 				String description = descriptionTF.getText();
 
 				boolean alreadyExists = false;
-				for (AgendaStage stage : agenda.getStages())
+				for (Stage stage : agenda.getStages())
 				{
 					if (stage.getName().equals(name))
 					{
@@ -70,7 +70,7 @@ public class AddStagePanel extends JFrame{
 				}
 				else if ( alreadyExists == false )
 				{
-					AgendaStage s = new AgendaStage(name,description);
+					Stage s = new Stage(name,description);
 					agenda.addStage(s);
 					JOptionPane.showMessageDialog(null, "Stage added!");
 					setVisible(false);

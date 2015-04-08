@@ -17,17 +17,17 @@ public class Agenda implements Serializable {
 
 	private static final long serialVersionUID = 1;
 
-	private ArrayList<AgendaStage> stages;
+	private ArrayList<Stage> stages;
 	private ArrayList<Event> events;
 	private ArrayList<Artist> artists;
 
 	public Agenda() {
-		stages = new ArrayList<AgendaStage>();
+		stages = new ArrayList<Stage>();
 		events = new ArrayList<Event>();
 		artists = new ArrayList<Artist>();
 	}
 	
-	public void addStage(AgendaStage stage){
+	public void addStage(Stage stage){
 		stages.add(stage);
 	}
 
@@ -47,11 +47,12 @@ public class Agenda implements Serializable {
 	{
 		return artists;
 	}
-	public ArrayList<AgendaStage> getStages()
+	public ArrayList<Stage> getStages()
 	{
 		return stages;
 	}
 	
+	/*
 	public void saveAgenda()
 	{
 		JFileChooser fileChooser = new JFileChooser();
@@ -179,7 +180,7 @@ public class Agenda implements Serializable {
 		{
 			boolean exists = false;
 			String name = e.getStage().getName();
-			for (AgendaStage s : stages)
+			for (Stage s : stages)
 			{
 				if ( s.getName().equals(name) ) {
 					exists = true;
@@ -202,7 +203,8 @@ public class Agenda implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}		
+	}	
+	*/	
 	
 	public void clearAgenda()
 	{
@@ -211,10 +213,12 @@ public class Agenda implements Serializable {
 		artists.clear();
 	}	
 	
+	/*
 	public void fillAllLists()
 	{
 		loadAgenda();
 		fillStages();
 		fillArtists();
 	}
+	*/
 }

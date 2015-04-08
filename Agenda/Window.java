@@ -36,14 +36,16 @@ public class Window extends JFrame {
 	private static GregorianCalendar date;
 	private static Agenda agenda;
 	private static String currentPanel = "table";
+	private Applicatie.Panel ap;
 	
-	public Window()
+	public Window(Applicatie.Panel ap)
 	{
 		/*
 		 * Initialize window
 		 */
 		super("Agenda");
-		agenda = new Agenda();
+		this.ap = ap;
+		agenda = ap.getAgenda();
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -231,6 +233,12 @@ public class Window extends JFrame {
 	public void setAgenda(Agenda a)
 	{
 		agenda = a; 
+		ap.setAgenda(a);
+	}
+	
+	public Applicatie.Panel getPanel()
+	{
+		return ap;
 	}
 	
 	
