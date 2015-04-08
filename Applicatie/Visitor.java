@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import Agenda.Agenda;
@@ -102,7 +103,7 @@ public class Visitor
 	{
 		System.out.println("CurrentTarget: " + target);
 		System.out.println("FinalTarget: " + finalTarget);
-		Point2D targetPoint = panel.getWaypoint(target).getAccuratePoint();
+		Point2D targetPoint = panel.getWaypoint(target).getPosition();
 
 		double newRot = Math.atan2(targetPoint.getY() - position.getY(), targetPoint.getX() - position.getX());
 
@@ -157,8 +158,10 @@ public class Visitor
 
 			for (Map.Entry<Integer, int[]> e : options.entrySet())
 			{
+//				System.out.println("KEY: " + e.getKey());
 				for (int i : e.getValue())
 				{
+//					System.out.println("VAL: " + i);
 					if (finalTarget != target)
 					{
 						if (finalTarget == i && e.getKey() == target)
@@ -173,8 +176,14 @@ public class Visitor
 						}
 					}
 				}
+				System.out.println("--------------");
 			}
 		}
+	}
+	
+	public int getNextWaypoint()
+	{
+		return 0;
 	}
 
 	public boolean checkIfOnWaypoint(Panel panel)

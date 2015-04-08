@@ -148,7 +148,7 @@ public class Panel extends JPanel implements ActionListener
 		addMouseWheelListener(new MouseWheel(this));
 
 		addFocusListener(new WindowFocusListener(this));
-		t = new Timer(1000 / 50, this);
+		t = new Timer(1000 / 5000, this);
 	}
 
 	public int getPanelInfoLength()
