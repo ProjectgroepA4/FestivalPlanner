@@ -44,7 +44,7 @@ import Objects.Wall;
 public class Panel extends JPanel implements ActionListener
 {
 
-	BufferedImage grass, sand;
+	BufferedImage grass, grass2, sand, sand2, stone;
 	BufferedImage background;
 	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage, waypointImage;
 
@@ -60,8 +60,8 @@ public class Panel extends JPanel implements ActionListener
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
 	private Path currentPath;
-	private int width = 1920;
-	private int height = 1080;
+	private static int width = 1920;
+	private static int height = 1080;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -107,7 +107,10 @@ public class Panel extends JPanel implements ActionListener
 		try
 		{
 			grass = ImageIO.read(new File("images/grass.jpg"));
+			grass2 = ImageIO.read(new File("images/grass2.png"));
 			sand = ImageIO.read(new File("images/sand.jpg"));
+			sand2 = ImageIO.read(new File("images/sand2.jpg"));
+			stone = ImageIO.read(new File("images/stone.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
@@ -571,12 +574,12 @@ public class Panel extends JPanel implements ActionListener
 		this.agenda = agenda;
 	}
 	
-	public int getFieldWidth()
+	public static int getFieldWidth()
 	{
 		return width;
 	}
 	
-	public int getFieldHeight()
+	public static int getFieldHeight()
 	{
 		return height;
 	}
@@ -626,12 +629,21 @@ public class Panel extends JPanel implements ActionListener
 		cameraScale = 1;
 		switch (terrainIndex)
 		{
-			case 0:
-				background = grass;
-				break;
-			case 1:
-				background = sand;
-				break;
+		case 0:
+			background = grass;
+			break;
+		case 1:
+			background = grass2;
+			break;
+		case 2:
+			background = sand;
+			break;
+		case 3:
+			background = sand2;
+			break;
+		case 4:
+			background = stone;
+			break;
 		}
 		repaint();
 	}
