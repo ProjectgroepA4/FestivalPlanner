@@ -420,7 +420,13 @@ public class PropertiesPanel extends JPanel
 						{
 							scaleField.setBackground(Color.WHITE);
 							double scale = Double.parseDouble(scaleField.getText());
+							if(scale<0 || (scale >0 && scale<0.2))
+							{
+								scale=0.2;
+								scaleField.setText(scale+"");
+							}
 							selectedObject.setScale(scale);
+							
 							p.update();
 						}
 						catch (NumberFormatException nfe)

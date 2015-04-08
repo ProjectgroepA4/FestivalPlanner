@@ -24,9 +24,9 @@ public class Window extends JFrame
 		// CONTENT PANELS
 		JPanel contentPanel = new JPanel(new BorderLayout());
 		PropertiesPanel pp = new PropertiesPanel();
-		fp = new Panel(pp);
+		ControlPanel cp = new ControlPanel();
+		fp = new Panel(pp, cp);
 		contentPanel.add(fp, BorderLayout.CENTER);
-		ControlPanel cp = new ControlPanel(fp);
 		contentPanel.add(cp, BorderLayout.SOUTH);
 		contentPanel.add(pp, BorderLayout.EAST);
 		contentPanel.add(fp, BorderLayout.CENTER);

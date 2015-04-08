@@ -92,7 +92,7 @@ public class AddEventPanel extends JFrame{
 		center.add(panel6);
 		
 		JComboBox<Integer> minuteE = new JComboBox<Integer>(minutes);
-		minuteE.setSelectedIndex(today.get(GregorianCalendar.MINUTE));
+		minuteE.setSelectedIndex(today.get(GregorianCalendar.MINUTE+1));
 		panel6.add(minuteE);
 		panel6.add(new JSeparator(SwingConstants.VERTICAL));
 		panel6.add(new JSeparator(SwingConstants.VERTICAL));

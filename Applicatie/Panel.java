@@ -17,7 +17,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -63,12 +65,16 @@ public class Panel extends JPanel implements ActionListener
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
 	PropertiesPanel pp;
+	ControlPanel cp;
 	Agenda agenda;
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
 	javax.swing.Timer t;
+	
+	SimpleDateFormat formatter;
+	GregorianCalendar date;
 
 	int currentTime = 540;
 	int tick = 0;
@@ -89,10 +95,14 @@ public class Panel extends JPanel implements ActionListener
 		this.selectionPosition = selectionPosition;
 	}
 
-	Panel(PropertiesPanel pp)
+	Panel(PropertiesPanel pp, ControlPanel cp)
 	{
 		this.pp = pp;
+		this.cp = cp;
+		cp.setPanel(this);
 		pp.setPanel(this);
+		date = new GregorianCalendar();
+		formatter = new SimpleDateFormat("H:s dd-MM-yyyy");
 		try
 		{
 			grass = ImageIO.read(new File("images/grass.jpg"));
@@ -100,7 +110,6 @@ public class Panel extends JPanel implements ActionListener
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
-			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
 			waypointImage = ImageIO.read(new File("images/waypointIcon.png"));
@@ -113,7 +122,6 @@ public class Panel extends JPanel implements ActionListener
 		panelInfo.add(podiumImage);
 		panelInfo.add(toiletImage);
 		panelInfo.add(entranceImage);
-		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
 		panelInfo.add(waypointImage);
@@ -158,10 +166,8 @@ public class Panel extends JPanel implements ActionListener
 			case 2:
 				return new Entrance(null);
 			case 3:
-				return new OldPath(null);
-			case 4:
 				return new Wall(null);
-			case 5:
+			case 4:
 				return new Food(null);
 			case 6:
 				return new Waypoint(null);
@@ -557,6 +563,16 @@ public class Panel extends JPanel implements ActionListener
 	{
 		this.agenda = agenda;
 	}
+	
+	public int getFieldWidth()
+	{
+		return width;
+	}
+	
+	public int getFieldHeight()
+	{
+		return height;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -566,6 +582,8 @@ public class Panel extends JPanel implements ActionListener
 		{
 			tick = 0;
 			currentTime++;
+			date.setTimeInMillis(date.getTimeInMillis() + 1000);
+			cp.setTime(formatter.format(date.getTime()));
 			System.out.println(currentTime);
 		}
 
