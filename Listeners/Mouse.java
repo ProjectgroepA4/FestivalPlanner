@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.SwingUtilities;
 
 import Applicatie.Panel;
-import Applicatie.PathPopup;
-
 import Applicatie.Waypoint;
 import Applicatie.WaypointPopup;
 import Objects.DrawObject;
@@ -47,17 +45,14 @@ public class Mouse extends MouseAdapter
 					if (e.getX() >= panel.getScrollfactor() && e.getX() < last + image.getWidth() + panel.getScrollfactor())
 					{
 						DrawObject tempDrawObj = panel.createNewDrawObject(i);
-						if (tempDrawObj != null)
-						{
-							tempDrawObj.setPosition(clickPoint);
-							if (!panel.getObjects().isEmpty())
-								panel.clearObjectSelection();
-							panel.setDragObject(tempDrawObj);
-							panel.getDragObject().setSelected(true);
-							panel.getPP().setSelected(tempDrawObj);
-							panel.setSelectedObject(tempDrawObj);
-							selectedObject = tempDrawObj;
-						}
+						tempDrawObj.setPosition(clickPoint);
+						if (!panel.getObjects().isEmpty())
+							panel.clearObjectSelection();
+						panel.setDragObject(tempDrawObj);
+						panel.getDragObject().setSelected(true);
+						panel.getPP().setSelected(tempDrawObj);
+						panel.setSelectedObject(tempDrawObj);
+						selectedObject = tempDrawObj;
 						break;
 					}
 					i++;
@@ -76,10 +71,8 @@ public class Mouse extends MouseAdapter
 					{
 						if (SwingUtilities.isRightMouseButton(e))
 						{
-							if (o instanceof Waypoint)
-							{
-								new WaypointPopup(o, panel);
-
+							if(o instanceof Waypoint){
+								new WaypointPopup(o);
 							}
 						}
 						if (o == selectedObject)
@@ -125,19 +118,7 @@ public class Mouse extends MouseAdapter
 
 					}
 				}
-				Path clickedPath = panel.getClickedPath(clickPoint);
-				if (clickedPath != null)
-				{
-					if (SwingUtilities.isRightMouseButton(e))
-					{
-						new PathPopup(clickedPath, panel);
-					}
-				}
-				else
-				{
-					panel.checkPath(clickPoint);
-				}
-
+				panel.checkPath(clickPoint);
 			}
 			if (panel.getDragObject() == null && selectedObject != null)
 			{
@@ -149,19 +130,15 @@ public class Mouse extends MouseAdapter
 		}
 		else
 		{ // Making path.
-
 			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(), clickPoint.getY()));
-
 		}
 		panel.repaint();
 	}
 
 	public void mouseReleased(MouseEvent e)
 	{
-		if (panel.getDragObject() != null)
-		{
-			if (panel.getDragObject().getRectangleColor() != Color.RED)
-			{
+		if(panel.getDragObject() != null) {
+			if(panel.getDragObject().getRectangleColor() != Color.RED) {
 				panel.getDragObject().setPosition(panel.getDragObject().getPosition(), true);
 				panel.getPP().update();
 				panel.setDragObject(null);

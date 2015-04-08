@@ -23,12 +23,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import Agenda.Agenda;
-import Agenda.AgendaStage;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
@@ -73,7 +71,7 @@ public class Panel extends JPanel implements ActionListener
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
-	Timer t;
+	javax.swing.Timer t;
 	
 	SimpleDateFormat formatter;
 	GregorianCalendar date;
@@ -146,8 +144,9 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-
+		
 		addFocusListener(new WindowFocusListener(this));
+		
 		t = new Timer(1000 / 10, this);
 	}
 
@@ -167,26 +166,7 @@ public class Panel extends JPanel implements ActionListener
 		switch (index)
 		{
 			case 0:
-				ArrayList<AgendaStage> stages = agenda.getStages();
-				Object[] s = new Object[stages.size()];
-				AgendaStage stage = null;
-				if (stages.size() != 0)
-				{
-					for (int i = 0; i < stages.size(); i++)
-					{
-						s[i] = stages.get(i);
-					}
-
-					stage = (AgendaStage) JOptionPane.showInputDialog(null, "Select the right Stage", "Select Stage", JOptionPane.PLAIN_MESSAGE, null, s, "stage");
-				}
-				if (stage != null)
-				{
-					return new Stage(null, stage);
-				}
-				else
-				{
-					return null;
-				}
+				return new Stage(null);
 			case 1:
 				return new Toilet(null);
 			case 2:
@@ -211,18 +191,6 @@ public class Panel extends JPanel implements ActionListener
 	{
 		waypoints.add(w);
 	}
-	
-	public Waypoint getWaypoint(int i)
-	{
-		for(Waypoint w : waypoints)
-		{
-			if(w.getSelf() == i)
-			{
-				return w;
-			}
-		}
-		return null;
-	}
 
 	public ArrayList<Waypoint> getWaypoints()
 	{
@@ -231,27 +199,14 @@ public class Panel extends JPanel implements ActionListener
 
 	public void addVisitors()
 	{
-		ArrayList<DrawObject> entrances = new ArrayList<>();
-		for(DrawObject object : objects) {
-			if(object instanceof Entrance) {
-				entrances.add(object);
-			}
-		}
-		if(!entrances.isEmpty()) {
-			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
-			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
-			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "You don't have an entrance");
-		}
+		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 	}
 
 	public void addVisitors(int count)
 	{
 		for (int i = 0; i < count; i++)
 		{
-			addVisitors();
+			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 		}
 	}
 
@@ -563,26 +518,12 @@ public class Panel extends JPanel implements ActionListener
 		{
 			if (path.containsPoint(point))
 			{
-
 				setcurrentPath(path);
 				setClickedOption("Path");
-
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	public Path getClickedPath(Point2D point)
-	{
-		for (Path path : paths)
-		{
-			if (path.containsPoint(point))
-			{
-				return path;
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -616,17 +557,17 @@ public class Panel extends JPanel implements ActionListener
 	{
 		this.agenda = agenda;
 	}
-
+	
 	public static int getFieldWidth()
 	{
 		return width;
 	}
-
+	
 	public static int getFieldHeight()
 	{
 		return height;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -642,7 +583,7 @@ public class Panel extends JPanel implements ActionListener
 
 		for (Visitor v : visitors)
 		{
-			v.update(objects, currentTime, visitors, paths, this);
+			v.update(objects, currentTime, visitors, paths);
 		}
 		repaint();
 
@@ -669,25 +610,25 @@ public class Panel extends JPanel implements ActionListener
 		this.height = height;
 		paths.clear();
 		objects.clear();
+		visitors.clear();
 		cameraScale = 1;
 		switch (terrainIndex)
 		{
-			case 0:
-				background = grass;
-				break;
-			case 1:
-				background = grass2;
-				break;
-			case 2:
-				background = sand;
-				break;
-			case 3:
-				background = sand2;
-				break;
-			case 4:
-				background = stone;
-				break;
-
+		case 0:
+			background = grass;
+			break;
+		case 1:
+			background = grass2;
+			break;
+		case 2:
+			background = sand;
+			break;
+		case 3:
+			background = sand2;
+			break;
+		case 4:
+			background = stone;
+			break;
 		}
 		repaint();
 	}

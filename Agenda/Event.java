@@ -19,13 +19,13 @@ public class Event implements Serializable {
 	private int stopHour;
 	private int stopMinute;
 	private Artist artist;
-	private AgendaStage stage;
+	private Stage stage;
 	private String description;
 	private int expectedPopularity;
 
 	public Event(String eventName, int startYear, int startMonth, int startDay,
 			int startHour, int startMinute, int endYear, int endMonth,
-			int endDay, int endHour, int endMinute, Artist artist, AgendaStage stage,
+			int endDay, int endHour, int endMinute, Artist artist, Stage stage,
 			String description, int expectedPopularity) {
 		this.eventName = eventName;
 		this.startDate = new GregorianCalendar(startYear, startMonth - 1,
@@ -43,7 +43,7 @@ public class Event implements Serializable {
 	}
 
 	public Event(String eventName, GregorianCalendar startDate,
-			GregorianCalendar endDate, Artist artist, AgendaStage stage,
+			GregorianCalendar endDate, Artist artist, Stage stage,
 			String description, int expectedPopularity) {
 		this.eventName = eventName;
 		this.startDate = startDate;
@@ -86,7 +86,7 @@ public class Event implements Serializable {
 		return this.description;
 	}
 
-	public AgendaStage getStage() {
+	public Stage getStage() {
 		return this.stage;
 	}
 
@@ -132,7 +132,7 @@ public class Event implements Serializable {
 		this.expectedPopularity = popularity;
 	}
 
-	public void setStage(AgendaStage stage) {
+	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 	
