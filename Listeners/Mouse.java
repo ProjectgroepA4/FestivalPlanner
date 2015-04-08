@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import Applicatie.Panel;
+import Applicatie.Waypoint;
 import Objects.DrawObject;
-import Objects.Stage;
+import Objects.Path;
+import Objects.Entrance;
 
 public class Mouse extends MouseAdapter
 {
@@ -27,7 +30,8 @@ public class Mouse extends MouseAdapter
 		Point2D clickPoint = panel.getClickPoint(e.getPoint());
 		panel.setLastClickPosition(clickPoint);
 		panel.setLastMousePosition(e.getPoint());
-		if(!panel.getClickedOption().equals("Path")) {
+		if (!panel.getClickedOption().equals("Path"))
+		{
 			if (e.getY() < 150)
 			{
 				int i = 0;
@@ -37,14 +41,16 @@ public class Mouse extends MouseAdapter
 					if (e.getX() >= panel.getScrollfactor() && e.getX() < last + image.getWidth() + panel.getScrollfactor())
 					{
 						DrawObject tempDrawObj = panel.createNewDrawObject(i);
+						if (tempDrawObj != null){
 						tempDrawObj.setPosition(clickPoint);
-						if(!panel.getObjects().isEmpty()) 
+						if (!panel.getObjects().isEmpty())
 							panel.clearObjectSelection();
 						panel.setDragObject(tempDrawObj);
 						panel.getDragObject().setSelected(true);
 						panel.getPP().setSelected(tempDrawObj);
 						panel.setSelectedObject(tempDrawObj);
 						selectedObject = tempDrawObj;
+						}
 						break;
 					}
 					i++;
@@ -101,7 +107,7 @@ public class Mouse extends MouseAdapter
 						panel.getPP().setSelected(o);
 						panel.setSelectedObject(o);
 						panel.setSelectionPosition(panel.getDragObject().getPosition());
-	
+
 					}
 				}
 				panel.checkPath(clickPoint);
@@ -114,21 +120,52 @@ public class Mouse extends MouseAdapter
 				selectedObject = null;
 			}
 		}
-		else { //Making path.
-			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(),clickPoint.getY()));
+		else
+		{ // Making path.
+			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(), clickPoint.getY()));
 		}
 		panel.repaint();
 	}
-
 
 	public void mouseReleased(MouseEvent e)
 	{
 		if(panel.getDragObject() != null) {
 			if(panel.getDragObject().getRectangleColor() != Color.RED) {
+				if(panel.getDragObject() instanceof Entrance)
+				{
+					Rectangle2D rect = panel.getDragObject().getRectangle();
+					double xl = (panel.getFieldWidth()/2) + rect.getMinX();
+					double xr = panel.getFieldWidth() - xl+rect.getWidth();
+					double yt = (panel.getFieldHeight()/2) + rect.getMinY();
+					double yb = panel.getFieldHeight() - yt+rect.getHeight();
+					if(xl < xr && xl < yt && xl < yb)
+					{
+						panel.getDragObject().setPosition(new Point2D.Double(-panel.getFieldWidth()/2, rect.getMinY()));
+					}
+					else if(xr < xl && xr < yt && xr < yb)
+					{
+						panel.getDragObject().setPosition(new Point2D.Double(panel.getFieldWidth()/2 - rect.getWidth(), rect.getMinY()));
+					}
+					else if(yt < xl && yt < xr && yt < yb)
+					{
+						panel.getDragObject().setPosition(new Point2D.Double(rect.getMinX(), -panel.getFieldHeight()/2));
+					}
+					else if(yb < xl && yb < yt && yb < xr)
+					{
+						panel.getDragObject().setPosition(new Point2D.Double(rect.getMinX(), panel.getFieldHeight()/2 - rect.getHeight()));
+					}
+					else
+					{
+						panel.getDragObject().setPosition(new Point2D.Double(-panel.getFieldWidth()/2, -panel.getFieldHeight()/2));
+					}
+					
+				}
+
 				panel.setDragObject(null);
 				panel.setClickedOption("drag");
 			}
-			else {
+			else
+			{
 				panel.getDragObject().setPosition(panel.getSelectionPosition());
 				panel.getDragObject().setRectangleColor(Color.BLACK);
 			}

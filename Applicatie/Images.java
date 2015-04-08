@@ -23,6 +23,7 @@ public class Images
 		images.put("stage1", loadImage("images/stage3.png"));
 		images.put("visitor", loadImage("images/visitor.png"));
 		images.put("food", loadImage("images/food.png"));
+		images.put("waypoint", loadImage("images/waypoint.png"));
 	}
 
 	public static Image loadImage(String path)

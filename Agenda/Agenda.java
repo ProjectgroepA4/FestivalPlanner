@@ -17,17 +17,17 @@ public class Agenda implements Serializable {
 
 	private static final long serialVersionUID = 1;
 
-	private ArrayList<Stage> stages;
+	private ArrayList<AgendaStage> stages;
 	private ArrayList<Event> events;
 	private ArrayList<Artist> artists;
 
 	public Agenda() {
-		stages = new ArrayList<Stage>();
+		stages = new ArrayList<AgendaStage>();
 		events = new ArrayList<Event>();
 		artists = new ArrayList<Artist>();
 	}
 	
-	public void addStage(Stage stage){
+	public void addStage(AgendaStage stage){
 		stages.add(stage);
 	}
 
@@ -47,7 +47,7 @@ public class Agenda implements Serializable {
 	{
 		return artists;
 	}
-	public ArrayList<Stage> getStages()
+	public ArrayList<AgendaStage> getStages()
 	{
 		return stages;
 	}
@@ -179,7 +179,7 @@ public class Agenda implements Serializable {
 		{
 			boolean exists = false;
 			String name = e.getStage().getName();
-			for (Stage s : stages)
+			for (AgendaStage s : stages)
 			{
 				if ( s.getName().equals(name) ) {
 					exists = true;

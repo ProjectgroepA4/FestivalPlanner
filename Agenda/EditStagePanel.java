@@ -18,7 +18,7 @@ public class EditStagePanel extends JFrame{
 
 	private static final long serialVersionUID = 1;
 
-	public EditStagePanel(Agenda agenda, Stage sta)
+	public EditStagePanel(Agenda agenda, AgendaStage sta)
 	{
 		super("Stage editscreen!");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -59,7 +59,7 @@ public class EditStagePanel extends JFrame{
 				String description = descriptionTF.getText();
 
 				boolean alreadyExists = false;
-				for (Stage stage : agenda.getStages())
+				for (AgendaStage stage : agenda.getStages())
 				{
 					if (stage.getName().equals(name)  && !stage.equals(sta))
 					{
@@ -101,10 +101,10 @@ public class EditStagePanel extends JFrame{
 				
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to remove this stage?", "Remove Stage", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
 				{
-					Iterator<Stage> it = agenda.getStages().iterator();
+					Iterator<AgendaStage> it = agenda.getStages().iterator();
 					while(it.hasNext())
 					{
-						Stage s = it.next();
+						AgendaStage s = it.next();
 						if(s.equals(sta))
 						{
 							it.remove();

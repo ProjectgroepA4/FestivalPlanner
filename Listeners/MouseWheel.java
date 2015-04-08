@@ -6,6 +6,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 
 import Applicatie.Panel;
+import Objects.DrawObject;
 
 public class MouseWheel implements MouseWheelListener
 {

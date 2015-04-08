@@ -17,14 +17,18 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import Agenda.Agenda;
+import Agenda.AgendaStage;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
@@ -38,28 +42,32 @@ import Objects.Toilet;
 import Objects.Wall;
 
 @SuppressWarnings("serial")
-public class Panel extends JPanel implements ActionListener 
+public class Panel extends JPanel implements ActionListener
 {
 
+	BufferedImage grass, sand;
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage, waypointImage;
 
 	private int panelInfox, panelInfoy, scrollfactor;
 
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
 	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
 	ArrayList<Visitor> visitors = new ArrayList<>();
-
+	ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	ArrayList<Path> paths = new ArrayList<>();
 	DrawObject dragObject = null;
 	private DrawObject selectedObject;
 	private String clickedOption = "drag";
 	private Path currentPath;
+	private int width = 1920;
+	private int height = 1080;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
 	PropertiesPanel pp;
+	ControlPanel cp;
 	Agenda agenda;
 	Point2D lastClickPosition = new Point(0, 0);
 	Point lastMousePosition = new Point(0, 0);
@@ -67,8 +75,12 @@ public class Panel extends JPanel implements ActionListener
 	Images images = new Images();
 	javax.swing.Timer t;
 	
+	SimpleDateFormat formatter;
+	GregorianCalendar date;
+
 	int currentTime = 540;
 	int tick = 0;
+
 	// how to nieuwe dingen aan het panel toe te voegen:
 	// maak bufferedimage global aan, voeg er een image aan toe, en voeg de
 	// image aan panelInfo toe en het object aan panelTypes.
@@ -85,19 +97,25 @@ public class Panel extends JPanel implements ActionListener
 		this.selectionPosition = selectionPosition;
 	}
 
-	Panel(PropertiesPanel pp)
+	Panel(PropertiesPanel pp, ControlPanel cp)
 	{
 		this.pp = pp;
+		this.cp = cp;
+		cp.setPanel(this);
 		pp.setPanel(this);
+		date = new GregorianCalendar();
+		formatter = new SimpleDateFormat("H:s dd-MM-yyyy");
 		try
 		{
-			background = ImageIO.read(new File("images/grass.jpg"));
+			grass = ImageIO.read(new File("images/grass.jpg"));
+			sand = ImageIO.read(new File("images/sand.jpg"));
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
-			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
+			waypointImage = ImageIO.read(new File("images/waypoint.png"));
+			background = grass;
 		}
 		catch (IOException e)
 		{
@@ -106,10 +124,10 @@ public class Panel extends JPanel implements ActionListener
 		panelInfo.add(podiumImage);
 		panelInfo.add(toiletImage);
 		panelInfo.add(entranceImage);
-		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
-		
+		panelInfo.add(waypointImage);
+
 		agenda = new Agenda();
 
 		panelInfox = 0;
@@ -125,11 +143,9 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		t = new Timer(1000/100, this);
+		t = new Timer(1000 / 10, this);
 	}
 
-	
-	
 	public int getPanelInfoLength()
 	{
 		int panelInfoLength = 0;
@@ -146,17 +162,33 @@ public class Panel extends JPanel implements ActionListener
 		switch (index)
 		{
 			case 0:
-				return new Stage(null);
+					ArrayList<AgendaStage> stages = agenda.getStages();
+					Object[] s = new Object[stages.size()];
+					AgendaStage stage = null;
+					if (stages.size() != 0) {
+						for (int i = 0; i < stages.size(); i++) {
+							s[i] = stages.get(i);
+						}
+
+						stage = (AgendaStage) JOptionPane.showInputDialog(null,
+								"Select the right Stage", "Select Stage",
+								JOptionPane.PLAIN_MESSAGE, null, s, "stage");
+					}
+					if (stage != null){
+						return new Stage(null, stage);
+					} else {
+						return null;
+					}
 			case 1:
 				return new Toilet(null);
 			case 2:
 				return new Entrance(null);
 			case 3:
-				return new OldPath(null);
-			case 4:
 				return new Wall(null);
-			case 5:
+			case 4:
 				return new Food(null);
+			case 6:
+				return new Waypoint(null);
 			default:
 				return null;
 		}
@@ -167,14 +199,39 @@ public class Panel extends JPanel implements ActionListener
 		objects.add(dragObject);
 	}
 
+	public void addWaypoint(Waypoint w)
+	{
+		waypoints.add(w);
+	}
+
+	public ArrayList<Waypoint> getWaypoints()
+	{
+		return waypoints;
+	}
+
+	public int getNextTarget()
+	{
+		int last = 0;
+		for (Waypoint w : waypoints)
+		{
+			System.out.println(waypoints);
+			if (w.getSelf() > last)
+			{
+				last = w.getSelf();
+			}
+		}
+		System.out.println(last);
+		return last;
+	}
+
 	public void addVisitors()
 	{
 		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 	}
-	
+
 	public void addVisitors(int count)
 	{
-		for(int i = 0 ; i < count ; i++)
+		for (int i = 0; i < count; i++)
 		{
 			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
 		}
@@ -202,7 +259,8 @@ public class Panel extends JPanel implements ActionListener
 
 		TexturePaint p = new TexturePaint(background, new Rectangle2D.Double(0, 0, 100, 100));
 		g2.setPaint(p);
-		g2.fill(new Rectangle2D.Double(-1920, -1080, 3840, 2160));
+
+		g2.fill(new Rectangle2D.Double(-width / 2, -height / 2, width, height));
 
 		BasicStroke stroke = new BasicStroke(10);
 		g2.setStroke(stroke);
@@ -215,11 +273,12 @@ public class Panel extends JPanel implements ActionListener
 		{
 			o.draw(g2);
 		}
-		
-		for (Visitor v : visitors){
+
+		for (Visitor v : visitors)
+		{
 			v.draw(g2);
 		}
-		
+
 		g2.setTransform(oldTransform);
 		if (currentPath != null)
 		{ // Display text while in path making modes.
@@ -522,30 +581,69 @@ public class Panel extends JPanel implements ActionListener
 	{
 		this.agenda = agenda;
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		tick++;
-		if ( tick >= 10 && visitors.size() > 0){
-			tick = 0;
-			currentTime++;
-			System.out.println(currentTime);
-		}
-		
-		for (Visitor v: visitors){
-			v.update(objects, currentTime, visitors);
-		}
-		repaint();
-		
+	
+	public int getFieldWidth()
+	{
+		return width;
+	}
+	
+	public int getFieldHeight()
+	{
+		return height;
 	}
 
-	public javax.swing.Timer getT()
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		tick++;
+		if (tick >= 10 && visitors.size() > 0)
+		{
+			tick = 0;
+			currentTime++;
+			date.setTimeInMillis(date.getTimeInMillis() + 1000);
+			cp.setTime(formatter.format(date.getTime()));
+			System.out.println(currentTime);
+		}
+
+		for (Visitor v : visitors)
+		{
+			v.update(objects, currentTime, visitors, paths);
+		}
+		repaint();
+
+	}
+
+	public Timer getT()
 	{
 		return t;
 	}
 
-	public void setT(javax.swing.Timer t)
+	public ArrayList<Path> getPaths()
+	{
+		return paths;
+	}
+
+	public void setT(Timer t)
 	{
 		this.t = t;
+	}
+
+	public void newWorld(int width, int height, int terrainIndex)
+	{
+		this.width = width;
+		this.height = height;
+		paths.clear();
+		objects.clear();
+		cameraScale = 1;
+		switch (terrainIndex)
+		{
+			case 0:
+				background = grass;
+				break;
+			case 1:
+				background = sand;
+				break;
+		}
+		repaint();
 	}
 }

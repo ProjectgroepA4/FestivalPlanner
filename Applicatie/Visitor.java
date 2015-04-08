@@ -3,13 +3,19 @@ package Applicatie;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Agenda.Agenda;
 import Agenda.Event;
 import Objects.DrawObject;
+import Objects.Path;
 
 public class Visitor
 {
@@ -22,6 +28,7 @@ public class Visitor
 	ArrayList<Action> actions;
 	Agenda agenda;
 	ArrayList<DrawObject> objects;
+	char target;
 
 	public Visitor(String filename, Point2D position, Agenda agenda, ArrayList<DrawObject> objects)
 	{
@@ -34,6 +41,7 @@ public class Visitor
 		this.agenda = agenda;
 		this.objects = objects;
 		fillActions();
+		target = 'z';
 	}
 
 	public void draw(Graphics2D g2)
@@ -49,12 +57,11 @@ public class Visitor
 		AffineTransform tx = new AffineTransform();
 		tx.scale(scale, scale);
 		tx.translate(position.getX(), position.getY());
-//		System.out.println(position.getX());
 		tx.rotate(rotation, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		return tx;
 	}
 
-	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors)
+	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
 		Point2D target = new Point(500, 500);
 		for (Action a : actions)
@@ -65,57 +72,179 @@ public class Visitor
 			}
 
 		}
-		moveToTarget(target, objects, visitors);
+		
+		moveToTarget(target, objects, visitors, paths);
 	}
 
-	public void moveToTarget(Point2D target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors)
+	public void moveToTarget(Point2D target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
-
-		double newRot = Math.atan2(target.getY() - position.getY(), target.getX() - position.getX());
-
-		int difx = (int) (target.getX() - position.getX());
-		int dify = (int) (target.getY() - position.getY());
-		int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
-
-		if (rotation > newRot && distance > 10)
+		Point2D tar = target;
+		boolean hasPathBelow = false;
+		for (Path p : paths)
 		{
-			rotation -= 0.15;
-		}
-		else if (rotation < newRot && distance > 10)
-		{
-			rotation += 0.15;
-		}
-
-		Point2D oldPosition = position;
-
-		// face direction
-		float directionX = (float) Math.cos(rotation);
-		float directionY = (float) Math.sin(rotation);
-
-		if (distance > 10)
-		{
-			position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
-		}
-
-		boolean possible = true;
-		for (DrawObject object : objects)
-		{
-			if (hitTest(object))
+			if (p.containsPoint(position))
 			{
-				possible = false;
+				hasPathBelow = true;
+				break;
+			}
+			Shape containsShape = p.containsPointShape(position);
+			if(containsShape != null)
+			{
+				tar = new Point2D.Double(containsShape.getBounds().getCenterX(), containsShape.getBounds().getCenterY());
 			}
 		}
-//		for (Visitor object : visitors)
-//		{
-//			if (hitTestVisitor(object) && object != this)
-//			{
-//				possible = false;
-//			}
-//		}
-		if (possible == false)
+
+		if (hasPathBelow)
 		{
-			position = oldPosition;
-			rotation += 0.2;
+			double newRot = Math.atan2(tar.getY() - position.getY(), tar.getX() - position.getX());
+
+			int difx = (int) (tar.getX() - position.getX());
+			int dify = (int) (tar.getY() - position.getY());
+			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
+
+			if (rotation > newRot && distance > 10)
+			{
+				rotation -= 0.15;
+			}
+			else if (rotation < newRot && distance > 10)
+			{
+				rotation += 0.15;
+			}
+
+			Point2D oldPosition = position;
+
+			// face direction
+			float directionX = (float) Math.cos(rotation);
+			float directionY = (float) Math.sin(rotation);
+
+			if (distance > 10)
+			{
+				position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
+			}
+
+			boolean possible = true;
+			for (DrawObject object : objects)
+			{
+				if (hasCollisionDO(object))
+				{
+					possible = false;
+				}
+			}
+			for (Visitor object : visitors)
+			{
+				if (hasCollision(object) && object != this)
+				{
+					possible = false;
+				}
+			}
+			if (possible == false)
+			{
+				position = oldPosition;
+				rotation += 0.2;
+			}
+		}
+		else
+		{
+			HashMap<Double, Shape> values = new HashMap<Double, Shape>();
+			for (Path p : paths)
+			{
+				for (Shape s : p.getPath())
+				{
+					Rectangle b = s.getBounds();
+					double maxx = b.getMaxX();
+					double minx = b.getMinX();
+					double maxy = b.getMaxY();
+					double miny = b.getMinY();
+
+					Point2D.Double[] points = new Point2D.Double[4];
+					points[0] = new Point2D.Double(minx, miny);
+					points[1] = new Point2D.Double(minx, maxy);
+					points[2] = new Point2D.Double(maxx, miny);
+					points[3] = new Point2D.Double(maxx, maxy);
+
+					Double lastdistance = null;
+					for (Point2D.Double point : points)
+					{
+						double distance = Point2D.distance(point.getX(), point.getY(), position.getX(), position.getY());
+						if (lastdistance == null)
+						{
+							lastdistance = distance;
+							continue;
+						}
+						if (distance < lastdistance)
+						{
+							lastdistance = distance;
+						}
+					}
+					values.put(lastdistance, s);
+
+				}
+			}
+			Double lastdistance = null;
+			Shape lastShape = null;
+			for (Map.Entry<Double, Shape> e : values.entrySet())
+			{
+				double distance = e.getKey();
+				if (lastdistance == null)
+				{
+					lastdistance = distance;
+					continue;
+				}
+				if (distance < lastdistance)
+				{
+					lastdistance = distance;
+				}
+			}
+			lastShape = values.get(lastdistance);
+			
+			Point2D.Double target2 = new Point2D.Double(lastShape.getBounds().getCenterX(), lastShape.getBounds().getCenterY());
+			
+			double newRot = Math.atan2(target2.getY() - position.getY(), target2.getX() - position.getX());
+
+			int difx = (int) (target2.getX() - position.getX());
+			int dify = (int) (target2.getY() - position.getY());
+			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
+
+			if (rotation > newRot && distance > 10)
+			{
+				rotation -= 0.15;
+			}
+			else if (rotation < newRot && distance > 10)
+			{
+				rotation += 0.15;
+			}
+
+			Point2D oldPosition = position;
+
+			// face direction
+			float directionX = (float) Math.cos(rotation);
+			float directionY = (float) Math.sin(rotation);
+
+			if (distance > 10)
+			{
+				position = new Point2D.Double((position.getX() + directionX * speed), (position.getY() + directionY * speed));
+			}
+
+			boolean possible = true;
+			for (DrawObject object : objects)
+			{
+				if (hasCollisionDO(object))
+				{
+					possible = false;
+				}
+			}
+			for (Visitor object : visitors)
+			{
+				if (hasCollision(object) && object != this)
+				{
+					possible = false;
+				}
+			}
+			if (possible == false)
+			{
+				position = oldPosition;
+				rotation += 0.2;
+			}
 		}
 	}
 
@@ -197,27 +326,52 @@ public class Visitor
 		time = (hours * 100) + minutes;
 		return time;
 	}
-
-	public int getEndX()
-	{
+	
+	public boolean hasCollisionDO(DrawObject object){
 		Image image = Images.getImage(filename);
-		return (int) (position.getX() + image.getWidth(null));
+		Image image2 = Images.getImage(object.getFileName());
+	    Rectangle recta = new Rectangle((int)position.getX(),(int)position.getY(), image.getWidth(null), image.getHeight(null));
+	    Rectangle rectb = new Rectangle((int)object.getPosition().getX(),(int)object.getPosition().getY(), image2.getWidth(null), image2.getHeight(null));
+	    
+	    Area a = new Area(recta);
+	    Area b = new Area(rectb);
+	    
+	    AffineTransform transA = new AffineTransform();
+	    transA.rotate(rotation, position.getX(), position.getY());
+
+	    AffineTransform transB = new AffineTransform();
+	    transB.rotate(Math.toRadians(object.getRotation()), object.getPosition().getX(), object.getPosition().getY());
+
+	    Area aa = a.createTransformedArea(transA);
+	    Area bb = b.createTransformedArea(transB);
+
+	    if(bb.intersects(aa.getBounds2D())){
+	        return true;
+	    }
+	    return false;
 	}
 
-	public int getEndY()
-	{
+	public boolean hasCollision(Visitor v){
 		Image image = Images.getImage(filename);
-		return (int) (position.getY() + image.getHeight(null));
+	    Rectangle a = new Rectangle((int)position.getX(),(int)position.getY(), image.getWidth(null), image.getHeight(null));
+	    Rectangle b = new Rectangle((int)v.position.getX(),(int)v.position.getY(), image.getWidth(null), image.getHeight(null));
+	    
+	    Area aa = new Area(a);
+	    Area bb = new Area(b);
+	    
+	    AffineTransform af = new AffineTransform();
+	    af.rotate(rotation, position.getX(), position.getY());
+
+	    AffineTransform bf = new AffineTransform();
+	    bf.rotate(v.rotation, v.position.getX(), v.position.getY());
+
+	    Area ra = aa.createTransformedArea(af);
+	    Area rb = bb.createTransformedArea(bf);
+
+	    if(ra.intersects(rb.getBounds2D())){
+	        return true;
+	    }
+	    return false;
 	}
 
-	public boolean hitTest(DrawObject to2)
-	{
-		return (getEndX() >= to2.getPosition().getX() && getEndY() >= to2.getPosition().getY() && to2.getEndX() >= position.getX() && to2.getEndY() >= position.getY());
-
-	}
-
-//	public boolean hitTestVisitor(Visitor v)
-//	{
-//		return (getEndX() >= v.position.getX() && getEndY() >= v.position.getY() && v.getEndX() >= position.getX() && v.getEndY() >= position.getY());
-//	}
 }
