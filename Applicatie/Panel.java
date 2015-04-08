@@ -45,7 +45,7 @@ public class Panel extends JPanel implements ActionListener
 
 	BufferedImage grass, sand;
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, wallImage, foodImage;
 
 	private int panelInfox, panelInfoy, scrollfactor;
 
@@ -110,7 +110,6 @@ public class Panel extends JPanel implements ActionListener
 			podiumImage = ImageIO.read(new File("images/stageIcon.png"));
 			toiletImage = ImageIO.read(new File("images/wcIcon.png"));
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
-			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
 			background = grass;
@@ -122,7 +121,6 @@ public class Panel extends JPanel implements ActionListener
 		panelInfo.add(podiumImage);
 		panelInfo.add(toiletImage);
 		panelInfo.add(entranceImage);
-		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
 
@@ -166,10 +164,8 @@ public class Panel extends JPanel implements ActionListener
 			case 2:
 				return new Entrance(null);
 			case 3:
-				return new OldPath(null);
-			case 4:
 				return new Wall(null);
-			case 5:
+			case 4:
 				return new Food(null);
 			default:
 				return null;
@@ -537,6 +533,16 @@ public class Panel extends JPanel implements ActionListener
 	public void setAgenda(Agenda agenda)
 	{
 		this.agenda = agenda;
+	}
+	
+	public int getFieldWidth()
+	{
+		return width;
+	}
+	
+	public int getFieldHeight()
+	{
+		return height;
 	}
 
 	@Override
