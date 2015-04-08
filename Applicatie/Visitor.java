@@ -102,7 +102,6 @@ public class Visitor
 	{
 		System.out.println("CurrentTarget: " + target);
 		System.out.println("FinalTarget: " + finalTarget);
-		System.out.println(panel.getWaypoints().size());
 		Point2D targetPoint = panel.getWaypoint(target).getAccuratePoint();
 
 		double newRot = Math.atan2(targetPoint.getY() - position.getY(), targetPoint.getX() - position.getX());
