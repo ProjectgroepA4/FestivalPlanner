@@ -20,7 +20,7 @@ public class EditStagePanel extends JFrame{
 
 	public EditStagePanel(Agenda agenda, AgendaStage sta)
 	{
-		super("Stage editscreen!");
+		super("Stage editscreen");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JPanel content = new JPanel(new BorderLayout());
 		JPanel south = new JPanel(new FlowLayout());

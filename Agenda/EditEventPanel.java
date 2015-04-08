@@ -24,7 +24,7 @@ public class EditEventPanel extends JFrame{
 
 	public EditEventPanel(Agenda agenda, Event e, TabbedPane tab)
 	{
-		super("Event editscreen!");
+		super("Event editscreen");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JPanel content = new JPanel(new BorderLayout());
 		JPanel south = new JPanel(new FlowLayout());

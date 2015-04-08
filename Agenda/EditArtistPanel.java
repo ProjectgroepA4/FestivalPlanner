@@ -19,7 +19,7 @@ public class EditArtistPanel extends JFrame {
 
 	public EditArtistPanel(Agenda agenda, Artist art, TabbedPane tab)
 	{
-		super("Artist editscreen!");
+		super("Artist editscreen");
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JPanel content = new JPanel(new BorderLayout());
 		JPanel south = new JPanel(new FlowLayout());
