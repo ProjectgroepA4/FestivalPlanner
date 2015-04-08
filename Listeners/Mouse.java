@@ -78,7 +78,7 @@ public class Mouse extends MouseAdapter
 						{
 							if (o instanceof Waypoint)
 							{
-								new WaypointPopup(o, panel);
+								new WaypointPopup(o);
 
 							}
 						}
