@@ -56,6 +56,7 @@ public class PropertiesPanel extends JPanel
 		setPreferredSize(new Dimension(200, 0));
 		setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 		setBackground(new Color(220, 220, 220));
+		setFocusable(false);
 
 		// NAME "PROPERTIES"
 		JPanel propPanel = new JPanel();
