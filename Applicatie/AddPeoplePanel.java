@@ -1,13 +1,17 @@
 package Applicatie;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -31,6 +35,29 @@ public class AddPeoplePanel extends JFrame {
 		panel = new JPanel();
 		JTextField amountOfPeopleField = new JTextField("0");
 		amountOfPeopleField.setPreferredSize(new Dimension(100,20));
+		amountOfPeopleField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				try {
+					amountOfPeopleField.setBackground(Color.WHITE);
+					int amountOfPeople = Integer.parseInt(amountOfPeopleField.getText());
+					amountOfPeopleField.setText(amountOfPeople + "");
+				}
+				catch(NumberFormatException nf) {
+					amountOfPeopleField.setBackground(Color.RED);
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
+		
 		label = new JLabel("people ");
 		panel.add(amountOfPeopleField);
 		panel.add(label);
@@ -51,8 +78,12 @@ public class AddPeoplePanel extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				topPanel.addVisitors(Integer.parseInt(amountOfPeopleField.getText()));
-				AddPeoplePanel.this.dispose();
+				if(amountOfPeopleField.getBackground() != Color.RED) {
+					topPanel.addVisitors(Integer.parseInt(amountOfPeopleField.getText()));
+					AddPeoplePanel.this.dispose();
+				}
+				else 
+					JOptionPane.showMessageDialog(topPanel, "Only numbers are accepted");
 			}
 		});
 		panel.add(button);

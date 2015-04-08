@@ -231,14 +231,11 @@ public class Panel extends JPanel implements ActionListener
 
 	public void addVisitors(ArrayList<DrawObject> entrances)
 	{
-		if(!entrances.isEmpty()) {
+		
 			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
 			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
 			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
-		}
-		else {
-			JOptionPane.showMessageDialog(this, "You don't have an entrance");
-		}
+		
 	}
 
 	public void addVisitors(int count)
@@ -249,10 +246,14 @@ public class Panel extends JPanel implements ActionListener
 				entrances.add(object);
 			}
 		}
-		for (int i = 0; i < count; i++)
-		{
-			addVisitors(entrances);
+		if(!entrances.isEmpty()) {
+			for (int i = 0; i < count; i++)
+			{
+				addVisitors(entrances);
+			}
 		}
+		else 
+			JOptionPane.showMessageDialog(this, "You don't have an entrance");
 		cp.setPeople(visitors.size());
 	}
 
