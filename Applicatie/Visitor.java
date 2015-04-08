@@ -220,14 +220,15 @@ public class Visitor
 			System.out.println(rotation);
 			System.out.println(newRot);
 			System.out.println("--------------");
-			if (rotation > newRot && distance > 10)
-			{
-				rotation -= 0.15;
-			}
-			else if (rotation < newRot && distance > 10)
-			{
-				rotation += 0.15;
-			}
+//			if (rotation > newRot && distance > 10)
+//			{
+//				rotation -= 0.15;
+//			}
+//			else if (rotation < newRot && distance > 10)
+//			{
+//				rotation += 0.15;
+//			}
+			rotation = newRot;
 
 			Point2D oldPosition = position;
 

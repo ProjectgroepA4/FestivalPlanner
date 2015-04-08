@@ -114,7 +114,7 @@ public class Panel extends JPanel implements ActionListener
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
-			waypointImage = ImageIO.read(new File("images/waypoint.png"));
+			waypointImage = ImageIO.read(new File("images/waypointIcon.png"));
 			background = grass;
 		}
 		catch (IOException e)

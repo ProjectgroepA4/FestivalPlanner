@@ -11,7 +11,6 @@ public class Waypoint extends DrawObject
 	public Waypoint(Point2D position)
 	{
 		super("waypoint", position);
-		self = 1;
 	}
 
 	@Override
@@ -37,6 +36,7 @@ public class Waypoint extends DrawObject
 
 	public void setSelf(int self)
 	{
+		System.out.println(self);
 		this.self = self;
 	}
 
