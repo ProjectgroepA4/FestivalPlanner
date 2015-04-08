@@ -3,8 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -62,7 +60,7 @@ public class WaypointPopup extends JFrame {
 		panel1.add(name);
 		row1.add(panel1);
 		
-		JTextField tf = new JTextField(10);
+		JTextField tf = new JTextField(wp.getSelf() + "", 10);
 		row2.add(tf);
 		
 		JPanel panel2 = new JPanel();
@@ -75,7 +73,21 @@ public class WaypointPopup extends JFrame {
 		empty2.add(Box.createRigidArea(new Dimension(0, 5)));
 		row2.add(empty2);
 		
-		JTextField tx = new JTextField(8);
+		String optionss = "";
+		if(wp.getOptions() != null)
+		{
+			if(wp.getOptions().length != 0)
+			{
+				int[] optionsa = wp.getOptions();
+				optionss += optionsa[0];
+				for(int i = 1; i < optionsa.length; i++)
+				{
+					optionss += "-" + optionsa[i];
+				}
+			}
+		}
+		
+		JTextField tx = new JTextField("" + optionss, 8);
 		row2.add(tx);
 		
 		JPanel help = new JPanel();
@@ -99,8 +111,6 @@ public class WaypointPopup extends JFrame {
 				for(int i = 0; i < options.length; i++)
 				{
 					ioptions[i] = Integer.valueOf(options[i]);
-					System.out.println(ioptions[i]);
-
 				}
 				wp.setOptions(ioptions);
 				
