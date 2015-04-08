@@ -27,23 +27,51 @@ public class Keyboard implements KeyListener {
 		}
 		else if(e.getKeyCode() == e.VK_LEFT) {
 			if(panel.getSelectedObject() != null) 
-				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX()-5,panel.getSelectedObject().getPosition().getY()));
+				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX()-5,panel.getSelectedObject().getPosition().getY()), true);
 			panel.checkCollision();
+			panel.getPP().update();
 		}
 		else if(e.getKeyCode() == e.VK_RIGHT) {
 			if(panel.getSelectedObject() != null) 
-				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX()+5,panel.getSelectedObject().getPosition().getY()));
+				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX()+5,panel.getSelectedObject().getPosition().getY()), true);
 			panel.checkCollision();
+			panel.getPP().update();
 		}
 		else if(e.getKeyCode() == e.VK_UP) {
 			if(panel.getSelectedObject() != null) 
-				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX(),panel.getSelectedObject().getPosition().getY()-5));
+				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX(),panel.getSelectedObject().getPosition().getY()-5), true);
 			panel.checkCollision();
+			panel.getPP().update();
 		}
 		else if(e.getKeyCode() == e.VK_DOWN) {
 			if(panel.getSelectedObject() != null) 
-				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX(),panel.getSelectedObject().getPosition().getY()+5));
+				panel.getSelectedObject().setPosition(new Point2D.Double(panel.getSelectedObject().getPosition().getX(),panel.getSelectedObject().getPosition().getY()+5), true);
 			panel.checkCollision();
+			panel.getPP().update();
+		}
+		else if(e.getKeyCode() == e.VK_ADD) {
+			if(panel.getSelectedObject() != null) 
+				panel.getSelectedObject().setScale(panel.getSelectedObject().getScale()+0.2);
+			panel.checkCollision();
+			panel.getPP().update();
+		}
+		else if(e.getKeyCode() == e.VK_SUBTRACT) {
+			if(panel.getSelectedObject() != null) 
+				panel.getSelectedObject().setScale(Math.max(panel.getSelectedObject().getScale()-0.2, 0.2));
+			panel.checkCollision();
+			panel.getPP().update();
+		}
+		else if(e.getKeyCode() == e.VK_COMMA) {
+			if(panel.getSelectedObject() != null) 
+				panel.getSelectedObject().setRotation((panel.getSelectedObject().getRotation()-5)%360);
+			panel.checkCollision();
+			panel.getPP().update();
+		}
+		else if(e.getKeyCode() == e.VK_PERIOD) {
+			if(panel.getSelectedObject() != null) 
+				panel.getSelectedObject().setRotation((panel.getSelectedObject().getRotation()+5)%360);
+			panel.checkCollision();
+			panel.getPP().update();
 		}
 		else if(e.getKeyCode() == e.VK_ENTER) {
 			if(panel.getClickedOption().equals("Path")) {
