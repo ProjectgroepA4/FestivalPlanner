@@ -49,6 +49,9 @@ public class Visitor {
 		this.objects = objects;
 		fillActions();
 		System.out.println(actions.size());
+		for (Action a : actions){
+			System.out.println("" + a.getStartTime());
+		}
 		target = 1;
 		finalTarget = 4;
 	}
