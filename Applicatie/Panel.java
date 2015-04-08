@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import Agenda.Agenda;
+import Listeners.WindowFocusListener;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
@@ -112,7 +113,7 @@ public class Panel extends JPanel implements ActionListener
 			entranceImage = ImageIO.read(new File("images/entranceIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
-			waypointImage = ImageIO.read(new File("images/waypointIcon.png"));
+			waypointImage = ImageIO.read(new File("images/waypoint.png"));
 			background = grass;
 		}
 		catch (IOException e)
@@ -141,6 +142,9 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
+		
+		addFocusListener(new WindowFocusListener(this));
+		
 		t = new Timer(1000 / 10, this);
 	}
 
@@ -223,7 +227,7 @@ public class Panel extends JPanel implements ActionListener
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 300));
+		g2.setClip(new Rectangle2D.Double(0, 0, getWidth(), 150));
 		Stroke old = g2.getStroke();
 		g2.setStroke(new BasicStroke(10));
 		g2.drawLine(0, 150, getWidth(), 150);
@@ -483,6 +487,9 @@ public class Panel extends JPanel implements ActionListener
 	 */
 	public void startPath()
 	{
+		pp.clearSelected();
+		setSelectedObject(null);
+		clearObjectSelection();
 		setClickedOption("Path");
 		currentPath = new Path();
 		paths.add(currentPath);

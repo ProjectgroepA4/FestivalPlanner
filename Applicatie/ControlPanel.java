@@ -26,10 +26,11 @@ public class ControlPanel extends JPanel
 		super();
 		BoxLayout box = new BoxLayout(this, BoxLayout.X_AXIS);
 		setLayout(box);
+		
 		setPreferredSize(new Dimension(0,50));
 		setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 		setBackground(new Color(220, 220, 220));
-		
+		setFocusable(false);
 		
 		JPanel simulatorPanel  = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		simulatorPanel.setPreferredSize(new Dimension(350,50));
