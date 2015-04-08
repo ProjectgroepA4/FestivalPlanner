@@ -158,10 +158,10 @@ public class Visitor
 
 			for (Map.Entry<Integer, int[]> e : options.entrySet())
 			{
-//				System.out.println("KEY: " + e.getKey());
+				// System.out.println("KEY: " + e.getKey());
 				for (int i : e.getValue())
 				{
-//					System.out.println("VAL: " + i);
+					// System.out.println("VAL: " + i);
 					if (finalTarget != target)
 					{
 						if (finalTarget == i && e.getKey() == target)
@@ -171,19 +171,26 @@ public class Visitor
 						}
 						else if (finalTarget == i)
 						{
-							target = e.getKey();
+							target = getNextWaypoint(options, e.getKey());
 							break;
 						}
 					}
 				}
-				System.out.println("--------------");
 			}
 		}
 	}
-	
-	public int getNextWaypoint()
+
+	public int getNextWaypoint(HashMap<Integer, int[]> options, int lastWaypoint)
 	{
-		return 0;
+		Iterator<Integer> it = options.keySet().iterator();
+		for (int i : options.get(lastWaypoint))
+		{
+			while (it.hasNext())
+			{
+				System.out.println(it.next());
+			}
+		}
+		return lastWaypoint;
 	}
 
 	public boolean checkIfOnWaypoint(Panel panel)
