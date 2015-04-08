@@ -637,7 +637,6 @@ public class Panel extends JPanel implements ActionListener
 			currentTime++;
 			date.setTimeInMillis(date.getTimeInMillis() + 1000);
 			cp.setTime(formatter.format(date.getTime()));
-			System.out.println(currentTime);
 		}
 
 		for (Visitor v : visitors)

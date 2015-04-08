@@ -79,8 +79,7 @@ public class MenuBar extends JMenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				w.setVisible(false);
-				w.dispose();
+				System.exit(0);
 			}
 		});
 
