@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -97,12 +98,24 @@ public class WaypointPopup extends JFrame {
 				for(int i = 0; i < options.length; i++)
 				{
 					ioptions[i] = Integer.valueOf(options[i]);
+					System.out.println(ioptions[i]);
 				}
 				wp.setOptions(ioptions);
 				
 			}
 		});
 		south.add(edit);
+		
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				dispose();
+			}
+		});
+		south.add(cancel);
 		
 		setContentPane(content);
 		setVisible(true);

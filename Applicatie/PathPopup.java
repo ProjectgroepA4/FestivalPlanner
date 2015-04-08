@@ -51,7 +51,7 @@ public class PathPopup extends JFrame
 			}
 		});
 		
-		JButton cancel = new JButton("Done");
+		JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(new ActionListener()
 		{
 			@Override
