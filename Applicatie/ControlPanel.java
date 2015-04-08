@@ -22,6 +22,7 @@ public class ControlPanel extends JPanel
 	private int people;
 	JLabel timeLabel;
 	JLabel peopleLabel;
+	JLabel runningLabel;
 	
 	public ControlPanel()
 	{
@@ -36,8 +37,8 @@ public class ControlPanel extends JPanel
 		setFocusable(false);
 		
 		JPanel simulatorPanel  = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		simulatorPanel.setPreferredSize(new Dimension(350,50));
-		simulatorPanel.setMaximumSize(new Dimension(350,50));
+		simulatorPanel.setPreferredSize(new Dimension(290,50));
+		simulatorPanel.setMaximumSize(new Dimension(290,50));
 		add(simulatorPanel);
 		{
 			JLabel simulatorLabel = new JLabel("Simulator: ");
@@ -51,20 +52,10 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().start();
+					runningLabel.setText("Simulation Started");
 				}
 			});
 			simulatorPanel.add(playButton);
-			
-			JButton pauseButton = new JButton("Pause");
-			pauseButton.setFocusable(false);
-			pauseButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-			pauseButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					p.getT().stop();
-				}
-			});
-			simulatorPanel.add(pauseButton);
 			
 			JButton stopButton = new JButton("Stop");
 			stopButton.setFocusable(false);
@@ -73,6 +64,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().stop();
+					runningLabel.setText("Simulation Stopped");
 				}
 			});
 			simulatorPanel.add(stopButton);
@@ -131,7 +123,7 @@ public class ControlPanel extends JPanel
 		runningPanel.setMaximumSize(new Dimension(195,50));
 		add(runningPanel);
 		{
-			JLabel runningLabel = new JLabel("Simulation stopped");
+			runningLabel = new JLabel("Simulation stopped");
 			runningLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			runningPanel.add(runningLabel);
 		}

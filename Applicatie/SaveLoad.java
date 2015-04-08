@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import Agenda.Agenda;
 import Objects.DrawObject;
+import Objects.Path;
 
 public class SaveLoad
 {
@@ -83,7 +85,12 @@ public class SaveLoad
 			oos.writeObject(panel.getAgenda());
 			for (DrawObject object : panel.objects)
 			{
+				object.setSelected(false);
 				oos.writeObject(object);
+			}
+			for(Path p : panel.paths)
+			{
+				oos.writeObject(p);
 			}
 			oos.close();
 			JOptionPane.showMessageDialog(null, "Saved succesfully");
@@ -166,6 +173,12 @@ public class SaveLoad
 					{
 						panel.addWaypoint((Waypoint) object);
 						panel.objects.add((DrawObject) object);
+					}
+					if (object instanceof Path)
+					{
+						Path p = (Path) object;
+						p.updateImage();
+						panel.paths.add((Path) object);
 					}
 					else
 					{
