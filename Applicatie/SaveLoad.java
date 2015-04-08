@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import Agenda.Agenda;
 import Objects.DrawObject;
 
 public class SaveLoad {
@@ -66,6 +67,7 @@ public class SaveLoad {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(panel.getAgenda());
 			for (DrawObject object : panel.objects) {
 				oos.writeObject(object);
 			}
@@ -124,8 +126,10 @@ public class SaveLoad {
 			ois = new ObjectInputStream(fis);
 
 			Object object;
-			object = ois.readObject();
+			Agenda a = (Agenda) ois.readObject();
+			panel.setAgenda(a);
 			try {
+				object = ois.readObject();
 				panel.clearObjects();
 				while (object != null) {
 					panel.objects.add((DrawObject) object); 					

@@ -33,10 +33,12 @@ public class MenuBar extends JMenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				new Agenda.Window();
+				new Agenda.Window(w.getPanel());
 			}
 		});
 		file.add(agenda);
+		
+		file.addSeparator();
 		
 		item = new JMenuItem("Open");
 		item.addActionListener(new ActionListener() {
@@ -60,22 +62,12 @@ public class MenuBar extends JMenuBar
 		
 		file.addSeparator();
 		
-		item = new JMenuItem("Load agenda");
-		item.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				w.getPanel().agenda.loadAgenda();
-			}
-		});
-		file.add(item);
-		
 		item = new JMenuItem("Agenda");
 		item.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				new Agenda.Window();
+				new Agenda.Window(w.getPanel());
 			}
 		});
 		file.add(item);

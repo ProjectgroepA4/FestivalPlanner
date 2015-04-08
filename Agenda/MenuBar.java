@@ -63,7 +63,8 @@ public class MenuBar extends JMenuBar {
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				w.getAgenda().loadAgenda();
+				Applicatie.SaveLoad.load(w.getPanel());
+				w.setAgenda(w.getPanel().getAgenda());
 				Window.updatePanel();
 			}
 		});
@@ -72,7 +73,7 @@ public class MenuBar extends JMenuBar {
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				w.getAgenda().saveAgenda();
+				Applicatie.SaveLoad.save(w.getPanel());
 				Window.updatePanel();
 			}
 		});
