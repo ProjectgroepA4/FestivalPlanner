@@ -110,6 +110,18 @@ public class Path
 		}
 		return false;
 	}
+	
+	public boolean intersectsRect(Rectangle2D rect)
+	{
+		for(Shape line : getPath())
+		{
+			if(line.intersects(rect))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Get array with line's from the points.

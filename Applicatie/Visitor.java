@@ -27,6 +27,7 @@ public class Visitor
 	ArrayList<Action> actions;
 	Agenda agenda;
 	ArrayList<DrawObject> objects;
+	char target;
 
 	public Visitor(String filename, Point2D position, Agenda agenda, ArrayList<DrawObject> objects)
 	{
@@ -39,6 +40,7 @@ public class Visitor
 		this.agenda = agenda;
 		this.objects = objects;
 		fillActions();
+		target = 'z';
 	}
 
 	public void draw(Graphics2D g2)

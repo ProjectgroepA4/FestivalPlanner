@@ -4,10 +4,7 @@ package Agenda;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-<<<<<<< HEAD
 import java.awt.FlowLayout;
-=======
->>>>>>> origin/Banaan
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

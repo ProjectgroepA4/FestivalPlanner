@@ -43,14 +43,14 @@ public class Panel extends JPanel implements ActionListener
 
 	BufferedImage grass, sand;
 	BufferedImage background;
-	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage;
+	BufferedImage podiumImage, toiletImage, entranceImage, pathImage, wallImage, foodImage, waypointImage;
 
 	private int panelInfox, panelInfoy, scrollfactor;
 
 	private ArrayList<BufferedImage> panelInfo = new ArrayList<BufferedImage>();
 	// private ArrayList<Object> panelTypes = new ArrayList<Object>();
 	ArrayList<Visitor> visitors = new ArrayList<>();
-
+	ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
 	ArrayList<DrawObject> objects = new ArrayList<>();
 	ArrayList<Path> paths = new ArrayList<>();
 	DrawObject dragObject = null;
@@ -103,6 +103,7 @@ public class Panel extends JPanel implements ActionListener
 			pathImage = ImageIO.read(new File("images/pathIcon.png"));
 			wallImage = ImageIO.read(new File("images/wallIcon.png"));
 			foodImage = ImageIO.read(new File("images/foodIcon.png"));
+			waypointImage = ImageIO.read(new File("images/waypointIcon.png"));
 			background = grass;
 		}
 		catch (IOException e)
@@ -115,6 +116,7 @@ public class Panel extends JPanel implements ActionListener
 		panelInfo.add(pathImage);
 		panelInfo.add(wallImage);
 		panelInfo.add(foodImage);
+		panelInfo.add(waypointImage);
 
 		agenda = new Agenda();
 
@@ -161,6 +163,8 @@ public class Panel extends JPanel implements ActionListener
 				return new Wall(null);
 			case 5:
 				return new Food(null);
+			case 6:
+				return new Waypoint(null);
 			default:
 				return null;
 		}
@@ -169,6 +173,31 @@ public class Panel extends JPanel implements ActionListener
 	public void add(DrawObject dragObject)
 	{
 		objects.add(dragObject);
+	}
+
+	public void addWaypoint(Waypoint w)
+	{
+		waypoints.add(w);
+	}
+
+	public ArrayList<Waypoint> getWaypoints()
+	{
+		return waypoints;
+	}
+
+	public int getNextTarget()
+	{
+		int last = 0;
+		for (Waypoint w : waypoints)
+		{
+			System.out.println(waypoints);
+			if (w.getSelf() > last)
+			{
+				last = w.getSelf();
+			}
+		}
+		System.out.println(last);
+		return last;
 	}
 
 	public void addVisitors()
@@ -551,6 +580,11 @@ public class Panel extends JPanel implements ActionListener
 	public Timer getT()
 	{
 		return t;
+	}
+
+	public ArrayList<Path> getPaths()
+	{
+		return paths;
 	}
 
 	public void setT(Timer t)

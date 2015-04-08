@@ -82,12 +82,8 @@ public class MenuBar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to close this program?", "Close Agenda", JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
 				{
-<<<<<<< HEAD
 					w.setVisible(false);
 					w.dispose();
-=======
-					System.exit(0);
->>>>>>> origin/Banaan
 				}
 			}
 		});
