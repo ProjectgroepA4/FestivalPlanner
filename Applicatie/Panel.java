@@ -63,6 +63,7 @@ public class Panel extends JPanel implements ActionListener
 	private Path currentPath;
 	private static int width = 1920;
 	private static int height = 1080;
+	private boolean play = false;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -240,7 +241,7 @@ public class Panel extends JPanel implements ActionListener
 		if(!entrances.isEmpty()) {
 			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
 			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
-			visitors.add(new Visitor("visitor",point, agenda, objects));
+			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "You don't have an entrance");
@@ -661,6 +662,16 @@ public class Panel extends JPanel implements ActionListener
 	public void setT(Timer t)
 	{
 		this.t = t;
+	}
+	
+	public void setPlay(boolean play)
+	{
+		this.play = play;
+	}
+	
+	public boolean getPlay()
+	{
+		return play;
 	}
 
 	public void newWorld(int width, int height, int terrainIndex)
