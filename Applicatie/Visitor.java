@@ -10,8 +10,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import Agenda.Agenda;
 import Agenda.Event;
@@ -87,11 +87,13 @@ public class Visitor
 	public void update(ArrayList<DrawObject> objects, int currentTime, ArrayList<Visitor> visitors, ArrayList<Path> paths, Panel panel)
 	{
 		DrawObject target = getEntrance();
+
 		for (Action a : actions)
 		{
 			if (currentTime >= a.getStartTime() && currentTime < a.getStoptime())
 			{
 				this.finalTarget = a.getWaypoint().getSelf();
+
 			}
 
 		}
@@ -138,6 +140,7 @@ public class Visitor
 
 			if (hasCollisionDO(object))
 			{
+
 				possible = false;
 			}
 		}
@@ -146,8 +149,10 @@ public class Visitor
 			position = oldPosition;
 			rotation += 0.2;
 		}
+
 		if (checkIfOnWaypoint(panel))
 		{
+
 			HashMap<Integer, int[]> options = new HashMap<Integer, int[]>();
 			for (Waypoint w : panel.getWaypoints())
 			{
@@ -174,6 +179,7 @@ public class Visitor
 							break;
 						}
 					}
+
 				}
 			}
 		}
@@ -247,6 +253,7 @@ public class Visitor
 
 				if (hasCollision(object) && object != this)
 				{
+
 					possible = false;
 				}
 			}
@@ -364,13 +371,13 @@ public class Visitor
 	@SuppressWarnings("static-access")
 	public void fillActions()
 	{
-		int startTime = 540;
-		int stopTime = 1260;
+		int startTime = 840;
+		int stopTime = 1440;
 
 		while (startTime < stopTime)
 		{
 			int random = (int) Math.floor(Math.random() * 51);
-			if (random < 40)
+			if (random < 30)
 			{
 				Point2D position = null;
 				DrawObject targetStage = null;
@@ -382,20 +389,35 @@ public class Visitor
 						posEvents.add(e);
 					}
 				}
-
-				if (posEvents.size() != 0)
+				int totalPopularity = 0;
+				for (Event ev : posEvents)
 				{
-					int r = (int) Math.floor(Math.random() * posEvents.size());
-					Event evs = posEvents.get(r);
-					for (DrawObject d : objects)
+					totalPopularity += ev.getExpectedPopularity();
+				}
+
+				Random rand = new Random();
+				int n = rand.nextInt(totalPopularity + 1);
+				int currentPop = 0;
+				if (posEvents != null)
+				{
+					for (Event evs : posEvents)
 					{
-						if (d.getFileName().equals("stage"))
+						int before = currentPop;
+						currentPop = currentPop + evs.getExpectedPopularity();
+						if (before < n && currentPop >= n)
 						{
-							Stage s = (Stage) d;
-							if (s.getStage().getName().equals(evs.getStage().getName()))
+							for (DrawObject d : objects)
 							{
-								position = s.getPosition();
-								targetStage = d;
+								if (d.getFileName().equals("stage"))
+								{
+									Stage s = (Stage) d;
+									if (s.getStage().getName().equals(evs.getStage().getName()))
+									{
+										position = s.getPosition();
+										targetStage = d;
+									}
+								}
+
 							}
 						}
 					}
@@ -404,13 +426,13 @@ public class Visitor
 				int randomtime = (int) (40 + (Math.random() * (60 - 40)));
 				if (position != null)
 				{
-					Waypoint w = getClosestWaypoint(position);
+					Waypoint w = getClosedWaypoint(position);
 					actions.add(new Action(position, startTime, randomtime, targetStage, w));
 				}
 				startTime = startTime + randomtime;
 
 			}
-			else if (random >= 40 && random < 45)
+			else if (random >= 30 && random < 40)
 			{
 				Point2D position = null;
 				DrawObject targetStage = null;
@@ -428,15 +450,16 @@ public class Visitor
 					int r = (int) Math.floor(Math.random() * foodPlaces.size());
 					position = foodPlaces.get(r).getPosition();
 					targetStage = foodPlaces.get(r);
-					Waypoint w = getClosestWaypoint(position);
+					Waypoint w = getClosedWaypoint(position);
 					actions.add(new Action(position, startTime, 35, targetStage, w));
 					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
 
 			}
-			else if (random > 45)
+			else if (random >= 40)
 			{
+
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<DrawObject> toilets = new ArrayList<DrawObject>();
@@ -447,13 +470,15 @@ public class Visitor
 						toilets.add(d);
 					}
 				}
+
 				if (toilets.size() != 0)
 				{
 					int r = (int) Math.floor(Math.random() * toilets.size());
 					position = toilets.get(r).getPosition();
 					targetStage = toilets.get(r);
-					Waypoint w = getClosestWaypoint(position);
+					Waypoint w = getClosedWaypoint(position);
 					actions.add(new Action(position, startTime, 35, targetStage, w));
+
 					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
@@ -462,7 +487,7 @@ public class Visitor
 		}
 	}
 
-	public Waypoint getClosestWaypoint(Point2D point)
+	public Waypoint getClosedWaypoint(Point2D point)
 	{
 		Waypoint waypoint = null;
 		int distance = 10000;
@@ -470,6 +495,7 @@ public class Visitor
 		{
 			if (w.getPosition().distance(point) < distance)
 			{
+
 				waypoint = w;
 				distance = (int) w.getPosition().distance(point);
 			}
@@ -479,6 +505,7 @@ public class Visitor
 
 	public boolean hasCollisionDO(DrawObject object)
 	{
+
 		Image image = Images.getImage(filename);
 		Image image2 = Images.getImage(object.getFileName());
 		Rectangle recta = new Rectangle((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
