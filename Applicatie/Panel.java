@@ -226,14 +226,14 @@ public class Panel extends JPanel implements ActionListener
 
 	public void addVisitors()
 	{
-		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+		visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects, date));
 	}
 
 	public void addVisitors(int count)
 	{
 		for (int i = 0; i < count; i++)
 		{
-			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects));
+			visitors.add(new Visitor("visitor", new Point(100, 300), agenda, objects, date));
 		}
 	}
 
