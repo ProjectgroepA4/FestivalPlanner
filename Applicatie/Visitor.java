@@ -140,28 +140,34 @@ public class Visitor
 		}
 		if (checkIfOnWaypoint(panel))
 		{
-			// for(int i : panel.getWaypoint(target).getOptions())
-			// {
-			// if(i == finalTarget)
-			// {
-			// target = finalTarget;
-			// }
-			// }
-//			ArrayList<int[]> options = new ArrayList<int[]>();
 			HashMap<Integer, int[]> options = new HashMap<Integer, int[]>();
 			for (Waypoint w : panel.getWaypoints())
 			{
 				options.put(w.getSelf(), w.getOptions());
 			}
-			for(Map.Entry<Integer, int[]> e : options.entrySet())
+			for (Map.Entry<Integer, int[]> e : options.entrySet())
 			{
-				System.out.println(e.getKey());
-				System.out.println("=====================");
-				for(int i : e.getValue())
+				for (int i : e.getValue())
 				{
-					System.out.println(i);
+					System.out.println("KEY:" + e.getKey());
+					System.out.println("VAL:" + i);
+					System.out.println("TAR: " + target);
+
+					System.out.println("____________");
+					if (finalTarget != target)
+					{
+						if (finalTarget == i && e.getKey() == target)
+						{
+							target = finalTarget;
+							break;
+						}
+						else if (finalTarget == i)
+						{
+							target = e.getKey();
+							break;
+						}
+					}
 				}
-				System.out.println("----------");
 			}
 		}
 
