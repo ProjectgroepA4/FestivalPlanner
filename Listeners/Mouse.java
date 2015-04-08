@@ -71,7 +71,9 @@ public class Mouse extends MouseAdapter
 					{
 						if (SwingUtilities.isRightMouseButton(e))
 						{
-							new WaypointPopup(o);
+							if(o instanceof Waypoint){
+								new WaypointPopup(o);
+							}
 						}
 						if (o == selectedObject)
 						{
