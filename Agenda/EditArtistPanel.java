@@ -49,11 +49,13 @@ public class EditArtistPanel extends JFrame {
 		
 		JPanel panel5 = new JPanel();
 		JLabel image = new JLabel("Image: ");
+		image.setVisible(false);
 		panel5.add(image);
 		center.add(panel5);
 		
 		JPanel panel6 = new JPanel();
 		JTextField imageTF = new JTextField("null", 15);
+		imageTF.setVisible(false);
 		panel6.add(imageTF);
 		center.add(panel6);
 		
