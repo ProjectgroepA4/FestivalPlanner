@@ -612,6 +612,7 @@ public class Panel extends JPanel implements ActionListener
 		this.height = height;
 		paths.clear();
 		objects.clear();
+		visitors.clear();
 		cameraScale = 1;
 		switch (terrainIndex)
 		{

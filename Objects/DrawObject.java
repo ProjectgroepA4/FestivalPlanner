@@ -15,6 +15,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 import Applicatie.Images;
+import Applicatie.Panel;
 
 public abstract class DrawObject implements Serializable
 {
@@ -232,11 +233,27 @@ public abstract class DrawObject implements Serializable
 
 	public void setPosition(Point2D position)
 	{
+		if(position.getX() < -Panel.getFieldWidth()/2)
+		{
+			position.setLocation(-Panel.getFieldWidth()/2, position.getY());
+		}
+		if(position.getY() < -Panel.getFieldHeight()/2)
+		{
+			position.setLocation(position.getX(), -Panel.getFieldHeight()/2);
+		}
+		if(position.getX() > Panel.getFieldWidth()/2 - width)
+		{
+			position.setLocation(Panel.getFieldWidth()/2-width, position.getY());
+		}
+		if(position.getY() > Panel.getFieldHeight()/2 - height)
+		{
+			position.setLocation(position.getX(), Panel.getFieldHeight()/2-height);
+		}
 		this.position = position;
 	}
 	public void setPosition(Point2D position, boolean b)
 	{
-		this.position = position;
+		setPosition(position);
 	}
 
 	public double getRotation()
