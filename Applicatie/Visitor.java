@@ -56,9 +56,8 @@ public class Visitor
 		this.agenda = agenda;
 		this.objects = objects;
 		fillActions();
-		System.out.println(actions.size());
 		target = 1;
-		finalTarget = 4;
+		finalTarget = 0;
 	}
 
 	public void draw(Graphics2D g2)
@@ -97,10 +96,11 @@ public class Visitor
 		{
 			if (currentTime >= a.getStartTime() && currentTime < a.getStoptime())
 			{
-				target = a.getTargetObject();
+				this.finalTarget = a.getWaypoint().getSelf();
 			}
 
 		}
+		System.out.println(actions.size());
 
 		// moveToTarget(target, objects, visitors, paths);
 		move(target, panel);
@@ -166,11 +166,6 @@ public class Visitor
 			{
 				for (int i : e.getValue())
 				{
-					System.out.println("KEY:" + e.getKey());
-					System.out.println("VAL:" + i);
-					System.out.println("TAR: " + target);
-
-					System.out.println("____________");
 					if (finalTarget != target)
 					{
 						if (finalTarget == i && e.getKey() == target)
@@ -427,7 +422,7 @@ public class Visitor
 				int randomtime = (int) (40 + (Math.random() * (60 - 40)));
 				if (position != null)
 				{
-					Waypoint w = getClosedWaypoint(position);
+					Waypoint w = getClosestWaypoint(position);
 					actions.add(new Action(position, startTime, randomtime, targetStage, w));
 				}
 				startTime = startTime + randomtime;
@@ -451,7 +446,7 @@ public class Visitor
 					int r = (int) Math.floor(Math.random() * foodPlaces.size());
 					position = foodPlaces.get(r).getPosition();
 					targetStage = foodPlaces.get(r);
-					Waypoint w = getClosedWaypoint(position);
+					Waypoint w = getClosestWaypoint(position);
 					actions.add(new Action(position, startTime, 35, targetStage, w));
 					startTime = startTime + 20;
 				}
@@ -475,7 +470,7 @@ public class Visitor
 					int r = (int) Math.floor(Math.random() * toilets.size());
 					position = toilets.get(r).getPosition();
 					targetStage = toilets.get(r);
-					Waypoint w = getClosedWaypoint(position);
+					Waypoint w = getClosestWaypoint(position);
 					actions.add(new Action(position, startTime, 35, targetStage, w));
 					startTime = startTime + 20;
 				}
@@ -485,7 +480,7 @@ public class Visitor
 		}
 	}
 
-	public Waypoint getClosedWaypoint(Point2D point)
+	public Waypoint getClosestWaypoint(Point2D point)
 	{
 		Waypoint waypoint = null;
 		int distance = 10000;
