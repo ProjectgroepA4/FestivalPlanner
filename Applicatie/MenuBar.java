@@ -60,6 +60,16 @@ public class MenuBar extends JMenuBar
 		
 		file.addSeparator();
 		
+		item = new JMenuItem("Load agenda");
+		item.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				w.getPanel().agenda.loadAgenda();
+			}
+		});
+		file.add(item);
+		
 		item = new JMenuItem("Agenda");
 		item.addActionListener(new ActionListener()
 		{

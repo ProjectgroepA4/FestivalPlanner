@@ -28,14 +28,14 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import Agenda.Agenda;
-import Listeners.WindowFocusListener;
+import Agenda.AgendaStage;
 import Listeners.Mouse;
 import Listeners.MouseMotion;
 import Listeners.MouseWheel;
+import Listeners.WindowFocusListener;
 import Objects.DrawObject;
 import Objects.Entrance;
 import Objects.Food;
-import Objects.OldPath;
 import Objects.Path;
 import Objects.Stage;
 import Objects.Toilet;
@@ -168,7 +168,23 @@ public class Panel extends JPanel implements ActionListener
 		switch (index)
 		{
 			case 0:
-				return new Stage(null);
+				ArrayList<AgendaStage> stages = agenda.getStages();
+				Object[] s = new Object[stages.size()];
+				AgendaStage stage = null;
+				if (stages.size() != 0) {
+					for (int i = 0; i < stages.size(); i++) {
+						s[i] = stages.get(i);
+					}
+
+					stage = (AgendaStage) JOptionPane.showInputDialog(null,
+							"Select the right Stage", "Select Stage",
+							JOptionPane.PLAIN_MESSAGE, null, s, "stage");
+				}
+				if (stage != null){
+					return new Stage(null, stage);
+				} else {
+					return null;
+				}
 			case 1:
 				return new Toilet(null);
 			case 2:
