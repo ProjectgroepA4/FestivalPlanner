@@ -1,6 +1,5 @@
 package Agenda;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -183,7 +182,7 @@ public class Window extends JFrame {
             }
 		});
 	}
-	
+
 	public static void changePanel(String panel)
 	{
 		currentPanel = panel;

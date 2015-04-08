@@ -256,6 +256,7 @@ public abstract class DrawObject implements Serializable
 		setPosition(position);
 	}
 
+
 	public double getRotation()
 	{
 		return rotation;

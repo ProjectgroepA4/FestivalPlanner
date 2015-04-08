@@ -205,9 +205,9 @@ public class AddEventPanel extends JFrame{
 				
 				String stageName = (String)stage2.getSelectedItem();
 				
-				Stage stage = null;
+				AgendaStage stage = null;
 
-				for(Stage s : agenda.getStages())
+				for(AgendaStage s : agenda.getStages())
 				{
 					if (s.getName().equals(stageName))
 					{

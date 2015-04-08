@@ -28,6 +28,18 @@ public class MenuBar extends JMenuBar
 		});
 		file.add(item);
 		
+		JMenuItem agenda = new JMenuItem("Open Agenda");
+		agenda.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				new Agenda.Window(w.getPanel());
+			}
+		});
+		file.add(agenda);
+		
+		file.addSeparator();
+		
 		item = new JMenuItem("Open");
 		item.addActionListener(new ActionListener() {
 			
