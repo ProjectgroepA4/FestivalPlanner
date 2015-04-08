@@ -316,13 +316,14 @@ public class Visitor {
 		}
 	}
 
+	
 	public void fillActions() {
 		int startTime = 540;
 		int stopTime = 1260;
 
 		while (startTime < stopTime) {
 			int random = (int) Math.floor(Math.random() * 51);
-			if (random < 40) {
+			if (random < 30) {
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<Event> posEvents = new ArrayList<Event>();
@@ -331,17 +332,29 @@ public class Visitor {
 						posEvents.add(e);
 					}
 				}
+				
+				int totalPopularity = 0;
+				for (Event ev : posEvents){
+					totalPopularity += ev.getExpectedPopularity();
+				}
 
-				if (posEvents.size() != 0) {
-					int r = (int) Math.floor(Math.random() * posEvents.size());
-					Event evs = posEvents.get(r);
-					for (DrawObject d : objects) {
-						if (d.getFileName().equals("stage")) {
-							Stage s = (Stage) d;
-							if (s.getStage().getName()
-									.equals(evs.getStage().getName())) {
-								position = s.getPosition();
-								targetStage = d;
+				Random rand = new Random();
+				int n = rand.nextInt(totalPopularity) + 1;
+				int currentPop = 0;
+				if (posEvents != null){
+					for (Event evs : posEvents){
+						int before = currentPop;
+						currentPop = currentPop + evs.getExpectedPopularity();
+						if (before < n && currentPop >= n){
+							for (DrawObject d : objects) {
+								if (d.getFileName().equals("stage")) {
+									Stage s = (Stage) d;
+									if (s.getStage().getName()
+											.equals(evs.getStage().getName())) {
+										position = s.getPosition();
+										targetStage = d;
+									}
+								}	
 							}
 						}
 					}
@@ -355,7 +368,7 @@ public class Visitor {
 				}
 				startTime = startTime + randomtime;
 
-			} else if (random >= 40 && random < 45) {
+			} else if (random >= 30 && random < 40) {
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<DrawObject> foodPlaces = new ArrayList<DrawObject>();
@@ -376,7 +389,7 @@ public class Visitor {
 				}
 				startTime = startTime + 35;
 
-			} else if (random > 45) {
+			} else if (random >= 40) {
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<DrawObject> toilets = new ArrayList<DrawObject>();
