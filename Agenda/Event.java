@@ -55,11 +55,11 @@ public class Event implements Serializable {
 	}
 	
 	public int getStart(){
-		return (startHour * 100) + startMinute;
+		return (startHour * 60) + startMinute;
 	}
 	
 	public int getStop(){
-		return (stopHour * 100) + stopMinute;
+		return (stopHour * 60) + stopMinute;
 	}
 	
 	public int getStopHour(){

@@ -362,30 +362,38 @@ public class Visitor
 	}
 
 	@SuppressWarnings("static-access")
-	public void fillActions() {
+	public void fillActions()
+	{
 		int startTime = 540;
 		int stopTime = 1260;
 
-		while (startTime < stopTime) {
+		while (startTime < stopTime)
+		{
 			int random = (int) Math.floor(Math.random() * 51);
-			if (random < 40) {
+			if (random < 40)
+			{
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<Event> posEvents = new ArrayList<Event>();
-				for (Event e : agenda.getEvents()) {
-					if (startTime >= e.getStart() && startTime < e.getStop()) {
+				for (Event e : agenda.getEvents())
+				{
+					if (startTime >= e.getStart() && startTime < e.getStop())
+					{
 						posEvents.add(e);
 					}
 				}
 
-				if (posEvents.size() != 0) {
+				if (posEvents.size() != 0)
+				{
 					int r = (int) Math.floor(Math.random() * posEvents.size());
 					Event evs = posEvents.get(r);
-					for (DrawObject d : objects) {
-						if (d.getFileName().equals("stage")) {
+					for (DrawObject d : objects)
+					{
+						if (d.getFileName().equals("stage"))
+						{
 							Stage s = (Stage) d;
-							if (s.getStage().getName()
-									.equals(evs.getStage().getName())) {
+							if (s.getStage().getName().equals(evs.getStage().getName()))
+							{
 								position = s.getPosition();
 								targetStage = d;
 							}
@@ -394,50 +402,58 @@ public class Visitor
 				}
 
 				int randomtime = (int) (40 + (Math.random() * (60 - 40)));
-				if (position != null) {
+				if (position != null)
+				{
 					Waypoint w = getClosestWaypoint(position);
-					actions.add(new Action(position, startTime, randomtime,
-							targetStage, w));
+					actions.add(new Action(position, startTime, randomtime, targetStage, w));
 				}
 				startTime = startTime + randomtime;
 
-			} else if (random >= 40 && random < 45) {
+			}
+			else if (random >= 40 && random < 45)
+			{
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<DrawObject> foodPlaces = new ArrayList<DrawObject>();
-				for (DrawObject d : objects) {
-					if (d.getFileName().equals("food")) {
+				for (DrawObject d : objects)
+				{
+					if (d.getFileName().equals("food"))
+					{
 						foodPlaces.add(d);
 					}
 				}
 
-				if (foodPlaces.size() != 0) {
+				if (foodPlaces.size() != 0)
+				{
 					int r = (int) Math.floor(Math.random() * foodPlaces.size());
 					position = foodPlaces.get(r).getPosition();
 					targetStage = foodPlaces.get(r);
 					Waypoint w = getClosestWaypoint(position);
-					actions.add(new Action(position, startTime, 35,
-							targetStage, w));
+					actions.add(new Action(position, startTime, 35, targetStage, w));
 					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
 
-			} else if (random > 45) {
+			}
+			else if (random > 45)
+			{
 				Point2D position = null;
 				DrawObject targetStage = null;
 				ArrayList<DrawObject> toilets = new ArrayList<DrawObject>();
-				for (DrawObject d : objects) {
-					if (d.getFileName().equals("wc")) {
+				for (DrawObject d : objects)
+				{
+					if (d.getFileName().equals("wc"))
+					{
 						toilets.add(d);
 					}
 				}
-				if (toilets.size() != 0) {
+				if (toilets.size() != 0)
+				{
 					int r = (int) Math.floor(Math.random() * toilets.size());
 					position = toilets.get(r).getPosition();
 					targetStage = toilets.get(r);
 					Waypoint w = getClosestWaypoint(position);
-					actions.add(new Action(position, startTime, 35,
-							targetStage, w));
+					actions.add(new Action(position, startTime, 35, targetStage, w));
 					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
