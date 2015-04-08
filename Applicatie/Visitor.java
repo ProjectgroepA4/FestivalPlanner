@@ -101,8 +101,6 @@ public class Visitor
 
 	public void move(DrawObject tar, Panel panel)
 	{
-		System.out.println("CurrentTarget: " + target);
-		System.out.println("FinalTarget: " + finalTarget);
 		Point2D targetPoint = panel.getWaypoint(target).getPosition();
 
 		double newRot = Math.atan2(targetPoint.getY() - position.getY(), targetPoint.getX() - position.getX());
@@ -156,14 +154,15 @@ public class Visitor
 				options.put(w.getSelf(), w.getOptions());
 			}
 
-			for (Map.Entry<Integer, int[]> e : options.entrySet())
+			if (finalTarget != target)
 			{
-				// System.out.println("KEY: " + e.getKey());
-				for (int i : e.getValue())
+				for (Map.Entry<Integer, int[]> e : options.entrySet())
 				{
-					// System.out.println("VAL: " + i);
-					if (finalTarget != target)
+					// System.out.println("KEY: " + e.getKey());
+					for (int i : e.getValue())
 					{
+						// System.out.println("VAL: " + i);
+
 						if (finalTarget == i && e.getKey() == target)
 						{
 							target = finalTarget;
@@ -171,26 +170,13 @@ public class Visitor
 						}
 						else if (finalTarget == i)
 						{
-							target = getNextWaypoint(options, e.getKey());
+							target = e.getKey();
 							break;
 						}
 					}
 				}
 			}
 		}
-	}
-
-	public int getNextWaypoint(HashMap<Integer, int[]> options, int lastWaypoint)
-	{
-		Iterator<Integer> it = options.keySet().iterator();
-		for (int i : options.get(lastWaypoint))
-		{
-			while (it.hasNext())
-			{
-				System.out.println(it.next());
-			}
-		}
-		return lastWaypoint;
 	}
 
 	public boolean checkIfOnWaypoint(Panel panel)
