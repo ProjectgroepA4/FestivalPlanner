@@ -5,8 +5,15 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import java.awt.geom.Area;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +22,8 @@ import Agenda.Event;
 import Objects.DrawObject;
 import Objects.Entrance;
 import Objects.Path;
+
+import Objects.Stage;
 
 public class Visitor
 {
@@ -27,15 +36,21 @@ public class Visitor
 	ArrayList<Action> actions;
 	Agenda agenda;
 	ArrayList<DrawObject> objects;
+
+	ArrayList<Waypoint> waypoints;
+	GregorianCalendar date;
 	int target;
 	int finalTarget;
 
-	public Visitor(String filename, Point2D position, Agenda agenda, ArrayList<DrawObject> objects)
+	public Visitor(String filename, Point2D position, Agenda agenda, ArrayList<DrawObject> objects, ArrayList<Waypoint> waypoints, GregorianCalendar date)
+
 	{
 		this.position = position;
 		this.filename = filename;
 		this.rotation = 0;
 		this.speed = 1 + Math.random() * 4;
+		this.waypoints = waypoints;
+		this.date = date;
 		scale = 1;
 		actions = new ArrayList<Action>();
 		this.agenda = agenda;
@@ -128,7 +143,8 @@ public class Visitor
 			{
 				continue;
 			}
-			if (hitTest(object))
+
+			if (hasCollisionDO(object))
 			{
 				possible = false;
 			}
@@ -145,6 +161,7 @@ public class Visitor
 			{
 				options.put(w.getSelf(), w.getOptions());
 			}
+
 			for (Map.Entry<Integer, int[]> e : options.entrySet())
 			{
 				for (int i : e.getValue())
@@ -231,14 +248,15 @@ public class Visitor
 			boolean possible = true;
 			for (DrawObject object : objects)
 			{
-				if (hitTest(object))
+				if (hasCollisionDO(object))
 				{
 					possible = false;
 				}
 			}
 			for (Visitor object : visitors)
 			{
-				if (hitTestVisitor(object) && object != this)
+
+				if (hasCollision(object) && object != this)
 				{
 					possible = false;
 				}
@@ -334,14 +352,14 @@ public class Visitor
 			boolean possible = true;
 			for (DrawObject object : objects)
 			{
-				if (hitTest(object))
+				if (hasCollisionDO(object))
 				{
 					possible = false;
 				}
 			}
 			for (Visitor object : visitors)
 			{
-				if (hitTestVisitor(object) && object != this)
+				if (hasCollision(object) && object != this)
 				{
 					possible = false;
 				}
@@ -354,6 +372,7 @@ public class Visitor
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public void fillActions()
 	{
 		int startTime = 540;
@@ -361,66 +380,104 @@ public class Visitor
 
 		while (startTime < stopTime)
 		{
-			int random = (int) Math.floor(Math.random() * 51);
-			if (random < 30)
+			int random = (int) Math.floor(Math.random() * 21);
+			if (random < 40)
 			{
 				Point2D position = null;
 				DrawObject targetStage = null;
+				ArrayList<Event> posEvents = new ArrayList<Event>();
 				for (Event e : agenda.getEvents())
 				{
-					if (convertMinutesToHours(startTime) > e.getStart() && convertMinutesToHours(startTime) < e.getStop())
+					if (startTime >= e.getStart() && startTime < e.getStop())
+					{
+						posEvents.add(e);
+					}
+				}
+
+				int totalPopularity = 0;
+				for (Event ev : posEvents)
+				{
+					totalPopularity += ev.getExpectedPopularity();
+				}
+
+				int r = (int) Math.floor(Math.random() * totalPopularity);
+				int currentPop = 0;
+				for (Event evs : posEvents)
+				{
+					int before = currentPop;
+					currentPop += evs.getExpectedPopularity();
+					if (currentPop >= r && before < r)
 					{
 						for (DrawObject d : objects)
 						{
-							if (d.getFileName().equals(e.getStage().getName()))
+							if (d.getFileName().equals("stage"))
 							{
-								position = d.getPosition();
-								targetStage = d;
+								Stage s = (Stage) d;
+								if (s.getStage().getName().equals(evs.getStage().getName()))
+								{
+									position = s.getPosition();
+									targetStage = d;
+								}
+
 							}
 						}
 					}
 				}
+
 				int randomtime = (int) (40 + (Math.random() * (60 - 40)));
 				if (position != null)
 				{
-					actions.add(new Action(position, startTime, randomtime, targetStage));
+					Waypoint w = getClosedWaypoint(position);
+					actions.add(new Action(position, startTime, randomtime, targetStage, w));
 				}
 				startTime = startTime + randomtime;
 
 			}
-			else if (random >= 30 && random < 35)
+			else if (random >= 40 && random < 45)
 			{
 				Point2D position = null;
-				DrawObject targetDraw = null;
+				DrawObject targetStage = null;
+				ArrayList<DrawObject> foodPlaces = new ArrayList<DrawObject>();
 				for (DrawObject d : objects)
 				{
-					if (d.getFileName().equals("entrance"))
+					if (d.getFileName().equals("food"))
 					{
-						position = d.getPosition();
+						foodPlaces.add(d);
 					}
 				}
-				if (position != null)
+
+				if (foodPlaces.size() != 0)
 				{
-					actions.add(new Action(position, startTime, 35, targetDraw));
-					startTime = startTime + 35;
+					int r = (int) Math.floor(Math.random() * foodPlaces.size());
+					position = foodPlaces.get(r).getPosition();
+					targetStage = foodPlaces.get(r);
+					Waypoint w = getClosedWaypoint(position);
+					actions.add(new Action(position, startTime, 35, targetStage, w));
+					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
 
 			}
-			else if (random > 35)
+			else if (random > 45)
 			{
 				Point2D position = null;
-				DrawObject targetDrawobj = null;
+				DrawObject targetStage = null;
+				ArrayList<DrawObject> toilets = new ArrayList<DrawObject>();
 				for (DrawObject d : objects)
 				{
 					if (d.getFileName().equals("wc"))
 					{
-						position = d.getPosition();
+						toilets.add(d);
 					}
 				}
-				if (position != null)
+				if (toilets.size() != 0)
 				{
-					actions.add(new Action(position, startTime, 35, targetDrawobj));
+					int r = (int) Math.floor(Math.random() * toilets.size());
+					position = toilets.get(r).getPosition();
+					targetStage = toilets.get(r);
+					Waypoint w = getClosedWaypoint(position);
+					actions.add(new Action(position, startTime, 35, targetStage, w));
+					startTime = startTime + 20;
 				}
 				startTime = startTime + 35;
 
@@ -428,35 +485,69 @@ public class Visitor
 		}
 	}
 
-	public int convertMinutesToHours(int startTime)
+	public Waypoint getClosedWaypoint(Point2D point)
 	{
-		int time = 0;
-		int hours = startTime / 60;
-		int minutes = startTime % 60;
-		time = (hours * 100) + minutes;
-		return time;
+		Waypoint waypoint = null;
+		int distance = 10000;
+		for (Waypoint w : waypoints)
+		{
+			if (w.getPosition().distance(point) < distance)
+			{
+				waypoint = w;
+				distance = (int) w.getPosition().distance(point);
+			}
+		}
+		return waypoint;
 	}
 
-	public int getEndX()
+	public boolean hasCollisionDO(DrawObject object)
 	{
 		Image image = Images.getImage(filename);
-		return (int) (position.getX() + image.getWidth(null));
+		Image image2 = Images.getImage(object.getFileName());
+		Rectangle recta = new Rectangle((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
+		Rectangle rectb = new Rectangle((int) object.getPosition().getX(), (int) object.getPosition().getY(), image2.getWidth(null), image2.getHeight(null));
+
+		Area a = new Area(recta);
+		Area b = new Area(rectb);
+
+		AffineTransform transA = new AffineTransform();
+		transA.rotate(rotation, position.getX(), position.getY());
+
+		AffineTransform transB = new AffineTransform();
+		transB.rotate(Math.toRadians(object.getRotation()), object.getPosition().getX(), object.getPosition().getY());
+
+		Area aa = a.createTransformedArea(transA);
+		Area bb = b.createTransformedArea(transB);
+
+		if (bb.intersects(aa.getBounds2D()))
+		{
+			return true;
+		}
+		return false;
 	}
 
-	public int getEndY()
+	public boolean hasCollision(Visitor v)
 	{
 		Image image = Images.getImage(filename);
-		return (int) (position.getY() + image.getHeight(null));
-	}
+		Rectangle a = new Rectangle((int) position.getX(), (int) position.getY(), image.getWidth(null), image.getHeight(null));
+		Rectangle b = new Rectangle((int) v.position.getX(), (int) v.position.getY(), image.getWidth(null), image.getHeight(null));
 
-	public boolean hitTest(DrawObject to2)
-	{
-		return (getEndX() >= to2.getPosition().getX() && getEndY() >= to2.getPosition().getY() && to2.getEndX() >= position.getX() && to2.getEndY() >= position.getY());
+		Area aa = new Area(a);
+		Area bb = new Area(b);
 
-	}
+		AffineTransform af = new AffineTransform();
+		af.rotate(rotation, position.getX(), position.getY());
 
-	public boolean hitTestVisitor(Visitor v)
-	{
-		return (getEndX() >= v.position.getX() && getEndY() >= v.position.getY() && v.getEndX() >= position.getX() && v.getEndY() >= position.getY());
+		AffineTransform bf = new AffineTransform();
+		bf.rotate(v.rotation, v.position.getX(), v.position.getY());
+
+		Area ra = aa.createTransformedArea(af);
+		Area rb = bb.createTransformedArea(bf);
+
+		if (ra.intersects(rb.getBounds2D()))
+		{
+			return true;
+		}
+		return false;
 	}
 }

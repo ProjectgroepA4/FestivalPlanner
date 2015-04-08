@@ -240,7 +240,7 @@ public class Panel extends JPanel implements ActionListener
 		if(!entrances.isEmpty()) {
 			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
 			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
-			visitors.add(new Visitor("visitor",point, agenda, objects));
+			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "You don't have an entrance");

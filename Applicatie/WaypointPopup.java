@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -99,6 +100,7 @@ public class WaypointPopup extends JFrame {
 				{
 					ioptions[i] = Integer.valueOf(options[i]);
 					System.out.println(ioptions[i]);
+
 				}
 				wp.setOptions(ioptions);
 				
