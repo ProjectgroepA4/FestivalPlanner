@@ -43,7 +43,7 @@ public class Visitor
 		fillActions();
 		System.out.println(actions.size());
 		target = 1;
-		finalTarget = 2;
+		finalTarget = 4;
 	}
 
 	public void draw(Graphics2D g2)
@@ -138,22 +138,39 @@ public class Visitor
 			position = oldPosition;
 			rotation += 0.2;
 		}
-		if(checkIfOnWaypoint(panel))
+		if (checkIfOnWaypoint(panel))
 		{
-			for(int i : panel.getWaypoint(target).getOptions())
+			// for(int i : panel.getWaypoint(target).getOptions())
+			// {
+			// if(i == finalTarget)
+			// {
+			// target = finalTarget;
+			// }
+			// }
+//			ArrayList<int[]> options = new ArrayList<int[]>();
+			HashMap<Integer, int[]> options = new HashMap<Integer, int[]>();
+			for (Waypoint w : panel.getWaypoints())
 			{
-				if(i == finalTarget)
+				options.put(w.getSelf(), w.getOptions());
+			}
+			for(Map.Entry<Integer, int[]> e : options.entrySet())
+			{
+				System.out.println(e.getKey());
+				System.out.println("=====================");
+				for(int i : e.getValue())
 				{
-					target = finalTarget;
+					System.out.println(i);
 				}
+				System.out.println("----------");
 			}
 		}
+
 	}
 
 	public boolean checkIfOnWaypoint(Panel panel)
 	{
 		if (panel.getWaypoint(target).contains(position))
-		{	
+		{
 			return true;
 		}
 		return false;
