@@ -73,7 +73,7 @@ public class Panel extends JPanel implements ActionListener
 	Point lastMousePosition = new Point(0, 0);
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
-	javax.swing.Timer t;
+	Timer t;
 	
 	SimpleDateFormat formatter;
 	GregorianCalendar date;
@@ -211,6 +211,18 @@ public class Panel extends JPanel implements ActionListener
 	{
 		waypoints.add(w);
 	}
+	
+	public Waypoint getWaypoint(int i)
+	{
+		for(Waypoint w : waypoints)
+		{
+			if(w.getSelf() == i)
+			{
+				return w;
+			}
+		}
+		return null;
+	}
 
 	public ArrayList<Waypoint> getWaypoints()
 	{
@@ -231,7 +243,7 @@ public class Panel extends JPanel implements ActionListener
 			visitors.add(new Visitor("visitor",point, agenda, objects));
 		}
 		else {
-			JOptionPane.showMessageDialog(this, "You don't have a entrance");
+			JOptionPane.showMessageDialog(this, "You don't have an entrance");
 		}
 	}
 

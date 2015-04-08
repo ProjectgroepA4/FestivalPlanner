@@ -28,6 +28,7 @@ public class Visitor
 	Agenda agenda;
 	ArrayList<DrawObject> objects;
 	int target;
+	int finalTarget;
 
 	public Visitor(String filename, Point2D position, Agenda agenda, ArrayList<DrawObject> objects)
 	{
@@ -42,6 +43,7 @@ public class Visitor
 		fillActions();
 		System.out.println(actions.size());
 		target = 0;
+		finalTarget = 0;
 	}
 
 	public void draw(Graphics2D g2)
@@ -88,6 +90,11 @@ public class Visitor
 		moveToTarget(target, objects, visitors, paths);
 	}
 
+	public void move(DrawObject tar)
+	{
+		
+	}
+	
 	public void moveToTarget(DrawObject target, ArrayList<DrawObject> objects, ArrayList<Visitor> visitors, ArrayList<Path> paths)
 	{
 		Point2D tar = target.getPosition();
@@ -217,18 +224,14 @@ public class Visitor
 			int dify = (int) (target2.getY() - position.getY());
 			int distance = (int) Math.sqrt((difx * difx) + (dify * dify));
 
-			System.out.println(rotation);
-			System.out.println(newRot);
-			System.out.println("--------------");
-//			if (rotation > newRot && distance > 10)
-//			{
-//				rotation -= 0.15;
-//			}
-//			else if (rotation < newRot && distance > 10)
-//			{
-//				rotation += 0.15;
-//			}
-			rotation = newRot;
+			if (rotation > newRot && distance > 10)
+			{
+				rotation -= 0.15;
+			}
+			else if (rotation < newRot && distance > 10)
+			{
+				rotation += 0.15;
+			}
 
 			Point2D oldPosition = position;
 
