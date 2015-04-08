@@ -229,7 +229,16 @@ public class Panel extends JPanel implements ActionListener
 		return waypoints;
 	}
 
-	public void addVisitors()
+	public void addVisitors(ArrayList<DrawObject> entrances)
+	{
+		
+			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
+			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
+			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
+		
+	}
+
+	public void addVisitors(int count)
 	{
 		ArrayList<DrawObject> entrances = new ArrayList<>();
 		for(DrawObject object : objects) {
@@ -238,21 +247,14 @@ public class Panel extends JPanel implements ActionListener
 			}
 		}
 		if(!entrances.isEmpty()) {
-			DrawObject entrance = entrances.get((int) Math.floor(Math.random()*entrances.size()));
-			Point point = new Point((int)entrance.getPosition().getX(),(int)entrance.getPosition().getY());
-			visitors.add(new Visitor("visitor",point, agenda, objects, waypoints, date));
+			for (int i = 0; i < count; i++)
+			{
+				addVisitors(entrances);
+			}
 		}
-		else {
+		else 
 			JOptionPane.showMessageDialog(this, "You don't have an entrance");
-		}
-	}
-
-	public void addVisitors(int count)
-	{
-		for (int i = 0; i < count; i++)
-		{
-			addVisitors();
-		}
+		cp.setPeople(visitors.size());
 	}
 
 	public void paintComponent(Graphics g)
@@ -668,6 +670,7 @@ public class Panel extends JPanel implements ActionListener
 		this.height = height;
 		paths.clear();
 		objects.clear();
+		visitors.clear();
 		cameraScale = 1;
 		switch (terrainIndex)
 		{

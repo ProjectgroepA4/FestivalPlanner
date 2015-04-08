@@ -94,7 +94,6 @@ public class Visitor
 			}
 
 		}
-
 		// moveToTarget(target, objects, visitors, paths);
 		move(target, panel);
 	}
@@ -177,7 +176,6 @@ public class Visitor
 				}
 			}
 		}
-
 	}
 
 	public boolean checkIfOnWaypoint(Panel panel)

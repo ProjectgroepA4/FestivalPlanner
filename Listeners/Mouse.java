@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.SwingUtilities;
@@ -16,7 +15,6 @@ import Applicatie.Waypoint;
 import Applicatie.WaypointPopup;
 import Objects.DrawObject;
 import Objects.Path;
-import Objects.Entrance;
 
 public class Mouse extends MouseAdapter
 {
@@ -130,7 +128,7 @@ public class Mouse extends MouseAdapter
 				{
 					if (SwingUtilities.isRightMouseButton(e))
 					{
-						new PathPopup(clickedPath, panel);
+						//new PathPopup(clickedPath, panel);
 					}
 				}
 				else
