@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import Applicatie.Waypoint;
+
 /**
  * Create's a path.
  * 
@@ -27,6 +29,7 @@ public class Path
 	private ArrayList<Shape> lines;
 	private Point2D tempPoint;
 	private BufferedImage pathBackground;
+	private ArrayList<Waypoint> waypoints;
 
 	/**
 	 * Constructor.
@@ -35,6 +38,7 @@ public class Path
 	{
 		points = new ArrayList<>();
 		lines = new ArrayList<>();
+		waypoints = new ArrayList<Waypoint>();
 		try
 		{
 			pathBackground = ImageIO.read(new File("images/newPath.png"));
@@ -140,6 +144,11 @@ public class Path
 			lines.add(stroke.createStrokedShape(line));
 		}
 		return lines;
+	}
+	
+	public void addWaypoint(Waypoint w)
+	{
+		waypoints.add(w);
 	}
 
 	/**

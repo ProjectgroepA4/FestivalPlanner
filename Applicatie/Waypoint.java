@@ -11,6 +11,7 @@ public class Waypoint extends DrawObject
 	public Waypoint(Point2D position)
 	{
 		super("waypoint", position);
+		self = 1;
 	}
 
 	@Override

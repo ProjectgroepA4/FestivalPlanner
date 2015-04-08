@@ -23,6 +23,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -169,7 +170,7 @@ public class Panel extends JPanel implements ActionListener
 				return new Wall(null);
 			case 4:
 				return new Food(null);
-			case 6:
+			case 5:
 				return new Waypoint(null);
 			default:
 				return null;
@@ -189,21 +190,6 @@ public class Panel extends JPanel implements ActionListener
 	public ArrayList<Waypoint> getWaypoints()
 	{
 		return waypoints;
-	}
-
-	public int getNextTarget()
-	{
-		int last = 0;
-		for (Waypoint w : waypoints)
-		{
-			System.out.println(waypoints);
-			if (w.getSelf() > last)
-			{
-				last = w.getSelf();
-			}
-		}
-		System.out.println(last);
-		return last;
 	}
 
 	public void addVisitors()
@@ -573,7 +559,7 @@ public class Panel extends JPanel implements ActionListener
 	{
 		return height;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
