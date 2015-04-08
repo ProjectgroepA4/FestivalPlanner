@@ -64,6 +64,7 @@ public class MenuBar extends JMenuBar {
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Applicatie.SaveLoad.load(w.getPanel());
+				w.setAgenda(w.getPanel().getAgenda());
 				Window.updatePanel();
 			}
 		});
