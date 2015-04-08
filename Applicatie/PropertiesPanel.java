@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,8 +22,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Agenda.AgendaStage;
+import Agenda.Event;
 import Objects.DrawObject;
 import Objects.Path;
+import Objects.Stage;
 
 @SuppressWarnings("serial")
 public class PropertiesPanel extends JPanel
@@ -36,6 +41,7 @@ public class PropertiesPanel extends JPanel
 
 	JLabel nameLabel;
 	JPanel areaPanel;
+	JPanel agendaPanel;
 	Component rigidArea;
 
 	JTextField locationXField;
@@ -500,12 +506,9 @@ public class PropertiesPanel extends JPanel
 		add(Box.createRigidArea(spacerDimension));
 
 		// AGENDA
-		JPanel agendaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel agendaLabel = new JLabel("Agenda");
-		agendaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		agendaPanel.setPreferredSize(new Dimension(200, 100));
-		agendaPanel.setMaximumSize(new Dimension(200, 100));
-		agendaPanel.add(agendaLabel);
+		agendaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		agendaPanel.setVisible(false);
+	
 		add(agendaPanel);
 
 		enableComponents(this, false);
@@ -566,12 +569,19 @@ public class PropertiesPanel extends JPanel
 		nameLabel.setText("No Selection");
 		areaPanel.setVisible(false);
 		rigidArea.setVisible(false);
+		agendaPanel.setVisible(false);
+		agendaPanel.removeAll();
+		agendaPanel.validate();
 	}
 
 	private void fillFields()
 	{
 
 		nameLabel.setText(selectedObject.getName());
+		
+		agendaPanel.removeAll();
+		agendaPanel.validate();
+		agendaPanel.setVisible(false);
 
 		locationXField.setText(Math.round(selectedObject.getPosition().getX()) + "");
 		locationYField.setText(Math.round(selectedObject.getPosition().getY()) + "");
@@ -582,7 +592,31 @@ public class PropertiesPanel extends JPanel
 		areaBottomField.setText(selectedObject.getAreaBottom() + "");
 		areaLeftField.setText(selectedObject.getAreaLeft() + "");
 		areaRightField.setText(selectedObject.getAreaRight() + "");
-
+		
+		if(selectedObject instanceof Stage)
+		{
+		
+			agendaPanel.setVisible(true);
+			JLabel agendaLabel = new JLabel("Agenda");
+			agendaLabel.setFont(new Font("Segoe UI", Font.ITALIC, 20));
+			agendaPanel.add(agendaLabel);
+			
+			AgendaStage st = ((Stage) selectedObject).getStage();
+			nameLabel.setText("Stage: " + st.getName());
+			ArrayList<Event> events = p.getAgenda().eventsForStage(st);
+			agendaPanel.setPreferredSize(new Dimension(200, ((30*events.size())+50) ));
+			agendaPanel.setMaximumSize(new Dimension(200, ((30*events.size())+50) ));
+			for(Event e : events)
+			{
+				JPanel eventPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				JLabel eventLabel = new JLabel(e.getEventName() + " - " + e.getArtist().getName());
+				eventLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+				eventPanel.setPreferredSize(new Dimension(200, 30));
+				eventPanel.setMaximumSize(new Dimension(200, 30));
+				eventPanel.add(eventLabel);
+				agendaPanel.add(eventPanel);
+			}
+		}
 	}
 
 	public void setPanel(Panel p)
