@@ -34,8 +34,8 @@ public class Event implements Serializable {
 				endHour, endMinute);
 		this.startHour = startHour;
 		this.startMinute = startMinute;
-		this.stopHour = stopHour;
-		this.stopMinute = stopMinute;
+		this.stopHour = endHour;
+		this.stopMinute = endMinute;
 		this.stage = stage;
 		this.artist = artist;
 		this.description = description;
