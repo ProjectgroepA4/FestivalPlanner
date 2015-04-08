@@ -37,8 +37,8 @@ public class ControlPanel extends JPanel
 		setFocusable(false);
 		
 		JPanel simulatorPanel  = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		simulatorPanel.setPreferredSize(new Dimension(350,50));
-		simulatorPanel.setMaximumSize(new Dimension(350,50));
+		simulatorPanel.setPreferredSize(new Dimension(290,50));
+		simulatorPanel.setMaximumSize(new Dimension(290,50));
 		add(simulatorPanel);
 		{
 			JLabel simulatorLabel = new JLabel("Simulator: ");
@@ -56,18 +56,6 @@ public class ControlPanel extends JPanel
 				}
 			});
 			simulatorPanel.add(playButton);
-			
-			JButton pauseButton = new JButton("Pause");
-			pauseButton.setFocusable(false);
-			pauseButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-			pauseButton.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					p.getT().stop();
-					runningLabel.setText("Simulation Paused");
-				}
-			});
-			simulatorPanel.add(pauseButton);
 			
 			JButton stopButton = new JButton("Stop");
 			stopButton.setFocusable(false);
