@@ -52,6 +52,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().start();
+					p.setPlay(true);
 					runningLabel.setText("Simulation Started");
 				}
 			});
@@ -64,6 +65,7 @@ public class ControlPanel extends JPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					p.getT().stop();
+					p.setPlay(false);
 					runningLabel.setText("Simulation Stopped");
 				}
 			});

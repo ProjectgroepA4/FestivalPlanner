@@ -63,6 +63,7 @@ public class Panel extends JPanel implements ActionListener
 	private Path currentPath;
 	private static int width = 1920;
 	private static int height = 1080;
+	private boolean play = false;
 
 	Point2D cameraPoint = new Point2D.Double(getWidth() / 2, getHeight() / 2);
 	float cameraScale = 1;
@@ -665,6 +666,16 @@ public class Panel extends JPanel implements ActionListener
 	public void setT(Timer t)
 	{
 		this.t = t;
+	}
+	
+	public void setPlay(boolean play)
+	{
+		this.play = play;
+	}
+
+	public boolean getPlay()
+	{
+		return play;
 	}
 
 	public void newWorld(int width, int height, int terrainIndex)

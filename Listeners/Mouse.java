@@ -34,6 +34,8 @@ public class Mouse extends MouseAdapter
 		panel.setLastClickPosition(clickPoint);
 		panel.setLastMousePosition(e.getPoint());
 
+		if(!panel.getPlay())
+		{
 		if (!panel.getClickedOption().equals("Path"))
 		{
 			if (e.getY() < 150)
@@ -151,12 +153,13 @@ public class Mouse extends MouseAdapter
 			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(), clickPoint.getY()));
 
 		}
+		}
 		panel.repaint();
 	}
 
 	public void mouseReleased(MouseEvent e)
 	{
-		if (panel.getDragObject() != null)
+		if (panel.getDragObject() != null && !panel.getPlay())
 		{
 			if (panel.getDragObject().getRectangleColor() != Color.RED)
 			{
