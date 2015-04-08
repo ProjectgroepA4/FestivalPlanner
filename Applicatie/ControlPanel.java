@@ -42,6 +42,7 @@ public class ControlPanel extends JPanel
 			simulatorPanel.add(simulatorLabel);
 			
 			JButton playButton = new JButton("Play");
+			playButton.setFocusable(false);
 			playButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			playButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
@@ -52,6 +53,7 @@ public class ControlPanel extends JPanel
 			simulatorPanel.add(playButton);
 			
 			JButton pauseButton = new JButton("Pause");
+			pauseButton.setFocusable(false);
 			pauseButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			pauseButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
@@ -62,6 +64,7 @@ public class ControlPanel extends JPanel
 			simulatorPanel.add(pauseButton);
 			
 			JButton stopButton = new JButton("Stop");
+			stopButton.setFocusable(false);
 			stopButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			stopButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
@@ -84,6 +87,7 @@ public class ControlPanel extends JPanel
 			timePanel.add(timeLabel);
 			
 			JButton dateButton = new JButton("Pick Date");
+			dateButton.setFocusable(false);
 			dateButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			dateButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
@@ -106,6 +110,7 @@ public class ControlPanel extends JPanel
 			peoplePanel.add(peopleLabel);
 			
 			JButton peopleButton = new JButton("Set People");
+			peopleButton.setFocusable(false);
 			peopleButton.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 			peopleButton.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
