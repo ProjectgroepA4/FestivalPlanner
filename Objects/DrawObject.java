@@ -234,6 +234,10 @@ public abstract class DrawObject implements Serializable
 	{
 		this.position = position;
 	}
+	public void setPosition(Point2D position, boolean b)
+	{
+		this.position = position;
+	}
 
 	public double getRotation()
 	{

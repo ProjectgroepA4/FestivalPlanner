@@ -105,7 +105,7 @@ public class PanelArtSta extends JPanel implements Panel{
 		else
 		{
 			dataStage = new Object[1];
-			dataStage[0] = new Stage("Geen Stages", "Geen Stages");
+			dataStage[0] = new AgendaStage("Geen Stages", "Geen Stages");
 			stages.setEnabled(false);
 		}
 	}
