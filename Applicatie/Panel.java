@@ -74,7 +74,7 @@ public class Panel extends JPanel implements ActionListener
 	Point2D selectionPosition = new Point(0, 0);
 	Images images = new Images();
 	javax.swing.Timer t;
-	
+
 	SimpleDateFormat formatter;
 	GregorianCalendar date;
 
@@ -146,9 +146,9 @@ public class Panel extends JPanel implements ActionListener
 		addMouseMotionListener(new MouseMotion(this));
 
 		addMouseWheelListener(new MouseWheel(this));
-		
+
 		addFocusListener(new WindowFocusListener(this));
-		
+
 		t = new Timer(1000 / 10, this);
 	}
 
@@ -171,18 +171,21 @@ public class Panel extends JPanel implements ActionListener
 				ArrayList<AgendaStage> stages = agenda.getStages();
 				Object[] s = new Object[stages.size()];
 				AgendaStage stage = null;
-				if (stages.size() != 0) {
-					for (int i = 0; i < stages.size(); i++) {
+				if (stages.size() != 0)
+				{
+					for (int i = 0; i < stages.size(); i++)
+					{
 						s[i] = stages.get(i);
 					}
 
-					stage = (AgendaStage) JOptionPane.showInputDialog(null,
-							"Select the right Stage", "Select Stage",
-							JOptionPane.PLAIN_MESSAGE, null, s, "stage");
+					stage = (AgendaStage) JOptionPane.showInputDialog(null, "Select the right Stage", "Select Stage", JOptionPane.PLAIN_MESSAGE, null, s, "stage");
 				}
-				if (stage != null){
+				if (stage != null)
+				{
 					return new Stage(null, stage);
-				} else {
+				}
+				else
+				{
 					return null;
 				}
 			case 1:
@@ -536,12 +539,26 @@ public class Panel extends JPanel implements ActionListener
 		{
 			if (path.containsPoint(point))
 			{
+
 				setcurrentPath(path);
 				setClickedOption("Path");
+
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public Path getClickedPath(Point2D point)
+	{
+		for (Path path : paths)
+		{
+			if (path.containsPoint(point))
+			{
+				return path;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -575,17 +592,17 @@ public class Panel extends JPanel implements ActionListener
 	{
 		this.agenda = agenda;
 	}
-	
+
 	public static int getFieldWidth()
 	{
 		return width;
 	}
-	
+
 	public static int getFieldHeight()
 	{
 		return height;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -631,21 +648,21 @@ public class Panel extends JPanel implements ActionListener
 		cameraScale = 1;
 		switch (terrainIndex)
 		{
-		case 0:
-			background = grass;
-			break;
-		case 1:
-			background = grass2;
-			break;
-		case 2:
-			background = sand;
-			break;
-		case 3:
-			background = sand2;
-			break;
-		case 4:
-			background = stone;
-			break;
+			case 0:
+				background = grass;
+				break;
+			case 1:
+				background = grass2;
+				break;
+			case 2:
+				background = sand;
+				break;
+			case 3:
+				background = sand2;
+				break;
+			case 4:
+				background = stone;
+				break;
 		}
 		repaint();
 	}

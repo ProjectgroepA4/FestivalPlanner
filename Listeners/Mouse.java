@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.SwingUtilities;
 
 import Applicatie.Panel;
+import Applicatie.PathPopup;
 import Applicatie.Waypoint;
 import Applicatie.WaypointPopup;
 import Objects.DrawObject;
@@ -76,7 +77,7 @@ public class Mouse extends MouseAdapter
 						{
 							if (o instanceof Waypoint)
 							{
-								new WaypointPopup(o);
+								new WaypointPopup(o, panel);
 							}
 						}
 						if (o == selectedObject)
@@ -122,7 +123,19 @@ public class Mouse extends MouseAdapter
 
 					}
 				}
-				panel.checkPath(clickPoint);
+				Path clickedPath = panel.getClickedPath(clickPoint);
+				if (clickedPath != null)
+				{
+					if (SwingUtilities.isRightMouseButton(e))
+					{
+						new PathPopup(clickedPath, panel);
+					}
+				}
+				else
+				{
+					panel.checkPath(clickPoint);
+				}
+
 			}
 			if (panel.getDragObject() == null && selectedObject != null)
 			{
@@ -134,7 +147,9 @@ public class Mouse extends MouseAdapter
 		}
 		else
 		{ // Making path.
+
 			panel.getCurrentPath().addPoint(new Point2D.Double(clickPoint.getX(), clickPoint.getY()));
+
 		}
 		panel.repaint();
 	}

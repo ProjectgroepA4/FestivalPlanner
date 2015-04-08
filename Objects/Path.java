@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import Applicatie.Panel;
 import Applicatie.Waypoint;
 
 /**
@@ -95,7 +96,7 @@ public class Path
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Check if one of the lines contains the given point.
 	 * 
@@ -114,12 +115,12 @@ public class Path
 		}
 		return false;
 	}
-	
+
 	public boolean intersectsRect(Rectangle2D rect)
 	{
-		for(Shape line : getPath())
+		for (Shape line : getPath())
 		{
-			if(line.intersects(rect))
+			if (line.intersects(rect))
 			{
 				return true;
 			}
@@ -145,10 +146,18 @@ public class Path
 		}
 		return lines;
 	}
-	
-	public void addWaypoint(Waypoint w)
+
+	public void addWaypoint(int i, Panel panel)
 	{
-		waypoints.add(w);
+		for (Waypoint w : panel.getWaypoints())
+		{
+			if (w.getSelf() == i)
+			{
+				waypoints.add(w);
+				return;
+			}
+		}
+
 	}
 
 	/**
