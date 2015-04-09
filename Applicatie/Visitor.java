@@ -371,8 +371,8 @@ public class Visitor
 	@SuppressWarnings("static-access")
 	public void fillActions()
 	{
-		int startTime = 840;
-		int stopTime = 1440;
+		int startTime = 540;
+		int stopTime = 1260;
 
 		while (startTime < stopTime)
 		{
